@@ -1,0 +1,1317 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migración Crítica de ERP — Caso de Estudio · Raúl Villarroel</title>
+  <meta name="description" content="Diseño UX/UI para la migración crítica de un sistema ERP. Case Study por Raúl Villarroel Pizarro.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg-hover: rgba(255, 255, 255, 0.09);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.18);
+      --blur: 18px;
+      /* Project accent — ERP blue/indigo */
+      --accent: #6366F1;
+      --accent-soft: rgba(99, 102, 241, 0.15);
+      --accent-border: rgba(99, 102, 241, 0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #07071A;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #07071A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
+    }
+    .glass-hover {
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glass-hover:hover {
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .gradient-text {
+      background: linear-gradient(130deg, #4ADE80 0%, #22D3EE 55%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Project accent gradient — indigo → violet */
+    .gradient-accent {
+      background: linear-gradient(130deg, #6366F1 0%, #A78BFA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #059669 0%, #0891B2 100%);
+      transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 35px rgba(8,145,178,0.4);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-indigo { background: radial-gradient(circle, rgba(99,102,241,0.28), transparent 70%); }
+    .orb-violet { background: radial-gradient(circle, rgba(167,139,250,0.22), transparent 70%); }
+    .orb-green  { background: radial-gradient(circle, rgba(34,197,94,0.2),   transparent 70%); }
+    .orb-cyan   { background: radial-gradient(circle, rgba(6,182,212,0.2),   transparent 70%); }
+
+    .grid-texture {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.08) 60%, transparent 100%);
+    }
+
+    /* Tag accent (ERP indigo) */
+    .tag-accent {
+      color: #C7D2FE;
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.22);
+    }
+
+    .step-num {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(167,139,250,0.15));
+      border: 1px solid rgba(99,102,241,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem;
+      color: #A78BFA; flex-shrink: 0;
+    }
+
+    .section-label {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 24px; height: 1px;
+      background: linear-gradient(90deg, #6366F1, #A78BFA);
+    }
+
+    .img-placeholder {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      color: rgba(255,255,255,0.2);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    }
+
+    .skill-tag {
+      font-family: 'DM Sans', sans-serif; font-size: 0.8125rem;
+      font-weight: 500; padding: 5px 13px; border-radius: 99px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-in { animation: fadeUp 0.7s cubic-bezier(.16,1,.3,1) both; }
+    .anim-d1  { animation-delay: 0.05s; }
+    .anim-d2  { animation-delay: 0.18s; }
+    .anim-d3  { animation-delay: 0.32s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb { animation: none !important; }
+      .anim-in { animation: none !important; }
+    }
+  </style>
+</head>
+
+<body class="grid-texture">
+
+  <!-- NAVBAR -->
+  <nav aria-label="Navegación principal" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl glass rounded-2xl px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-heading font-bold text-white text-base tracking-tight cursor-pointer flex items-center gap-1.5">
+      <span class="gradient-text font-heading font-bold">RV</span>
+      <span class="text-white/80">Portfolio</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5">
+      <a href="index.html#about"      class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Sobre mí</a>
+      <a href="index.html#projects"   class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Proyectos</a>
+      <a href="index.html#skills"     class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Habilidades</a>
+      <a href="index.html#experience" class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Experiencia</a>
+      <a href="index.html#contact"    class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Contacto</a>
+    </div>
+    <a href="case-studies.html" class="btn-primary text-white text-sm font-heading font-semibold px-5 py-2 rounded-xl cursor-pointer no-underline transition-all duration-200 inline-flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Casos de estudio
+    </a>
+  </nav>
+
+  <!-- ══════════════════════════════
+       HERO
+  ══════════════════════════════ -->
+  <section class="relative min-h-[72vh] flex flex-col justify-center overflow-hidden px-6 pt-32 pb-14">
+
+    <div class="orb orb-indigo" style="width:600px;height:600px;top:-180px;left:-160px;opacity:0.75;" aria-hidden="true"></div>
+    <div class="orb orb-violet" style="width:480px;height:480px;top:80px;right:-140px;opacity:0.65;" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto w-full text-center">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center justify-center gap-2 mb-6 anim-in anim-d1">
+        <a href="case-studies.html" class="text-white/35 text-xs font-body hover:text-white/60 transition-colors duration-200">Casos de estudio</a>
+        <span class="text-white/20 text-xs">/</span>
+        <span class="text-white/55 text-xs font-body">Migración Crítica de ERP</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap justify-center gap-2 mb-6 anim-in anim-d1">
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full tag-accent">ERP / Enterprise</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-emerald-300 bg-emerald-400/10 border border-emerald-400/15">Sistema de Diseño</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-cyan-300 bg-cyan-400/10 border border-cyan-400/15">UI Design</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-violet-300 bg-violet-400/10 border border-violet-400/15">UX Research</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-heading font-bold text-[clamp(1.9rem,4.5vw,3.2rem)] leading-[1.1] tracking-tight mb-8 anim-in anim-d2">
+        Migración Crítica de ERP: De la Deuda Técnica de Visual Basic a una Plataforma Web Escalar,<br><span class="gradient-accent">reduciendo el Time-to-Market en un 40%.</span>
+      </h1>
+
+      <!-- Meta cards -->
+      <div class="flex flex-wrap justify-center gap-3 anim-in anim-d3">
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Rol</p>
+            <p class="text-white/75 text-xs font-body font-medium">UX/UI Designer</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Año</p>
+            <p class="text-white/75 text-xs font-body font-medium">2022 – 2025</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Plataforma</p>
+            <p class="text-white/75 text-xs font-body font-medium">Web / Desktop</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Herramienta</p>
+            <p class="text-white/75 text-xs font-body font-medium">Figma</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="flex items-center justify-center gap-3 mt-8 anim-in anim-d3">
+        <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent" aria-hidden="true"></div>
+        <span class="text-white/25 text-xs font-body">Desplázate para ver el caso completo</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Cover image -->
+  <div class="px-6 max-w-6xl mx-auto mb-0 -mt-4">
+    <img
+      src="imagenes/gemini.png"
+      alt="Portada — Migración Crítica de ERP"
+      class="w-full rounded-2xl"
+      style="border:1px solid rgba(255,255,255,0.07);"
+    />
+  </div>
+
+  <div class="divider mt-20"></div>
+
+
+  <!-- ══════════════════════════════
+       1 — PROBLEMA & CONTEXTO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-indigo" style="width:400px;height:400px;top:-80px;right:-100px;opacity:0.3;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">01 — Problema &amp; Contexto</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-10 leading-snug">
+        El desafío de migrar<br>un sistema <span class="gradient-accent">crítico</span>
+      </h2>
+
+      <!-- Context cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-400" aria-hidden="true"></div>
+            <span class="text-white/40 text-xs font-body uppercase tracking-[0.14em]">Desafío</span>
+          </div>
+          <p class="text-white/65 text-sm font-body leading-relaxed">
+            Nuestro sistema ERP vital operaba sobre una infraestructura heredada de Visual Basic, un riesgo de negocio crítico que limitaba la escalabilidad y generaba una dependencia de un único ingeniero. La migración a una plataforma web moderna era esencial. Sin embargo, la interfaz existente padecía de una severa inconsistencia visual y errores de usabilidad fundamentales (como el uso incorrecto de elementos como radio buttons en campos binarios), lo que aumentaba el riesgo de errores operativos.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+            <span class="text-white/40 text-xs font-body uppercase tracking-[0.14em]">Mi Rol</span>
+          </div>
+          <p class="text-white/65 text-sm font-body leading-relaxed">
+            Como Diseñador UX/UI en un entorno ágil, fui responsable de diseñar la nueva arquitectura de interfaz y crear el Design System desde cero. Mi trabajo no fue solo estético; fue un <strong class="text-white/85 font-semibold">proyecto de ingeniería de la usabilidad destinado a desvincular el diseño de la complejidad técnica</strong>, acelerar al equipo de desarrollo y <strong class="text-white/85 font-semibold">garantizar la estandarización de la experiencia para el usuario</strong> empresarial.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Fase 1: Conceptualización y Narrativa -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="font-heading font-bold text-white/70 text-xs uppercase tracking-[0.18em]">Fase 1</span>
+          <div class="flex-1 h-px" style="background:rgba(99,102,241,0.25);"></div>
+        </div>
+        <h3 class="font-heading font-bold text-white text-lg mb-1 leading-snug">Conceptualización y Narrativa</h3>
+        <p class="font-heading font-semibold text-white/50 text-sm mb-4">1.1. Contexto y Desafío de Negocio: El Costo de la Deuda Técnica del ERP</p>
+        <p class="text-white/55 text-sm font-body leading-relaxed mb-8">
+          El objetivo de esta sección es exponer la magnitud del problema que el Design System vino a resolver. Este desafío no es solo estético, sino funcional y de sostenibilidad a largo plazo.
+        </p>
+
+        <!-- Tabla de desafíos -->
+        <div class="glass rounded-2xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.09);">
+
+          <!-- Header -->
+          <div class="grid" style="grid-template-columns:1fr 1.6fr 1.6fr;border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div class="px-5 py-3" style="background:rgba(99,102,241,0.1);">
+              <span class="font-heading font-semibold text-indigo-300 text-xs uppercase tracking-[0.12em]">Desafío de Negocio</span>
+            </div>
+            <div class="px-5 py-3" style="background:rgba(99,102,241,0.07);border-left:1px solid rgba(255,255,255,0.06);">
+              <span class="font-heading font-semibold text-violet-300 text-xs uppercase tracking-[0.12em]">Desafío Técnico/UX — Causas y Síntomas</span>
+            </div>
+            <div class="px-5 py-3" style="background:rgba(99,102,241,0.07);border-left:1px solid rgba(255,255,255,0.06);">
+              <span class="font-heading font-semibold text-emerald-300 text-xs uppercase tracking-[0.12em]">Solución — El DS como Agente de Cambio</span>
+            </div>
+          </div>
+
+          <!-- Row A -->
+          <div class="grid" style="grid-template-columns:1fr 1.6fr 1.6fr;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div class="px-5 py-5" style="background:rgba(255,255,255,0.02);">
+              <p class="font-heading font-semibold text-white/80 text-xs mb-1">A.</p>
+              <p class="font-heading font-semibold text-white text-sm leading-snug">Riesgo de Continuidad Operacional</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed">El back-end estaba anclado en Visual Basic, un lenguaje obsoleto que generaba una dependencia crítica de un único desarrollador. La migración era forzosa para evitar la paralización del negocio.</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed"><strong class="text-emerald-300/80 font-semibold">Mitigación de Riesgo:</strong> El DS definió el target de la nueva interfaz web, permitiendo al equipo de ingeniería (Agile/SCRUM) enfocarse en migrar la lógica de negocio, ya que el diseño del front-end estaba pre-validado y documentado.</p>
+            </div>
+          </div>
+
+          <!-- Row B -->
+          <div class="grid" style="grid-template-columns:1fr 1.6fr 1.6fr;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div class="px-5 py-5" style="background:rgba(255,255,255,0.02);">
+              <p class="font-heading font-semibold text-white/80 text-xs mb-1">B.</p>
+              <p class="font-heading font-semibold text-white text-sm leading-snug">Ineficiencia y Alto Costo de Desarrollo</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed">La lentitud en el desarrollo de nuevas funcionalidades y la corrección de errores (bugs) era inherente a la arquitectura antigua. El tiempo de desarrollo era lento y costoso.</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed"><strong class="text-emerald-300/80 font-semibold">Aceleración del Desarrollo:</strong> El DS proveyó componentes de UI estandarizados y reutilizables. Esto se traduce en una reducción del tiempo de desarrollo de interfaces de hasta 47% en comparación con el código desde cero, minimizando la deuda técnica y los redos.</p>
+            </div>
+          </div>
+
+          <!-- Row C -->
+          <div class="grid" style="grid-template-columns:1fr 1.6fr 1.6fr;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div class="px-5 py-5" style="background:rgba(255,255,255,0.02);">
+              <p class="font-heading font-semibold text-white/80 text-xs mb-1">C.</p>
+              <p class="font-heading font-semibold text-white text-sm leading-snug">Pérdida de Usabilidad y Errores Operacionales</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed">La interfaz antigua, con el mal uso de componentes (falsos input, radio buttons en lugar de checkboxes, o viceversa), generaba errores del usuario y confusión, especialmente en flujos críticos de entrada de datos.</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed"><strong class="text-emerald-300/80 font-semibold">Estandarización y Precisión:</strong> El DS estableció patrones de interacción y reglas de uso rigurosas para cada componente. Esto eliminó la ambigüedad, mejorando la precisión de la entrada de datos en la nueva versión web. La consistencia visual minimiza la frustración del usuario.</p>
+            </div>
+          </div>
+
+          <!-- Row D -->
+          <div class="grid" style="grid-template-columns:1fr 1.6fr 1.6fr;">
+            <div class="px-5 py-5" style="background:rgba(255,255,255,0.02);">
+              <p class="font-heading font-semibold text-white/80 text-xs mb-1">D.</p>
+              <p class="font-heading font-semibold text-white text-sm leading-snug">Inconsistencia de Marca y Experiencia</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed">La falta de una guía visual unificada significaba que cada nuevo módulo o pantalla desarrollada en el ERP se veía y funcionaba de manera diferente, lo que socavaba la confianza y la usabilidad general del producto.</p>
+            </div>
+            <div class="px-5 py-5" style="border-left:1px solid rgba(255,255,255,0.05);">
+              <p class="text-white/55 text-xs font-body leading-relaxed"><strong class="text-emerald-300/80 font-semibold">Gobernanza del Diseño:</strong> El DS proporcionó una única fuente de verdad (Single Source of Truth), asegurando que todos los componentes, desde los design tokens hasta los patrones complejos, promovieran una experiencia de marca profesional y predecible a través de los diversos módulos del ERP.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 1.1.A Riesgo de Continuidad Operacional -->
+      <div class="glass rounded-2xl p-6 mb-10">
+        <h4 class="font-heading font-semibold text-white text-base mb-5 leading-snug">
+          1.1.A. Riesgo de Continuidad Operacional y Deuda Técnica <span class="text-white/40 font-normal">(Visual Basic)</span>
+        </h4>
+        <div class="flex flex-col gap-6">
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">1</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Cuantificación del Riesgo</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                La dependencia a un <strong class="text-white/80 font-semibold">solo desarrollador capacitado en Visual Basic generaba grandes periodos del software fuera de servicio</strong> tanto para identificar el error como para intentar solucionarlo. Este desarrollador no trabajaba con un equipo de diseño, por lo que sus iteraciones con los problemas no siempre estaban resueltas en el primer intento, dilatando aún más la resolución. Por ejemplo, si existía algún problema con el módulo de Contabilidad del SaaS, esto incurría en evaluar cuándo el profesional podía tomar la tarea <strong class="text-white/80 font-semibold">(alrededor de 1 a 3 días hábiles desde que se informaba el error)</strong>, además de los días que podía tomarle solucionarlo <strong class="text-white/80 font-semibold">(entre 5 y 10 días hábiles)</strong>. Lo que da como resultado que <strong class="text-white/80 font-semibold">un error dentro del sistema tomaba en promedio 9.5 días en ser solucionado.</strong>
+              </p>
+            </div>
+          </div>
+
+          <div class="h-px" style="background:rgba(255,255,255,0.05);"></div>
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">2</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Influencia Metodológica</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                Otro de los desafíos enfrentados era <strong class="text-white/80 font-semibold">pasar de un solo desarrollador que manejaba todo el software a un equipo ágil</strong>. Donde se debía tomar la decisión de cuáles eran los componentes más críticos a diseñar y desarrollar. Al tratarse de un ERP, estos <strong class="text-white/80 font-semibold">componentes críticos eran los de Formularios y tabla de datos</strong>, con el objetivo de asegurar una primera aproximación de front-end mientras los desarrolladores migraban las bases de datos heredadas de la versión anterior.
+              </p>
+            </div>
+          </div>
+
+          <div class="h-px" style="background:rgba(255,255,255,0.05);"></div>
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">3</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Handoff y Colaboración</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                Este Sistema de Diseño se convirtió en el <strong class="text-white/80 font-semibold">nuevo lenguaje en común entre el equipo de diseño y el equipo de desarrollo</strong>, con el propósito de desacoplar al desarrollo de Visual Basic de los nuevos desarrolladores web, dando como consecuencia la aceleración de producción de historias de usuario.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ERP legacy image -->
+      <div class="relative rounded-3xl overflow-hidden mb-8" style="border:1px solid rgba(255,255,255,0.08);">
+        <img
+          src="imagenes/erp1.png"
+          alt="Sistema ERP legacy — Visual Basic"
+          class="w-full h-auto block"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="img-placeholder w-full h-56 md:h-72" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>Captura del sistema ERP legacy</span>
+        </div>
+      </div>
+
+      <!-- 1.1.B Ineficiencia y Alto Costo de Desarrollo -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <h4 class="font-heading font-semibold text-white text-base mb-5 leading-snug">
+          1.1.B. Ineficiencia y Alto Costo de Desarrollo
+        </h4>
+        <div class="flex flex-col gap-6">
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">1</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Ahorro de tiempo en diseño</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                Como se comenta con anterioridad, el promedio de resolución de errores era de <strong class="text-white/80 font-semibold">9.5 días</strong>. Además, el desarrollo de una nueva funcionalidad por parte del único desarrollador de Visual Basic podía tomar <strong class="text-white/80 font-semibold">hasta 30 días hábiles</strong>. Con la incorporación del Design System, el equipo ágil logra una <strong class="text-white/80 font-semibold">reducción del tiempo de desarrollo de interfaces de hasta un 47%</strong>, y una nueva funcionalidad logra estar disponible en <strong class="text-white/80 font-semibold">4.4 días, lo que significa menos de un sprint</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="h-px" style="background:rgba(255,255,255,0.05);"></div>
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">2</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Impacto en la deuda técnica</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                La ausencia de un sistema de diseño en el ERP de Visual Basic generaba <strong class="text-white/80 font-semibold">inconsistencias visuales constantes</strong> entre módulos, aumentando el carga de trabajo de QA en cada entrega. Con el Design System, las <strong class="text-white/80 font-semibold">inconsistencias visuales se redujeron en un 95%</strong>, liberando una cantidad enorme de trabajo al equipo de QA y permitiéndoles enfocarse en la lógica de negocio en lugar de la corrección visual.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- erp2 + erp3 images -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+        <div class="relative rounded-3xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08);">
+          <img
+            src="imagenes/erp2.png"
+            alt="Sistema ERP legacy — detalle 2"
+            class="w-full h-auto block"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="img-placeholder w-full h-56 md:h-64" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span>ERP legacy — captura 2</span>
+          </div>
+        </div>
+        <div class="relative rounded-3xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08);">
+          <img
+            src="imagenes/erp3.png"
+            alt="Sistema ERP legacy — detalle 3"
+            class="w-full h-auto block"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="img-placeholder w-full h-56 md:h-64" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span>ERP legacy — captura 3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.1.C Pérdida de Usabilidad y Errores Operacionales -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <h4 class="font-heading font-semibold text-white text-base mb-5 leading-snug">
+          1.1.C. Pérdida de Usabilidad y Errores Operacionales <span class="text-white/40 font-normal">(Patrones de Interacción)</span>
+        </h4>
+        <div class="flex flex-col gap-6">
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">1</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Errores operacionales</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                Existían instancias donde se usaban radio buttons para permitir múltiples selecciones, o checkboxes para opciones únicas, violando el principio fundamental de usabilidad. Esto aumentaba la carga cognitiva y provocaba errores en los formularios de configuración y de ingreso de inventario. <strong class="text-white/75 font-semibold">Principios Fundamentales Reforzados:</strong> El Design System estableció la Regla de Oro de Interacción en su documentación: <strong class="text-white/80 font-semibold">Radio Buttons:</strong> Solo para opciones mutuamente excluyentes (selecciona uno de muchos). <strong class="text-white/80 font-semibold">Checkboxes:</strong> Solo para opciones no excluyentes (selecciona cero, uno o varios). Al definir y documentar esta regla, <strong class="text-white/80 font-semibold">eliminamos el 100% de la ambigüedad semántica en los nuevos módulos web</strong>, lo que condujo a una mayor precisión en la entrada de datos por parte del usuario final.
+              </p>
+            </div>
+          </div>
+
+          <div class="h-px" style="background:rgba(255,255,255,0.05);"></div>
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">2</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Optimización de Componentes para la Densidad de Datos</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed mb-3">
+                Las tablas de datos del ERP (ej. Gestión de Clientes, Historial de Órdenes) eran interfaces de alta densidad que se veían abarrotadas y obligaban al usuario a hacer scroll horizontal excesivo. El uso de controles de selección voluminosos contribuía al desorden visual. Para esto se implementaron Segmented Controls y Toggle Tokens:
+              </p>
+              <div class="flex flex-col gap-3 pl-1">
+                <div class="rounded-xl p-4" style="background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.14);">
+                  <p class="font-heading font-semibold text-indigo-300 text-xs mb-1.5">Segmented Controls</p>
+                  <p class="text-white/50 text-xs font-body leading-relaxed">Para filtros de tablas donde solo se podía elegir un estado (ej. un filtro de "Estado de Orden" con opciones como Pendiente, En Proceso, Completada), el DS reemplazó los radio buttons por un Segmented Control compacto. Este componente es visualmente superior para alternar entre opciones excluyentes y optimiza el espacio de la barra de herramientas.</p>
+                </div>
+                <div class="rounded-xl p-4" style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.14);">
+                  <p class="font-heading font-semibold text-violet-300 text-xs mb-1.5">Check Tokens / Toggle Tokens</p>
+                  <p class="text-white/50 text-xs font-body leading-relaxed">Para opciones binarias simples (Sí/No, Activo/Inactivo) o selección múltiple en listas, el DS introdujo el componente Toggle Token (o un switch más pequeño). Este control es más compacto y visualmente limpio que una casilla de verificación tradicional, lo que reduce el desorden visual en las filas de las tablas densas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- erp4 image -->
+      <div class="relative rounded-3xl overflow-hidden mb-8" style="border:1px solid rgba(255,255,255,0.08);">
+        <img
+          src="imagenes/erp4.png"
+          alt="Sistema ERP legacy — detalle 4"
+          class="w-full h-auto block"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="img-placeholder w-full h-56 md:h-72" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>ERP legacy — captura 4</span>
+        </div>
+      </div>
+
+      <!-- 1.1.D Inconsistencia de Marca y Experiencia -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <h4 class="font-heading font-semibold text-white text-base mb-5 leading-snug">
+          1.1.D. Inconsistencia de Marca y Experiencia <span class="text-white/40 font-normal">(Gobernanza)</span>
+        </h4>
+        <div class="flex flex-col gap-6">
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">1</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">El Design System como Única Fuente de Verdad <span class="text-white/45 font-normal">(Single Source of Truth)</span></p>
+              <p class="text-white/55 text-sm font-body leading-relaxed mb-3">
+                Antes de la migración, cada desarrollador o consultor creaba su propia versión de elementos básicos (botones, colores, tipografía) para los nuevos módulos o parches, generando una inconsistencia visual del 100% en la plataforma ERP. Esto diluía la marca y confundía al usuario, afectando la lealtad y el entrenamiento del cliente.
+              </p>
+              <div class="rounded-xl p-4" style="background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.14);">
+                <p class="font-heading font-semibold text-indigo-300 text-xs mb-1.5">Arquitectura de Tokens Semánticos</p>
+                <p class="text-white/50 text-xs font-body leading-relaxed">Se estableció el Design System como la Única Fuente de Verdad (Single Source of Truth). Esto se logró definiendo un conjunto de Design Tokens en lugar de usar valores estáticos. Al usar tokens semánticos, incluso si la marca decidía cambiar su color primario, la actualización se aplicaría instantáneamente en todo el ERP web con solo cambiar el valor del token, <strong class="text-white/75 font-semibold">manteniendo la consistencia visual y de marca del 100%</strong>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-px" style="background:rgba(255,255,255,0.05);"></div>
+
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-heading font-bold text-xs" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">2</div>
+            <div>
+              <p class="font-heading font-semibold text-white/80 text-sm mb-2">Onboarding de Desarrolladores y Reducción del Tiempo de Revisión</p>
+              <p class="text-white/55 text-sm font-body leading-relaxed mb-3">
+                El onboarding de nuevos desarrolladores o diseñadores a la plataforma ERP era extremadamente lento y dependía de la experiencia de otros, lo que generaba un alto costo de capacitación y largos periodos hasta que un nuevo miembro podía ser productivo.
+              </p>
+              <div class="rounded-xl p-4 mb-3" style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.14);">
+                <p class="font-heading font-semibold text-violet-300 text-xs mb-2">Documentación Ejecutable <span class="text-white/40 font-normal">(Living Documentation)</span></p>
+                <p class="text-white/50 text-xs font-body leading-relaxed mb-3">El Design System se convirtió en una guía viva. Más allá de los componentes de Figma, incluye una documentación con:</p>
+                <div class="flex flex-col gap-2">
+                  <div class="flex gap-2 items-start">
+                    <div class="mt-1 w-1 h-1 rounded-full flex-shrink-0 bg-violet-400" aria-hidden="true"></div>
+                    <p class="text-white/45 text-xs font-body leading-relaxed"><strong class="text-white/65 font-semibold">Anatomía del Componente:</strong> Diagramas detallados que desglosan la estructura de los componentes complejos (ej. un campo de entrada con ayuda, tooltip y validación).</p>
+                  </div>
+                  <div class="flex gap-2 items-start">
+                    <div class="mt-1 w-1 h-1 rounded-full flex-shrink-0 bg-violet-400" aria-hidden="true"></div>
+                    <p class="text-white/45 text-xs font-body leading-relaxed"><strong class="text-white/65 font-semibold">Reglas de Uso (Do's and Don'ts):</strong> Reglas claras sobre cuándo usar (o no usar) un componente, así como pautas de contenido (ej. el tono de las etiquetas) y accesibilidad.</p>
+                  </div>
+                  <div class="flex gap-2 items-start">
+                    <div class="mt-1 w-1 h-1 rounded-full flex-shrink-0 bg-violet-400" aria-hidden="true"></div>
+                    <p class="text-white/45 text-xs font-body leading-relaxed"><strong class="text-white/65 font-semibold">Gobernanza Ágil:</strong> Implementación de sesiones o canales de comunicación (Office Hours o canales de consulta) para alinear a los equipos bajo metodologías SCRUM/Agile.</p>
+                  </div>
+                </div>
+              </div>
+              <p class="text-white/55 text-sm font-body leading-relaxed">
+                La documentación centralizada y la gobernanza del DS redujeron el <strong class="text-white/80 font-semibold">Tiempo Ahorrado en la incorporación de nuevos miembros del equipo de diseño y desarrollo en un 60%</strong>, acelerando su productividad y reduciendo los costos de capacitación.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- erp5 image -->
+      <div class="relative rounded-3xl overflow-hidden mb-8" style="border:1px solid rgba(255,255,255,0.08);">
+        <img
+          src="imagenes/erp5.png"
+          alt="Sistema ERP legacy — detalle 5"
+          class="w-full h-auto block"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="img-placeholder w-full h-56 md:h-72" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>ERP legacy — captura 5</span>
+        </div>
+      </div>
+
+      <!-- 1.2 Conclusión de la Fase -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <h4 class="font-heading font-semibold text-white text-base mb-4 leading-snug">
+          1.2. Conclusión de la Fase: El Design System como Inversión Estratégica
+        </h4>
+        <p class="text-white/55 text-sm font-body leading-relaxed mb-5">
+          El Design System para el ERP no fue un proyecto de mejora visual, sino una estrategia de mitigación de riesgo y un acelerador de negocio. La inversión en gobernanza y diseño resolvió simultáneamente cuatro desafíos críticos que ponían en peligro la escalabilidad de la empresa:
+        </p>
+        <div class="flex flex-col gap-4 mb-6">
+          <div class="flex gap-3 items-start">
+            <div class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center font-heading font-bold text-xs mt-0.5" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">1</div>
+            <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-semibold">Riesgo de Continuidad:</strong> Neutralizamos la dependencia crítica de la tecnología heredada (Visual Basic) al proporcionar una interfaz web estandarizada y pre-validada. Esto permitió al equipo Agile/SCRUM migrar la lógica de negocio de manera segura y enfocada, reduciendo la complejidad del proyecto de transformación.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center font-heading font-bold text-xs mt-0.5" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">2</div>
+            <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-semibold">Ineficiencia Operacional:</strong> Al sustituir la codificación repetitiva por componentes de UI reutilizables y documentados (la Living Documentation), se proyectó una aceleración del desarrollo de interfaces de hasta un 47% en comparación con el código escrito desde cero, liberando así una cantidad significativa de tiempo del equipo de QA y de ingeniería.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center font-heading font-bold text-xs mt-0.5" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">3</div>
+            <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-semibold">Errores Críticos de Usabilidad:</strong> Abordamos directamente los errores sistémicos en la entrada de datos (el mal uso de radio buttons y checkboxes) al establecer patrones de interacción rigurosos (ej. Segmented Controls y reglas de alineamiento), lo que mejoró la precisión en la entrada de datos, clave para la salud operativa del ERP.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center font-heading font-bold text-xs mt-0.5" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.3);color:#A78BFA;">4</div>
+            <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-semibold">Inconsistencia y Gobernanza:</strong> Establecimos el Design System como la Única Fuente de Verdad (Single Source of Truth). Esto, anclado en la arquitectura de Design Tokens Semánticos, garantizó el 100% de la coherencia visual y de marca en todos los módulos, lo cual es fundamental para generar confianza y reducir la curva de aprendizaje del usuario empresarial.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado Final destacado -->
+      <div class="relative rounded-2xl p-8 mb-2 overflow-hidden" style="background:linear-gradient(135deg,rgba(99,102,241,0.13) 0%,rgba(167,139,250,0.10) 100%);border:1px solid rgba(99,102,241,0.3);">
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse at 80% 50%,rgba(167,139,250,0.12),transparent 65%);"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-5">
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.35);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div>
+            <p class="font-heading font-semibold text-indigo-300 text-xs uppercase tracking-[0.16em] mb-2">Resultado Final</p>
+            <p class="text-white/80 text-base font-body leading-relaxed">
+              Mi rol transformó la UX de una limitación operativa a una <strong class="text-white font-semibold">ventaja de escalabilidad</strong>. El sistema no solo es más usable, sino que actúa como un activo de negocio que reduce el riesgo, acelera el <strong class="text-white font-semibold">Time-to-Market</strong> y sienta las bases para futuras expansiones a otras plataformas sin necesidad de un rediseño total.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       2 — INVESTIGACIÓN
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-violet" style="width:380px;height:380px;bottom:-60px;left:-80px;opacity:0.28;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">02 — Investigación</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-10 leading-snug">
+        Entendiendo a los<br><span class="gradient-accent">usuarios internos</span>
+      </h2>
+
+      <!-- Research methods -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-5">Métodos de investigación</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <p class="font-heading font-semibold text-white text-sm mb-1">Entrevistas</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">Usuarios finales y stakeholders del sistema legacy</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <p class="font-heading font-semibold text-white text-sm mb-1">Benchmarking</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">Análisis de ERPs líderes del mercado</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <p class="font-heading font-semibold text-white text-sm mb-1">Heurísticas</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">Evaluación de usabilidad del sistema actual</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          </div>
+          <p class="font-heading font-semibold text-white text-sm mb-1">Shadowing</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">Observación de flujos reales de trabajo</p>
+        </div>
+
+      </div>
+
+      <!-- Shadowing -->
+      <div class="mb-12">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base">Proceso de Shadowing</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+          <div class="glass rounded-2xl p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-indigo-400" aria-hidden="true"></div>
+              <span class="font-heading font-semibold text-indigo-300 text-xs uppercase tracking-[0.12em]">Objetivo</span>
+            </div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              El shadowing tuvo como propósito observar a los usuarios internos —contadores, supervisores de operaciones y gestores de inventario— mientras ejecutaban sus tareas diarias en el sistema ERP legacy, <strong class="text-white/75 font-semibold">sin intervenir ni guiar su comportamiento</strong>. El objetivo era capturar los flujos reales de trabajo, no los flujos ideales que los usuarios describirían en una entrevista.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+              <span class="font-heading font-semibold text-violet-300 text-xs uppercase tracking-[0.12em]">Metodología</span>
+            </div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Se realizaron sesiones de observación directa en el puesto de trabajo de cada perfil de usuario. Durante las sesiones se registraron los módulos utilizados, el orden de las acciones, los errores cometidos, los workarounds aplicados y las expresiones de frustración. Cada sesión fue documentada con notas estructuradas y cronometrada por tarea.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Hallazgos del shadowing -->
+        <div class="glass rounded-2xl p-6">
+          <p class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.14em] mb-5">Hallazgos observados en terreno</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <div class="flex flex-col gap-2">
+              <div class="rounded-xl p-4" style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.16);">
+                <p class="font-heading font-semibold text-indigo-300 text-xs mb-2">Workarounds habituales</p>
+                <p class="text-white/50 text-xs font-body leading-relaxed">Los usuarios mantenían planillas de Excel paralelas al ERP para compensar la falta de filtros y vistas consolidadas. Esto duplicaba el trabajo y generaba errores de sincronización de datos.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="rounded-xl p-4" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.16);">
+                <p class="font-heading font-semibold text-violet-300 text-xs mb-2">Patrones de error recurrentes</p>
+                <p class="text-white/50 text-xs font-body leading-relaxed">Se observó que el 7 de cada 10 usuarios seleccionaba el componente incorrecto (radio button vs. checkbox) en formularios de ingreso de inventario, requiriendo correcciones manuales posteriores.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="rounded-xl p-4" style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.16);">
+                <p class="font-heading font-semibold text-indigo-300 text-xs mb-2">Carga cognitiva elevada</p>
+                <p class="text-white/50 text-xs font-body leading-relaxed">La ausencia de jerarquía visual obligaba a los usuarios a leer cada campo detenidamente antes de actuar. Las tareas críticas que debían tomar 2 minutos consumían en promedio entre 8 y 12 minutos.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Key insights -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-5">Hallazgos clave</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass rounded-2xl p-6 border-t border-indigo-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">3×</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">más tiempo del necesario para completar tareas críticas en el sistema legacy.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border-t border-violet-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">+30%</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">tasa de error en entrada de datos por interfaz confusa e inconsistente.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border-t border-indigo-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">0</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">componentes reutilizables en el sistema existente — sin design system.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       3 — PROCESO DE DISEÑO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:360px;height:360px;top:-60px;right:-80px;opacity:0.2;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">03 — Proceso de diseño</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Construyendo desde<br>los <span class="gradient-accent">cimientos</span>
+      </h2>
+
+      <!-- Steps -->
+      <div class="flex flex-col gap-6 mb-14">
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">01</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Auditoría del sistema legacy</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Mapeo completo de todos los flujos y módulos existentes para identificar qué conservar, qué mejorar y qué eliminar completamente en la nueva versión.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">02</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Creación del Design System</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Desarrollo de un sistema de componentes desde cero en Figma: tokens de color, tipografía, espaciado, iconografía y más de 80 componentes bajo metodología Atomic Design.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">03</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Wireframes y arquitectura de información</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Redefinición de la navegación y estructura de módulos, priorizando las tareas de mayor frecuencia y criticidad operacional para el equipo interno.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">04</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Prototipo de alta fidelidad e iteración</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Diseño del prototipo navegable en Figma con validación con usuarios finales en sesiones de usabilidad, incorporando feedback en ciclos iterativos.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sistema de diseño — Colores -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-3">Sistema de diseño</h3>
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Colores</h4>
+      <img
+        src="imagenes/color%20erp.png"
+        alt="Paleta de colores del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Scale</h4>
+      <img
+        src="imagenes/scale%20erp.png"
+        alt="Escala tipográfica y de espaciado del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Type</h4>
+      <img
+        src="imagenes/type%20erp.png"
+        alt="Tipografía del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Iconos</h4>
+      <div class="grid grid-cols-3 gap-4 mb-12">
+
+        <img
+          src="imagenes/icono%20erp%201.png"
+          alt="Iconos del sistema de diseño ERP — set 1"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+        <img
+          src="imagenes/icono%20erp%202.png"
+          alt="Iconos del sistema de diseño ERP — set 2"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+        <img
+          src="imagenes/icono%20erp%203.png"
+          alt="Iconos del sistema de diseño ERP — set 3"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+      </div>
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Botones</h4>
+      <img
+        src="imagenes/bonotes%20erp.png"
+        alt="Botones del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div>
+          <h4 class="font-heading font-bold text-white text-xl mb-4">Pill</h4>
+          <img
+            src="imagenes/Pill.png"
+            alt="Componente Pill del sistema de diseño ERP"
+            class="w-full rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);"
+          />
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-white text-xl mb-4">Indicador de guardado</h4>
+          <img
+            src="imagenes/Indicador%20guardado.png"
+            alt="Componente Indicador de guardado del sistema de diseño ERP"
+            class="w-full rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);"
+          />
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-white text-xl mb-4">Indicador de estado</h4>
+          <img
+            src="imagenes/Status%20indicators.png"
+            alt="Componente Indicador de estado del sistema de diseño ERP"
+            class="w-full rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);"
+          />
+        </div>
+      </div>
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Dropdown</h4>
+      <img
+        src="imagenes/dropdown.png"
+        alt="Componente Dropdown del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Text Input</h4>
+      <img
+        src="imagenes/textinput.png"
+        alt="Componente Text Input del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Text Input + Presufijo</h4>
+      <img
+        src="imagenes/textinputpresufijo.png"
+        alt="Componente Text Input con Presufijo del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Numeric Input</h4>
+      <img
+        src="imagenes/numeric%20input.png"
+        alt="Componente Numeric Input del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Checkbox</h4>
+      <img
+        src="imagenes/checkbox.png"
+        alt="Componente Checkbox del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Radio Button</h4>
+      <img
+        src="imagenes/radiobutton.png"
+        alt="Componente Radio Button del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Text Area</h4>
+      <img
+        src="imagenes/textarea.png"
+        alt="Componente Text Area del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Avatar</h4>
+      <img
+        src="imagenes/avatar.png"
+        alt="Componente Avatar del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Modal</h4>
+      <img
+        src="imagenes/modal.png"
+        alt="Componente Modal del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Notificaciones</h4>
+      <img
+        src="imagenes/notificaciones.png"
+        alt="Componente Notificaciones del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Ciclo de vida</h4>
+      <img
+        src="imagenes/ciclo%20de%20vida.png"
+        alt="Componente Ciclo de vida del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Historial</h4>
+      <img
+        src="imagenes/historial.png"
+        alt="Componente Historial del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Uploader</h4>
+      <img
+        src="imagenes/uploader.png"
+        alt="Componente Uploader del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Menu general</h4>
+      <img
+        src="imagenes/menu%20general.png"
+        alt="Componente Menu general del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Navbar</h4>
+      <img
+        src="imagenes/navbar.png"
+        alt="Componente Navbar del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Drilldown</h4>
+      <img
+        src="imagenes/Drilldown.png"
+        alt="Componente Drilldown del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <h4 class="font-heading font-bold text-white text-xl mb-6">Toolbar</h4>
+      <img
+        src="imagenes/toolbar.png"
+        alt="Componente Toolbar del sistema de diseño ERP"
+        class="w-full rounded-2xl mb-12"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <!-- Herramientas -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-4">Herramientas utilizadas</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="skill-tag text-indigo-300 bg-indigo-400/08 border border-indigo-400/14">Figma</span>
+        <span class="skill-tag text-violet-300 bg-violet-400/08 border border-violet-400/14">FigJam</span>
+        <span class="skill-tag text-emerald-300 bg-emerald-400/08 border border-emerald-400/14">Miro</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">Airtable</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       4 — SOLUCIÓN FINAL
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-indigo" style="width:340px;height:340px;bottom:-80px;right:-60px;opacity:0.22;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"   style="width:300px;height:300px;top:-40px;left:-60px;opacity:0.18;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — Solución final</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-4 leading-snug">
+        Un ERP moderno,<br><span class="gradient-accent">eficiente y coherente</span>
+      </h2>
+      <p class="text-white/55 font-body text-[0.97rem] leading-relaxed mb-12 max-w-2xl">
+        La nueva interfaz unifica todos los módulos bajo un sistema de diseño consistente, reduciendo la carga cognitiva y el tiempo de capacitación para nuevos usuarios.
+      </p>
+
+      <!-- Módulo Tesorería -->
+      <div class="mb-6">
+        <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Módulo de tesorería</p>
+        <img
+          src="imagenes/tesoreria.png"
+          alt="Módulo de Tesorería del nuevo ERP"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+      </div>
+
+      <!-- Módulo Compras -->
+      <div class="mb-16">
+        <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Módulo de compras</p>
+        <img
+          src="imagenes/compras.png"
+          alt="Módulo de Compras del nuevo ERP"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+      </div>
+
+      <!-- Feature highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Design System unificado</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Más de 80 componentes reutilizables que garantizan consistencia visual y de interacción en todos los módulos del ERP.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 15h18M3 5h18M3 19h18"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Navegación rediseñada</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Arquitectura de información reorganizada que reduce a 2 clicks el acceso a cualquier módulo crítico del sistema.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Validación en tiempo real</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Feedback inmediato en formularios críticos que elimina errores en la entrada de datos antes de que lleguen al sistema.</p>
+        </div>
+
+      </div>
+
+      <!-- Formularios -->
+      <div class="mb-6">
+        <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Formulario de pago</p>
+        <img
+          src="imagenes/pago.png"
+          alt="Formulario de pago del nuevo ERP"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+      </div>
+      <div>
+        <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Formulario de compra</p>
+        <img
+          src="imagenes/compra.png"
+          alt="Formulario de compra del nuevo ERP"
+          class="w-full rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);"
+        />
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       5 — RESULTADOS
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-violet" style="width:400px;height:400px;top:-80px;left:-100px;opacity:0.25;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">05 — Resultados</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Impacto en el<br><span class="gradient-accent">equipo interno</span>
+      </h2>
+
+      <!-- Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#6366F1,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">60%</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">reducción en tiempo de tarea</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#6366F1,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">80+</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">componentes en design system</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#6366F1,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">−90%</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">errores en entrada de datos críticos</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#6366F1,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">2</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">clicks máx. para acceder a cualquier módulo</p>
+        </div>
+      </div>
+
+      <!-- Learnings -->
+      <div class="glass rounded-2xl p-8 w-full">
+        <h3 class="font-heading font-semibold text-white text-base mb-4">Aprendizajes</h3>
+        <ul class="flex flex-col gap-3">
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-indigo-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">Migrar un sistema crítico requiere involucrar a los usuarios desde el día 1 — su conocimiento del sistema legacy es invaluable para no romper flujos de trabajo.</p>
+          </li>
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-violet-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">Un design system robusto no es solo una biblioteca de componentes; es un lenguaje compartido entre diseño y desarrollo que acelera la entrega y reduce inconsistencias.</p>
+          </li>
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-indigo-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">La familiaridad con el sistema anterior genera resistencia al cambio — comunicar el "por qué" del rediseño fue tan importante como el diseño mismo.</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- BOTTOM NAV -->
+  <section class="py-16 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="case-studies.html" class="glass glass-hover text-white/70 text-sm font-heading font-semibold px-6 py-3 rounded-xl no-underline inline-flex items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Ver todos los casos
+      </a>
+      <a href="index.html#contact" class="btn-primary text-white text-sm font-heading font-semibold px-6 py-3 rounded-xl no-underline inline-flex items-center gap-2">
+        Trabajemos juntos
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="divider mb-6"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-white/25 text-sm font-body">© 2025 Portfolio. Todos los derechos reservados.</p>
+        <a href="index.html#contact" class="text-white/35 hover:text-white/70 text-sm font-body transition-colors duration-200">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

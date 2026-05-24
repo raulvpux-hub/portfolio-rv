@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Motival +Meaning — Caso de Estudio · Raúl Villarroel</title>
+  <meta name="description" content="Diseño UX/UI de landing page para Motival +Meaning. Case Study por Raúl Villarroel Pizarro.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg-hover: rgba(255, 255, 255, 0.09);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.18);
+      --blur: 18px;
+      --accent: #F97316;
+      --accent-soft: rgba(249, 115, 22, 0.15);
+      --accent-border: rgba(249, 115, 22, 0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #07071A;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #07071A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
+    }
+    .glass-hover {
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glass-hover:hover {
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .gradient-text {
+      background: linear-gradient(130deg, #4ADE80 0%, #22D3EE 55%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-accent {
+      background: linear-gradient(130deg, #F97316 0%, #FB7185 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #059669 0%, #0891B2 100%);
+      transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 35px rgba(8, 145, 178, 0.4);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-green  { background: radial-gradient(circle, rgba(34,197,94,0.35),  transparent 70%); }
+    .orb-cyan   { background: radial-gradient(circle, rgba(6,182,212,0.28),  transparent 70%); }
+    .orb-teal   { background: radial-gradient(circle, rgba(16,185,129,0.22), transparent 70%); }
+    .orb-green { background: radial-gradient(circle, #F97316, transparent 70%); }
+    .orb-cyan   { background: radial-gradient(circle, #FB7185, transparent 70%); }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.65);
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+    }
+
+    .img-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.02);
+      color: rgba(255,255,255,0.2);
+      font-size: 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: #F97316;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: rgba(255,255,255,0.85); }
+
+    .hero-stat-label {
+      font-size: 0.7rem;
+      font-family: 'DM Sans', sans-serif;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+    .hero-stat-value {
+      font-size: 0.92rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav aria-label="Navegación principal" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl glass rounded-2xl px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-heading font-bold text-white text-base tracking-tight cursor-pointer flex items-center gap-1.5 no-underline">
+      <span class="gradient-text font-heading font-bold">RV</span>
+      <span class="text-white/80">Portfolio</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5">
+      <a href="index.html#about"      class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 no-underline">Sobre mí</a>
+      <a href="index.html#projects"   class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 no-underline">Proyectos</a>
+      <a href="index.html#skills"     class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 no-underline">Habilidades</a>
+      <a href="index.html#experience" class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 no-underline">Experiencia</a>
+      <a href="index.html#contact"    class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 no-underline">Contacto</a>
+    </div>
+    <a href="case-studies.html" class="btn-primary text-white text-sm font-heading font-semibold px-5 py-2 rounded-xl cursor-pointer no-underline">
+      Casos de estudio
+    </a>
+  </nav>
+
+
+  <!-- ══════════════════════════════
+       HERO / OVERVIEW
+  ══════════════════════════════ -->
+  <section class="relative pt-36 pb-16 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:500px;height:500px;top:-120px;right:-100px;opacity:0.18;filter:blur(100px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"   style="width:380px;height:380px;bottom:-80px;left:-80px;opacity:0.14;filter:blur(90px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto text-center">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center justify-center gap-2 mb-8">
+        <a href="case-studies.html" class="text-white/30 text-xs font-body hover:text-white/60 transition-colors duration-200 no-underline">Casos de estudio</a>
+        <span class="text-white/20 text-xs">/</span>
+        <span class="text-white/50 text-xs font-body">Motival +Meaning</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap justify-center gap-2 mb-6">
+        <span class="tag">UX/UI Design</span>
+        <span class="tag">Landing Page</span>
+        <span class="tag">Web Design</span>
+        <span class="tag">2022</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-heading font-bold text-[clamp(2.2rem,5vw,3.8rem)] text-white leading-tight mb-6">
+        Landing Page<br><span class="gradient-accent">Motival +Meaning</span>
+      </h1>
+
+      <p class="text-white/55 font-body text-[1.05rem] leading-relaxed mb-12 max-w-2xl mx-auto">
+        Diseño de una landing page para Escuela para Padres Motival, el servicio de +Meaning que acompaña a familias y estudiantes en el desarrollo de habilidades socioemocionales para impactar positivamente en el aprendizaje escolar.
+      </p>
+
+      <!-- Stats grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+        <div class="glass rounded-2xl p-5">
+          <p class="hero-stat-label">Rol</p>
+          <p class="hero-stat-value">UX/UI Designer</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <p class="hero-stat-label">Año</p>
+          <p class="hero-stat-value">2022</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <p class="hero-stat-label">Tipo</p>
+          <p class="hero-stat-value">Landing Page</p>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <p class="hero-stat-label">Plataforma</p>
+          <p class="hero-stat-value">Web</p>
+        </div>
+      </div>
+
+      <!-- Hero image -->
+      <img
+        src="imagenes/meaning.png"
+        alt="Vista principal — Landing Page Motival +Meaning"
+        class="w-full rounded-2xl"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       1 — CONTEXTO Y PROBLEMA
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-teal" style="width:320px;height:320px;top:-60px;left:-80px;opacity:0.15;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">01 — Contexto y problema</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-10 leading-snug">
+        El origen del proyecto y<br><span class="gradient-accent">el desafío de rediseñarlo</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="glass rounded-2xl p-8">
+          <p class="text-white/60 font-body text-[0.97rem] leading-relaxed">
+            A mediados del año 2021 me encontraba ejerciendo como Jefe de Marketing en +Meaning. Organización que tiene como propósito potenciar el rol de los apoderados como agentes activos en el aprendizaje de los estudiantes en etapa escolar. Dentro de la organización existe un servicio llamado Escuela para padres Motival, que está enfocado en el desarrollo de la motivación y de habilidades socioemocionales en los estudiantes, mediante el trabajo con las familias. En palabras simples este servicio es ofertado a distintos colegios a nivel nacional y consiste en que todas las semanas se envían 2 mensajes de forma masiva a todos los apoderados del curso, que semana a semana, impactará positivamente en el alumno, con contenidos y actividades enfocadas en las habilidades socioemocionales. Todos los días viernes se envía un video informativo con propuestas de actividades de trabajo a nivel familiar y cada sábado, tips y reforzamiento del contenido de la semana.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl p-8">
+          <p class="text-white/60 font-body text-[0.97rem] leading-relaxed">
+            El programa estaba funcionando de maravilla en los colegios, pero con el equipo queríamos aún más alcance de nuestro contenido. Por lo que desarrollamos un libro digital que contuviera las actividades y herramientas más importantes del programa, con la finalidad de poder llegar a familias independiente de que el programa se estuviera implementado en su establecimiento educacional. Por lo que se me entrega la responsabilidad de diseñar tanto el libro digital, como el landing page de venta. Para ser honesto, este fue mi primer acercamiento al diseño web, pero de todas maneras tomé el desafío. Alrededor de un mes después, ya teníamos el libro y la landing page lista para poder comenzar la difusión a través de anuncios gestionados en Facebook Business. Hoy, a varios meses de la creación de esta landing page y estando desvinculado de la organización, me propongo el desafío de rediseñarlo aplicando todos mis conocimientos de UX y UI.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       1.1 — ¿QUÉ ENCONTRÉ?
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-cyan" style="width:320px;height:320px;top:-60px;right:-80px;opacity:0.14;filter:blur(90px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">¿Qué encontré?</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-10 leading-snug">
+        El estado de la<br><span class="gradient-accent">landing original</span>
+      </h2>
+
+      <div class="glass rounded-2xl p-8 mb-10 w-full">
+        <p class="text-white/60 font-body text-[0.97rem] leading-relaxed">
+          Al momento de ingresar a la URL de la landing page, me encuentro con la lamentable noticia que ha ocurrido un error crítico dentro de la web. Lo más probable, es que sea por falta de mantención en los plugins con los que fue construido. Vuelvo a recordar que estos fueron mis primeros acercamientos al diseño web, que fue mi puerta de entrada al mundo del UX.
+        </p>
+        <p class="text-white/60 font-body text-[0.97rem] leading-relaxed mt-4">
+          La landing se encuentra sin ilustraciones, con todos sus links rotos, no es responsiva, no posee coherencia, es decir, que dejó de ser funcional y por consecuencia genera una experiencia de usuario increíblemente mala.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-5">
+        <img
+          src="imagenes/rota%201.png"
+          alt="Landing page original rota — vista 1"
+          class="rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);max-width:280px;width:100%;"
+        />
+        <img
+          src="imagenes/rota%202.png"
+          alt="Landing page original rota — vista 2"
+          class="rounded-2xl"
+          style="border:1px solid rgba(255,255,255,0.07);max-width:280px;width:100%;"
+        />
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       2 — INVESTIGACIÓN
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-cyan" style="width:340px;height:340px;top:-60px;right:-80px;opacity:0.14;filter:blur(90px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">02 — Investigación</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-4 leading-snug">
+        Análisis Heurístico<br><span class="gradient-accent">Nielsen</span>
+      </h2>
+      <p class="text-white/55 font-body text-[0.97rem] leading-relaxed mb-12 max-w-2xl">
+        Se realizó un análisis heurístico basado en los principios de Nielsen para identificar los principales problemas de usabilidad de la landing original.
+      </p>
+
+      <div class="flex flex-col gap-5">
+
+        <!-- Heurística 1 -->
+        <div class="glass rounded-2xl p-7">
+          <h4 class="font-heading font-semibold text-white text-base mb-3">Prevención de errores</h4>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Esta heurística presenta tres catástrofes de usabilidad. El primero de ellos es la existencia de enlaces rotos dentro de la web; el siguiente problema grave es que no existe un sistema de validación antes de que el usuario ingrese información, además de no destacar campos obligatorios. Para esto sugiero la creación de inputs con formato condicional, dependiendo de la información que se esté requiriendo en el momento.
+          </p>
+        </div>
+
+        <!-- Heurística 2 -->
+        <div class="glass rounded-2xl p-7">
+          <h4 class="font-heading font-semibold text-white text-base mb-3">Ayuda y documentación</h4>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Al analizar esta heurística me encuentro con que la landing page no cuenta con una sección de ayuda o instrucciones, debido a que este se encontraba vinculado a un link que se encuentra roto. Además de no contar con un sistema de respaldo de la información, generando que, si hay algún error, el usuario tenga que volver a ingresar todos sus datos. Por lo que el nuevo diseño de la landing deberá contar con una sección de instrucciones visible y fácil de encontrar.
+          </p>
+        </div>
+
+        <!-- Heurística 3 -->
+        <div class="glass rounded-2xl p-7">
+          <h4 class="font-heading font-semibold text-white text-base mb-3">Ayude a los usuarios a reconocer, diagnosticar y recuperarse de errores</h4>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Esta es la heurística que presenta mayor cantidad de problemas, debido a que la landing page no posee ningún tipo de feedback en el caso de errores. Esto, sumado a los ya detectados problemas de prevención de errores, genera que esta plataforma sea un lugar donde el error es muy común. Recomiendo incorporar mensajes de errores expresados en lenguaje entendible, que indiquen con precisión el problema y que faciliten la experiencia al momento de corregir un posible error.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Proto-personas -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mt-14 mb-8">Proto-personas</h3>
+
+      <div class="flex flex-col gap-8">
+
+        <!-- Persona 1 — Sofía -->
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="p-6 border-b border-white/08">
+            <div class="flex items-center gap-4 mb-2">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 font-heading font-bold text-lg" style="background:linear-gradient(135deg,#F97316,#FB7185);color:#fff;">SC</div>
+              <div>
+                <h4 class="font-heading font-bold text-white text-base">Sofía Alejandra Cáceres Ruiz</h4>
+                <p class="text-white/40 text-xs font-body italic">"Aveces uno olvida la importancia que tienen los hábitos y la rutina para nuestros niños"</p>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/08">
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Datos personales</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Edad: 42 años</li>
+                  <li class="text-white/60 text-sm font-body">• Género: Mujer</li>
+                  <li class="text-white/60 text-sm font-body">• Ocupación: Secretaria</li>
+                  <li class="text-white/60 text-sm font-body">• Estado civil: Casada</li>
+                  <li class="text-white/60 text-sm font-body">• Residencia: Maipú</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Dolores</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Nunca tiene tiempo</li>
+                  <li class="text-white/60 text-sm font-body">• Siente que no presta suficiente atención a sus hijos</li>
+                  <li class="text-white/60 text-sm font-body">• Falta de estabilidad económica</li>
+                  <li class="text-white/60 text-sm font-body">• Su marido no le ayuda con los niños</li>
+                </ul>
+              </div>
+            </div>
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Nivel digital</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Nivel intermedio</li>
+                  <li class="text-white/60 text-sm font-body">• Trabaja con la tecnología</li>
+                  <li class="text-white/60 text-sm font-body">• Pantalla: 8-10 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Móvil: 3 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Computador: 8 hrs</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Necesidades</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Entregar buenas herramientas a sus hijos</li>
+                  <li class="text-white/60 text-sm font-body">• Que su marido sea parte del desarrollo de sus hijos</li>
+                  <li class="text-white/60 text-sm font-body">• Ahorrar para la educación de sus hijos</li>
+                  <li class="text-white/60 text-sm font-body">• Una casa propia</li>
+                  <li class="text-white/60 text-sm font-body">• Más tiempo del que tiene</li>
+                  <li class="text-white/60 text-sm font-body">• Seguridad para su familia</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Persona 2 — Josefa -->
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="p-6 border-b border-white/08">
+            <div class="flex items-center gap-4 mb-2">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 font-heading font-bold text-lg" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);color:#fff;">JU</div>
+              <div>
+                <h4 class="font-heading font-bold text-white text-base">Josefa Martina Ureta Muñoz</h4>
+                <p class="text-white/40 text-xs font-body italic">"Los hermanos mayores deberían ser pilares fundamentales a la hora de apoyar la infancia"</p>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/08">
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Datos personales</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Edad: 25 años</li>
+                  <li class="text-white/60 text-sm font-body">• Género: Mujer</li>
+                  <li class="text-white/60 text-sm font-body">• Ocupación: E.Universitaria</li>
+                  <li class="text-white/60 text-sm font-body">• Estado civil: Soltera</li>
+                  <li class="text-white/60 text-sm font-body">• Residencia: Osorno</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Dolores</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Tiene poco tiempo para sus hermanos</li>
+                  <li class="text-white/60 text-sm font-body">• Sus padres no prestan atención necesaria a sus hermanos</li>
+                  <li class="text-white/60 text-sm font-body">• No posee el dinero suficiente para apoyar a su familia</li>
+                </ul>
+              </div>
+            </div>
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Nivel digital</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Nivel alto</li>
+                  <li class="text-white/60 text-sm font-body">• Estudia con la tecnología</li>
+                  <li class="text-white/60 text-sm font-body">• Pantalla: 10-14 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Móvil: 8 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Computador: 6 hrs</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Necesidades</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Trabajo compatible con sus estudios y familia</li>
+                  <li class="text-white/60 text-sm font-body">• Que sus padres entiendan las necesidades de sus hermanos menores</li>
+                  <li class="text-white/60 text-sm font-body">• Conocer más herramientas para ayudar a sus hermanos</li>
+                  <li class="text-white/60 text-sm font-body">• Seguridad para su familia</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Persona 3 — Pedro -->
+        <div class="glass rounded-2xl overflow-hidden">
+          <div class="p-6 border-b border-white/08">
+            <div class="flex items-center gap-4 mb-2">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 font-heading font-bold text-lg" style="background:linear-gradient(135deg,#0891B2,#059669);color:#fff;">PR</div>
+              <div>
+                <h4 class="font-heading font-bold text-white text-base">Pedro Pablo Riveros Fuentealba</h4>
+                <p class="text-white/40 text-xs font-body italic">"Los abuelos poseemos mucha experiencia para ayudar a nuestros hijos con nuestros nietos, pero los tiempos cambian y la educación también."</p>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/08">
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Datos personales</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Edad: 66 años</li>
+                  <li class="text-white/60 text-sm font-body">• Género: Hombre</li>
+                  <li class="text-white/60 text-sm font-body">• Ocupación: Jubilado</li>
+                  <li class="text-white/60 text-sm font-body">• Estado civil: Viudo</li>
+                  <li class="text-white/60 text-sm font-body">• Residencia: Antofagasta</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Dolores</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• No sabe cómo ayudar a sus hijos con sus nietos</li>
+                  <li class="text-white/60 text-sm font-body">• Le preocupa el poco tiempo que tienen sus hijos con sus nietos</li>
+                  <li class="text-white/60 text-sm font-body">• Que sus nietos no tengan las herramientas para llevar una buena vida</li>
+                </ul>
+              </div>
+            </div>
+            <div class="p-6 grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Nivel digital</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Nivel intermedio</li>
+                  <li class="text-white/60 text-sm font-body">• Desconfianza con la tecnología</li>
+                  <li class="text-white/60 text-sm font-body">• Pantalla: 5-8 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Móvil: 5 hrs</li>
+                  <li class="text-white/60 text-sm font-body">• Computador: &lt;1 hr</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body uppercase tracking-widest mb-3">Necesidades</p>
+                <ul class="flex flex-col gap-1.5">
+                  <li class="text-white/60 text-sm font-body">• Entender cómo ayudar a sus nietos de manera correcta</li>
+                  <li class="text-white/60 text-sm font-body">• Tener proyectos para sus largos tiempos libres</li>
+                  <li class="text-white/60 text-sm font-body">• Aprender a buscar información correcta que le sirva a él y su familia</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       3 — PROCESO DE DISEÑO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:360px;height:360px;bottom:-80px;left:-80px;opacity:0.15;filter:blur(90px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">03 — Proceso de diseño</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-4 leading-snug">
+        Del concepto a la<br><span class="gradient-accent">experiencia final</span>
+      </h2>
+      <p class="text-white/55 font-body text-[0.97rem] leading-relaxed mb-12 max-w-2xl">
+        Un proceso iterativo centrado en construir confianza, comunicar claridad y guiar al usuario hacia la acción de forma natural.
+      </p>
+
+      <!-- Process steps -->
+      <div class="flex flex-col gap-4 mb-12">
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">01</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Arquitectura de la información</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Definición de la estructura de la página: jerarquía de secciones, flujo narrativo y puntos de conversión para guiar al usuario desde el interés hasta el contacto.</p>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">02</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Identidad visual y sistema de diseño</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Definición de paleta cromática, tipografía y componentes visuales alineados con los valores de la marca: calidez, propósito y crecimiento personal.</p>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">03</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Wireframes y layout</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Exploración de disposición de elementos, jerarquía visual y composición de cada sección antes de avanzar al diseño de alta fidelidad.</p>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">04</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Diseño de alta fidelidad</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Diseño final de todas las secciones en Figma: hero, servicios, testimonios, equipo y llamados a la acción, con foco en la conversión y la experiencia del usuario.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagramas de Interacción -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Diagramas de Interacción</h3>
+
+      <!-- Leyenda -->
+      <div class="glass rounded-2xl p-6 mb-8">
+        <div class="flex flex-wrap items-center gap-6 justify-center">
+          <div class="flex items-center gap-2">
+            <div class="px-4 py-1.5 rounded-full text-xs font-heading font-semibold text-white" style="background:#F5A623;">Inicio</div>
+            <span class="text-white/40 text-xs font-body">Inicio / Fin</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rotate-45 rounded-sm bg-white/20 border border-white/30 flex-shrink-0"></div>
+            <span class="text-white/40 text-xs font-body">Decisión</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="px-3 py-1.5 rounded text-xs font-heading font-semibold text-white/70" style="border:1.5px dashed rgba(239,68,68,0.7);background:rgba(239,68,68,0.08);">Fuera de plataforma</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="px-4 py-1.5 text-xs font-heading font-semibold text-white rounded" style="background:#60A5FA;transform:skewX(-12deg);"><span style="display:inline-block;transform:skewX(12deg);">Input</span></div>
+            <span class="text-white/40 text-xs font-body">Input</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="px-4 py-1.5 rounded text-xs font-heading font-semibold text-white" style="background:#A78BFA;">Proceso</div>
+            <span class="text-white/40 text-xs font-body">Proceso</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <div class="w-8 h-0.5 bg-emerald-400"></div>
+              <div class="w-0 h-0 border-l-4 border-l-emerald-400 border-y-2 border-y-transparent"></div>
+              <span class="text-white/40 text-xs font-body">Sí</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="w-8 h-0.5 bg-red-400"></div>
+              <div class="w-0 h-0 border-l-4 border-l-red-400 border-y-2 border-y-transparent"></div>
+              <span class="text-white/40 text-xs font-body">No</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagramas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+
+        <!-- Diagrama Actual -->
+        <div class="glass rounded-2xl p-6">
+          <h4 class="font-heading font-semibold text-white text-sm mb-6 text-center">Diagrama Actual</h4>
+          <div class="flex flex-col items-center gap-0 text-xs font-body">
+
+            <div class="px-5 py-2 rounded-full font-heading font-semibold text-white text-xs" style="background:#F5A623;">Entra al Landing Page</div>
+            <div class="w-px h-4 bg-white/20"></div>
+            <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-[9px] text-center leading-tight" style="font-size:8px;">¿Solicita el ebook?</span></div>
+            <div class="flex items-start gap-6 mt-0">
+              <div class="flex flex-col items-center gap-0">
+                <div class="flex items-center gap-1 mt-1"><div class="w-5 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div>
+                <div class="px-4 py-1.5 rounded-full font-semibold text-white text-[10px] mt-1" style="background:#F87171;">Fin</div>
+              </div>
+              <div class="flex flex-col items-center gap-0">
+                <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-4 bg-emerald-400"></div></div>
+                <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-center leading-tight" style="font-size:7px;">¿Completa info?</span></div>
+                <div class="flex items-start gap-4">
+                  <div class="flex flex-col items-center"><div class="flex items-center gap-1 mt-1"><div class="w-4 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div><div class="px-3 py-1.5 rounded-full font-semibold text-white text-[10px] mt-1" style="background:#F87171;">Fin</div></div>
+                  <div class="flex flex-col items-center gap-0">
+                    <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-3 bg-emerald-400"></div></div>
+                    <div class="px-3 py-1.5 text-[10px] font-semibold text-white rounded" style="background:#60A5FA;transform:skewX(-12deg);"><span style="display:inline-block;transform:skewX(12deg);">Genera solicitud</span></div>
+                    <div class="w-px h-3 bg-white/20"></div>
+                    <!-- Dashed box fuera de plataforma -->
+                    <div class="flex flex-col items-center gap-0 p-3 rounded" style="border:1.5px dashed rgba(239,68,68,0.6);">
+                      <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-center leading-tight" style="font-size:7px;">¿Abre correo?</span></div>
+                      <div class="flex items-start gap-3 mt-0">
+                        <div class="flex flex-col items-center"><div class="flex items-center gap-1 mt-1"><div class="w-3 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div><div class="px-2 py-1 rounded-full font-semibold text-white text-[9px] mt-1" style="background:#F87171;">Fin</div></div>
+                        <div class="flex flex-col items-center gap-0">
+                          <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-3 bg-emerald-400"></div></div>
+                          <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-center leading-tight" style="font-size:7px;">¿Realiza el pago?</span></div>
+                          <div class="flex items-start gap-3 mt-0">
+                            <div class="flex flex-col items-center"><div class="flex items-center gap-1 mt-1"><div class="w-3 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div><div class="px-2 py-1 rounded-full font-semibold text-white text-[9px] mt-1" style="background:#F87171;">Fin</div></div>
+                            <div class="flex flex-col items-center gap-0">
+                              <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-3 bg-emerald-400"></div></div>
+                              <div class="px-2 py-1.5 rounded text-[9px] font-semibold text-white text-center" style="background:#A78BFA;">Descarga ebook desde email</div>
+                              <div class="w-px h-3 bg-white/20"></div>
+                              <div class="px-3 py-1 rounded-full font-semibold text-white text-[10px]" style="background:#F87171;">Fin</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Diagrama Propuesto -->
+        <div class="glass rounded-2xl p-6">
+          <h4 class="font-heading font-semibold text-white text-sm mb-6 text-center">Diagrama Propuesto</h4>
+          <div class="flex flex-col items-center gap-0 text-xs font-body">
+
+            <div class="px-5 py-2 rounded-full font-heading font-semibold text-white text-xs" style="background:#F5A623;">Entra al Landing Page</div>
+            <div class="w-px h-4 bg-white/20"></div>
+            <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-center leading-tight" style="font-size:7px;">¿Completa datos?</span></div>
+            <div class="flex items-start gap-6 mt-0">
+              <div class="flex flex-col items-center">
+                <div class="flex items-center gap-1 mt-1"><div class="w-5 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div>
+                <div class="px-4 py-1.5 rounded-full font-semibold text-white text-[10px] mt-1" style="background:#F87171;">Fin</div>
+              </div>
+              <div class="flex flex-col items-center gap-0">
+                <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-3 bg-emerald-400"></div></div>
+                <div class="flex gap-3">
+                  <div class="px-2 py-1.5 text-[9px] font-semibold text-white rounded text-center" style="background:#60A5FA;transform:skewX(-12deg);"><span style="display:inline-block;transform:skewX(12deg);">Webpay</span></div>
+                  <div class="px-2 py-1.5 text-[9px] font-semibold text-white rounded text-center" style="background:#60A5FA;transform:skewX(-12deg);"><span style="display:inline-block;transform:skewX(12deg);">Transferencia</span></div>
+                </div>
+                <div class="w-px h-3 bg-white/20"></div>
+                <!-- Dashed box fuera de plataforma -->
+                <div class="flex flex-col items-center gap-0 p-3 rounded" style="border:1.5px dashed rgba(239,68,68,0.6);">
+                  <div class="w-8 h-8 rotate-45 rounded-sm bg-white/15 border border-white/25 flex items-center justify-center"><span class="-rotate-45 text-white/70 text-center leading-tight" style="font-size:7px;">¿Realiza el pago?</span></div>
+                  <div class="flex items-start gap-4 mt-0">
+                    <div class="flex flex-col items-center"><div class="flex items-center gap-1 mt-1"><div class="w-3 h-px bg-red-400"></div><span class="text-red-400 text-[9px]">No</span></div><div class="px-2 py-1 rounded-full font-semibold text-white text-[9px] mt-1" style="background:#F87171;">Fin</div></div>
+                    <div class="flex flex-col items-center gap-0">
+                      <div class="flex items-center gap-1 mt-1"><span class="text-emerald-400 text-[9px]">Sí</span><div class="w-px h-3 bg-emerald-400"></div></div>
+                      <div class="px-2 py-1.5 rounded text-[9px] font-semibold text-white text-center" style="background:#A78BFA;">Descarga ebook desde email</div>
+                      <div class="w-px h-3 bg-white/20"></div>
+                      <div class="px-3 py-1 rounded-full font-semibold text-white text-[10px]" style="background:#F87171;">Fin</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Wireframes -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Wireframes</h3>
+
+      <div class="grid grid-cols-2 gap-6 mb-12 items-start">
+        <div class="flex flex-col items-center" style="max-width:460px;width:100%;">
+          <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3 self-start">Desktop</p>
+          <img
+            src="imagenes/wireframe%20desktop.png"
+            alt="Wireframes desktop — Motival +Meaning"
+            class="w-full rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);"
+          />
+        </div>
+        <div class="flex flex-col items-start">
+          <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Mobile</p>
+          <img
+            src="imagenes/wireframe%20mobile.png"
+            alt="Wireframes mobile — Motival +Meaning"
+            class="rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);max-width:260px;"
+          />
+        </div>
+      </div>
+
+      <!-- Herramientas -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-4">Herramientas utilizadas</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="skill-tag text-orange-300 bg-orange-400/08 border border-orange-400/14">Figma</span>
+        <span class="skill-tag text-rose-300 bg-rose-400/08 border border-rose-400/14">Adobe Photoshop</span>
+        <span class="skill-tag text-amber-300 bg-amber-400/08 border border-amber-400/14">Adobe Illustrator</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       4 — SOLUCIÓN FINAL
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-cyan"   style="width:380px;height:380px;bottom:-80px;right:-60px;opacity:0.18;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-teal"  style="width:300px;height:300px;top:-40px;left:-60px;opacity:0.14;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — Solución final</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-4 leading-snug">
+        Una landing que convierte<br><span class="gradient-accent">propósito en acción</span>
+      </h2>
+      <p class="text-white/55 font-body text-[0.97rem] leading-relaxed mb-12 max-w-2xl">
+        El diseño final comunica la esencia de Motival +Meaning de forma clara y emotiva, guiando al visitante desde la primera impresión hasta el contacto con un coach.
+      </p>
+
+      <!-- Hero Motival -->
+      <img
+        src="imagenes/hero%20motival.png"
+        alt="Hero — Landing Page Motival +Meaning"
+        class="w-full rounded-2xl mb-6"
+        style="border:1px solid rgba(255,255,255,0.07);"
+      />
+
+      <!-- Feature highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style="background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.22);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Hero de impacto</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Sección de entrada que comunica el propósito de la marca en segundos, con un mensaje claro y un CTA visible.</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style="background:rgba(251,113,133,0.12);border:1px solid rgba(251,113,133,0.22);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FB7185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Coaches y servicios</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Presentación del equipo y metodología de coaching que transmite credibilidad y cercanía con el usuario.</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.22);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Testimonios y confianza</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Sección de casos de éxito que valida la propuesta de valor con experiencias reales de clientes anteriores.</p>
+        </div>
+      </div>
+
+      <!-- Landing desktop y mobile -->
+      <div class="grid grid-cols-2 gap-6 items-start">
+        <div class="flex flex-col items-start">
+          <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Desktop</p>
+          <img
+            src="imagenes/landing%20desktop.png"
+            alt="Landing page final desktop — Motival +Meaning"
+            class="w-full rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);"
+          />
+        </div>
+        <div class="flex flex-col items-start">
+          <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-3">Mobile</p>
+          <img
+            src="imagenes/landing%20mobile.png"
+            alt="Landing page final mobile — Motival +Meaning"
+            class="rounded-2xl"
+            style="border:1px solid rgba(255,255,255,0.07);max-width:260px;"
+          />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       5 — RESULTADOS
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:400px;height:400px;top:-80px;left:-100px;opacity:0.18;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">05 — Resultados</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Una marca con presencia<br><span class="gradient-accent">digital propia</span>
+      </h2>
+
+      <!-- Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-14">
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#F97316,#FB7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">100%</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">presencia digital desde cero</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#F97316,#FB7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">1</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">canal propio de conversión</p>
+        </div>
+        <div class="glass rounded-2xl p-6 text-center">
+          <p class="font-heading font-bold text-[2.4rem] leading-none mb-2" style="background:linear-gradient(130deg,#F97316,#FB7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">↑</p>
+          <p class="text-white/40 text-xs font-body leading-relaxed">visibilidad y captación orgánica</p>
+        </div>
+      </div>
+
+      <!-- Funcionalidades destacadas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+
+        <div class="glass rounded-2xl p-7">
+          <h4 class="font-heading font-semibold text-white text-base mb-3">Inputs con formato condicional</h4>
+          <p class="text-white/60 text-sm font-body leading-relaxed mb-5">
+            Esta nueva Landing Page Motival cuenta con todos sus inputs tanto con formato condicional, como el feedback correspondiente al posible error que pueda cometer el usuario dentro de la plataforma. Estas nuevas funcionalidades ayudan directamente a la prevención de errores y generan una ayuda directa y clara sobre cuál es el problema que no permite seguir navegando dentro del flujo.
+          </p>
+          <!-- Ejemplo de input con error -->
+          <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+            <p class="text-white/40 text-xs font-body mb-2">Correo</p>
+            <div class="flex items-center justify-between rounded-lg px-3 py-2.5 mb-2" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(239,68,68,0.6);">
+              <span class="text-white/70 text-sm font-body">Josefa_antonia@ejemplo.con</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <p class="text-red-400 text-xs font-body leading-relaxed">La información entregada no corresponde a un correo electrónico válido, por favor revise que esté escrito correctamente para continuar.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-7">
+          <h4 class="font-heading font-semibold text-white text-base mb-3">Sección Instrucciones y recomendaciones</h4>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Esta nueva Landing Page Motival cuenta con una sección de ayuda y recomendaciones clara y evidentemente visible al final de la plataforma, repercutiendo directamente en la heurística de ayuda y documentación. Esta sección entrega seguridad a los usuarios de que las acciones a realizar son las que ellos quieren realizar, evitando errores o confusiones dentro del flujo.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Testimonios -->
+      <div class="glass rounded-2xl p-7 mb-8">
+        <h4 class="font-heading font-semibold text-white text-base mb-3">Sección Testimonios de compradores</h4>
+        <p class="text-white/60 text-sm font-body leading-relaxed mb-8">
+          Esta nueva Landing Page Motival cuenta con una sección de testimonios de clientes anteriores, entregando transparencia y confiabilidad a la plataforma. Los usuarios antes de generar el diagrama de pago ya entienden con seguridad qué es lo que encontrarán en el libro digital, evitando que generen falsas expectativas del contenido que quieren adquirir.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <div class="rounded-2xl p-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+            <div class="w-10 h-10 rounded-full mb-4 flex items-center justify-center font-heading font-bold text-sm" style="background:linear-gradient(135deg,#F97316,#FB7185);color:#fff;">PP</div>
+            <p class="font-heading font-semibold text-white text-sm mb-2">Paulina Poblete</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed italic">"Lo que más me gustó del ebook fue que te ayudan a plantear que los niños sean autosuficientes y cómo tienen que lidiar los padres con ello."</p>
+          </div>
+
+          <div class="rounded-2xl p-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+            <div class="w-10 h-10 rounded-full mb-4 flex items-center justify-center font-heading font-bold text-sm" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);color:#fff;">DS</div>
+            <p class="font-heading font-semibold text-white text-sm mb-2">Dennise Saavedra</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed italic">"El ebook realmente superó mis expectativas, el mensaje es claro y muy organizado. Lo que más me gustó fue el dinamismo para enseñar, cambia totalmente la forma de enseñanza que se ha traído hasta hoy en día, ya sea en las escuelas y en la casa."</p>
+          </div>
+
+          <div class="rounded-2xl p-5" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+            <div class="w-10 h-10 rounded-full mb-4 flex items-center justify-center font-heading font-bold text-sm" style="background:linear-gradient(135deg,#0891B2,#059669);color:#fff;">YM</div>
+            <p class="font-heading font-semibold text-white text-sm mb-2">Yovanna Mendez Sánchez</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed italic">"Sin duda el proceso tiene para mí más significado, veo el esfuerzo y la perseverancia en mis hijos y eso me deja feliz y conforme, la verdad son muy inteligentes."</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Learnings -->
+      <div class="glass rounded-2xl p-8 w-full">
+        <h3 class="font-heading font-semibold text-white text-base mb-4">Aprendizajes</h3>
+        <ul class="flex flex-col gap-3">
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-orange-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">En una landing page, la claridad del mensaje es más importante que la complejidad visual — cada elemento debe responder la pregunta "¿por qué yo?".</p>
+          </li>
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-rose-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">La jerarquía visual y el flujo narrativo son tan importantes como el diseño en sí: el orden de las secciones debe contar una historia que lleve al usuario naturalmente hacia la conversión.</p>
+          </li>
+          <li class="flex gap-3 items-start">
+            <div class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-400" aria-hidden="true"></div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">Para marcas con un fuerte componente emocional como el coaching, la elección de imágenes, tonos y tipografía comunica tanto como el copy — la coherencia entre todos estos elementos es clave.</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- BOTTOM NAV -->
+  <section class="py-16 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="case-studies.html" class="glass glass-hover text-white/70 text-sm font-heading font-semibold px-6 py-3 rounded-xl no-underline inline-flex items-center gap-2 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Ver todos los casos
+      </a>
+      <a href="index.html#contact" class="btn-primary text-white text-sm font-heading font-semibold px-6 py-3 rounded-xl no-underline inline-flex items-center gap-2">
+        Trabajemos juntos
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="divider mb-6"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-white/25 text-sm font-body">© 2025 Portfolio. Todos los derechos reservados.</p>
+        <a href="index.html#contact" class="text-white/35 hover:text-white/70 text-sm font-body transition-colors duration-200">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

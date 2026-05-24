@@ -1,0 +1,1573 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New App Banco Falabella — Caso de Estudio · Raúl Villarroel</title>
+  <meta name="description" content="Rediseño de la app mobile de Banco Falabella. UX/UI Case Study por Raúl Villarroel Pizarro.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg-hover: rgba(255, 255, 255, 0.09);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.18);
+      --blur: 18px;
+      /* Project accent — Falabella red */
+      --accent: #E30613;
+      --accent-soft: rgba(227, 6, 19, 0.15);
+      --accent-border: rgba(227, 6, 19, 0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #07071A;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #07071A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
+    }
+    .glass-hover {
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glass-hover:hover {
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    /* Site palette gradient */
+    .gradient-text {
+      background: linear-gradient(130deg, #4ADE80 0%, #22D3EE 55%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Project accent gradient (Falabella red → warm orange) */
+    .gradient-accent {
+      background: linear-gradient(130deg, #E30613 0%, #FF6B35 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #059669 0%, #0891B2 100%);
+      transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 35px rgba(8,145,178,0.4);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-green  { background: radial-gradient(circle, rgba(34,197,94,0.3),  transparent 70%); }
+    .orb-cyan   { background: radial-gradient(circle, rgba(6,182,212,0.25), transparent 70%); }
+    .orb-red    { background: radial-gradient(circle, rgba(227,6,19,0.2),   transparent 70%); }
+
+    .grid-texture {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.08) 60%, transparent 100%);
+    }
+
+    /* Section label line */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: linear-gradient(90deg, #4ADE80, #22D3EE);
+    }
+
+    .skill-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 5px 13px;
+      border-radius: 99px;
+    }
+
+    /* Project-accent tag (red) */
+    .tag-accent {
+      color: #FCA5A5;
+      background: rgba(227,6,19,0.1);
+      border: 1px solid rgba(227,6,19,0.22);
+    }
+
+    /* Step number badge */
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(74,222,128,0.15), rgba(34,211,238,0.15));
+      border: 1px solid rgba(74,222,128,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #4ADE80;
+      flex-shrink: 0;
+    }
+
+    /* Image placeholder */
+    .img-placeholder {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: rgba(255,255,255,0.2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+    }
+
+    /* ── Flow chart nodes ── */
+    .fn {
+      display: inline-flex; align-items: center; justify-content: center; text-align: center;
+      padding: 5px 9px; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif; font-size: 9.5px; font-weight: 500; line-height: 1.35;
+      min-width: 72px; max-width: 118px; flex-shrink: 0;
+    }
+    .fn-def  { border: 1px dashed rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.65); }
+    .fn-acc  { border: 1px dashed rgba(236,72,153,0.5);   background: rgba(236,72,153,0.05);  color: rgba(255,182,220,0.9); }
+    .fn-hp   { border: 1.5px solid #F59E0B;               background: rgba(245,158,11,0.07);  color: #FDE68A; }
+    .fn-err  { border: 1px solid rgba(239,68,68,0.55);    background: rgba(239,68,68,0.06);   color: #FCA5A5; }
+    .fn-wp   { border: 1px dashed rgba(34,197,94,0.5);    background: rgba(34,197,94,0.05);   color: #86EFAC; }
+    .fn-email{ border: 1px dashed rgba(20,184,166,0.5);   background: rgba(20,184,166,0.05);  color: #5EEAD4; }
+    .fn-arr  { color: rgba(255,255,255,0.22); font-size: 11px; flex-shrink: 0; user-select: none; padding: 0 2px; }
+    .fn-dia  {
+      width: 40px; height: 40px; flex-shrink: 0; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fn-dia::before {
+      content: ''; position: absolute; inset: 5px;
+      border: 1.5px solid rgba(255,255,255,0.28); transform: rotate(45deg); border-radius: 3px;
+    }
+    .fn-dia-hp::before { border-color: #F59E0B; }
+    .fn-ext {
+      border-radius: 7px; padding: 6px 10px; flex-shrink: 0;
+      font-family: 'Space Grotesk', sans-serif; font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.04em; text-align: center;
+    }
+    .fn-ext-wp   { border: 1px dashed rgba(34,197,94,0.55);   background: rgba(34,197,94,0.1);   color: #4ADE80; }
+    .fn-ext-site { border: 1px dashed rgba(139,92,246,0.55);  background: rgba(139,92,246,0.1);  color: #C4B5FD; }
+    .fn-ext-mail { border: 1px dashed rgba(20,184,166,0.55);  background: rgba(20,184,166,0.1);  color: #5EEAD4; }
+    .fr { display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-in { animation: fadeUp 0.7s cubic-bezier(.16,1,.3,1) both; }
+    .anim-d1  { animation-delay: 0.05s; }
+    .anim-d2  { animation-delay: 0.18s; }
+    .anim-d3  { animation-delay: 0.32s; }
+    .anim-d4  { animation-delay: 0.46s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb { animation: none !important; }
+      .anim-in { animation: none !important; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="grid-texture">
+
+  <!-- ══════════════════════════════
+       NAVBAR
+  ══════════════════════════════ -->
+  <nav aria-label="Navegación principal" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl glass rounded-2xl px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-heading font-bold text-white text-base tracking-tight cursor-pointer flex items-center gap-1.5">
+      <span class="gradient-text font-heading font-bold">RV</span>
+      <span class="text-white/80">Portfolio</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5">
+      <a href="index.html#about"      class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Sobre mí</a>
+      <a href="index.html#projects"   class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Proyectos</a>
+      <a href="index.html#skills"     class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Habilidades</a>
+      <a href="index.html#experience" class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Experiencia</a>
+      <a href="index.html#contact"    class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Contacto</a>
+    </div>
+    <a href="case-studies.html" class="btn-primary text-white text-sm font-heading font-semibold px-5 py-2 rounded-xl cursor-pointer no-underline">
+      Casos de estudio
+    </a>
+  </nav>
+
+
+  <!-- ══════════════════════════════
+       HERO — Project Cover
+  ══════════════════════════════ -->
+  <section class="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16">
+
+    <div class="orb orb-red"   style="width:700px;height:700px;top:-250px;left:-200px;opacity:0.8" aria-hidden="true"></div>
+    <div class="orb orb-green" style="width:500px;height:500px;top:100px;right:-180px;opacity:0.7" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:400px;height:400px;bottom:-100px;left:35%;opacity:0.6" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+
+      <!-- Breadcrumb -->
+      <div class="anim-in anim-d1 inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 text-xs font-body text-white/50">
+        <a href="case-studies.html" class="hover:text-white transition-colors duration-200 cursor-pointer">Casos de estudio</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white/75">Banco Falabella</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="anim-in anim-d1 flex flex-wrap items-center justify-center gap-2 mb-8">
+        <span class="skill-tag tag-accent">Banca Digital</span>
+        <span class="skill-tag text-emerald-300 bg-emerald-400/08 border border-emerald-400/14">Mobile App</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">UX Research</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">UI Design</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="anim-in anim-d2 font-heading font-bold leading-[1.06] mb-6 text-[clamp(2.4rem,6.5vw,4.5rem)] tracking-tight">
+        New App<br>
+        <span class="gradient-accent">Banco Falabella</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="anim-in anim-d3 text-[clamp(1rem,2vw,1.15rem)] text-white/55 max-w-2xl mx-auto leading-relaxed mb-12 font-body">
+        Rediseño completo de la experiencia mobile del banco, simplificando flujos críticos y modernizando la interfaz para mejorar la adopción digital entre usuarios de la plataforma.
+      </p>
+
+      <!-- Meta cards -->
+      <div class="anim-in anim-d4 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
+        <div class="glass rounded-2xl p-4 text-center">
+          <p class="text-white/35 text-[0.7rem] font-body uppercase tracking-widest mb-1">Rol</p>
+          <p class="text-white font-heading font-semibold text-sm">UX/UI Designer</p>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center">
+          <p class="text-white/35 text-[0.7rem] font-body uppercase tracking-widest mb-1">Año</p>
+          <p class="text-white font-heading font-semibold text-sm">2022</p>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center">
+          <p class="text-white/35 text-[0.7rem] font-body uppercase tracking-widest mb-1">Plataforma</p>
+          <p class="text-white font-heading font-semibold text-sm">iOS & Android</p>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center">
+          <p class="text-white/35 text-[0.7rem] font-body uppercase tracking-widest mb-1">Tipo</p>
+          <p class="text-white font-heading font-semibold text-sm">Redesign</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" aria-hidden="true">
+      <span class="text-white/20 text-[0.6rem] font-body uppercase tracking-[0.2em]">Scroll</span>
+      <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- Cover image -->
+  <div class="px-6 max-w-6xl mx-auto mb-0 -mt-4">
+    <div class="relative rounded-3xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08);">
+      <img
+        src="imagenes/app-falabella.png"
+        alt="New App Banco Falabella — portada del proyecto"
+        class="w-full h-auto block"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      >
+      <div class="img-placeholder w-full h-72 md:h-[480px]" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <span>Imagen portada del proyecto</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider mt-20"></div>
+
+
+  <!-- ══════════════════════════════
+       1 — PROBLEMA - CONTEXTO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-red" style="width:420px;height:420px;top:-80px;right:-100px;opacity:0.25;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">01 — Problema - Contexto</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-10 leading-snug">
+        Problema &amp; <span class="gradient-accent">Contexto</span>
+      </h2>
+
+      <!-- Two-column context + problem -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+
+        <!-- Contexto del proyecto -->
+        <div class="glass rounded-2xl p-7">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1 h-5 rounded-full bg-gradient-to-b from-emerald-400 to-cyan-400" aria-hidden="true"></div>
+            <h3 class="font-heading font-semibold text-white text-base">Contexto del proyecto</h3>
+          </div>
+          <p class="text-white/55 font-body text-[0.95rem] leading-[1.85]">
+            Este proyecto fue realizado por un grupo de 5 profesionales multidisciplinarios como caso de estudio para el <strong class="text-white/80 font-medium">Diplomado de Diseño UX/UI AGILE</strong> impartido por la Universidad de Santiago de Chile, el cual tuvo una duración de 120 horas cronológicas.
+          </p>
+          <p class="text-white/55 font-body text-[0.95rem] leading-[1.85] mt-4">
+            Dentro de este proyecto participé de forma activa en el 100% de actividades y tomas de decisión para llegar a la entrega de un nuevo producto centrado en las necesidades y dolores de los clientes del Banco Falabella. Desde este momento todo nuestro equipo apodado <strong class="text-white/80 font-medium">+Gente</strong> te comentará la experiencia completa de este proceso de diseño.
+          </p>
+        </div>
+
+        <!-- Problema identificado -->
+        <div class="glass rounded-2xl p-7">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1 h-5 rounded-full" style="background:linear-gradient(180deg,#E30613,#FF6B35);" aria-hidden="true"></div>
+            <h3 class="font-heading font-semibold text-white text-base">El problema</h3>
+          </div>
+          <p class="text-white/55 font-body text-[0.95rem] leading-[1.85] mb-4">
+            Pagar las cuentas del mes puede ser un proceso engorroso por diversos motivos: la gran cantidad de estas o por tener que acceder a distintas plataformas para completar los procesos de pago. Sin embargo, actualmente existen diversas funciones dentro de aplicaciones bancarias que ayudan a simplificar este proceso.
+          </p>
+          <p class="text-white/55 font-body text-[0.95rem] leading-[1.85]">
+            Bajo este contexto, dimos con algunos problemas dentro de la app de Banco Falabella:
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Problem statement destacado -->
+      <div class="rounded-2xl p-7 mb-14" style="background:rgba(227,6,19,0.07);border:1px solid rgba(227,6,19,0.2);">
+        <div class="flex gap-4 items-start">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style="background:rgba(227,6,19,0.15);border:1px solid rgba(227,6,19,0.25);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-body uppercase tracking-widest text-white/35 mb-2">Problema principal identificado</p>
+            <p class="text-white/85 font-body text-[1rem] leading-[1.8]">
+              Al inscribir una nueva cuenta, el usuario <strong class="text-white font-semibold">no tiene la posibilidad de editarla o eliminarla</strong> en la misma plataforma, lo cual le resta flexibilidad al uso y corrección de errores de la aplicación.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Formulación de Hipótesis ── -->
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-1 h-5 rounded-full bg-gradient-to-b from-emerald-400 to-cyan-400" aria-hidden="true"></div>
+        <h3 class="font-heading font-semibold text-white text-xl">Formulación de Hipótesis</h3>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+        <!-- Mockup UI cards -->
+        <div class="flex flex-col gap-4">
+
+          <!-- Card: Eliminar Cuenta dialog -->
+          <div class="glass rounded-2xl p-5 max-w-xs mx-auto w-full">
+            <p class="font-heading font-semibold text-white text-sm text-center mb-1">Eliminar Cuenta</p>
+            <p class="text-white/50 text-xs font-body text-center mb-5 leading-relaxed">¿Estás seguro que deseas eliminar esta cuenta?</p>
+            <div class="flex gap-3">
+              <button class="flex-1 glass rounded-xl py-2 text-white/60 text-sm font-body font-medium cursor-default">Cancelar</button>
+              <button class="flex-1 rounded-xl py-2 text-sm font-body font-semibold cursor-default" style="background:rgba(227,6,19,0.2);border:1px solid rgba(227,6,19,0.3);color:#FCA5A5;">Eliminar</button>
+            </div>
+          </div>
+
+          <!-- Card: Éxito -->
+          <div class="glass rounded-2xl p-5 max-w-xs mx-auto w-full flex flex-col items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="font-heading font-semibold text-white text-sm text-center">Cambios correctamente guardados</p>
+          </div>
+
+        </div>
+
+        <!-- Hypothesis text -->
+        <div class="flex flex-col gap-6">
+
+          <div class="glass rounded-2xl p-6">
+            <div class="flex gap-3 items-start">
+              <span class="text-emerald-400 text-lg font-heading font-bold shrink-0 leading-none mt-0.5">H1</span>
+              <p class="text-white/65 font-body text-[0.97rem] leading-[1.8]">
+                Creemos que el usuario debiera <strong class="text-white font-semibold">poder modificar o editar sus cuentas inscritas en la App, sin necesidad de cambiar de plataforma</strong>. Para ello conocer las motivaciones y necesidades de los usuarios a profundidad es un punto muy importante para lograr soluciones efectivas.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-6">
+            <div class="flex gap-3 items-start">
+              <span class="text-cyan-400 text-lg font-heading font-bold shrink-0 leading-none mt-0.5">H2</span>
+              <p class="text-white/65 font-body text-[0.97rem] leading-[1.8]">
+                Al mismo tiempo, queremos saber si este problema <strong class="text-white font-semibold">genera que el usuario al equivocarse pudiese llegar a pagar una cuenta incorrecta</strong>.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       2 — INVESTIGACIÓN
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-cyan" style="width:380px;height:380px;bottom:-80px;left:-80px;opacity:0.3;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">02 — Investigación</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Entender antes<br>de <span class="gradient-text">diseñar</span>
+      </h2>
+
+      <!-- Methods grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+
+        <div class="glass rounded-2xl p-5">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-2">Entrevistas</h4>
+          <p class="text-white/45 text-xs font-body leading-relaxed">Sesiones con usuarios reales del banco para identificar pain points y tareas críticas.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-2">Card Sorting</h4>
+          <p class="text-white/45 text-xs font-body leading-relaxed">Optimal Workshop para reorganizar la arquitectura de información según modelos mentales reales.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-2">Benchmarking</h4>
+          <p class="text-white/45 text-xs font-body leading-relaxed">Análisis competitivo de apps bancarias líderes: Santander, BCI, Mercado Pago y Nequi.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-2">Usability Testing</h4>
+          <p class="text-white/45 text-xs font-body leading-relaxed">Pruebas de usabilidad sobre la app existente para detectar fricciones concretas en los flujos.</p>
+        </div>
+
+      </div>
+
+      <!-- Métricas de investigación -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
+
+        <div class="glass rounded-2xl p-8 text-center">
+          <p class="font-heading font-bold mb-3" style="font-size:clamp(3rem,6vw,4rem);line-height:1;background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">8+</p>
+          <div class="glass rounded-xl px-4 py-2 inline-block">
+            <p class="text-white/70 text-sm font-body font-medium">Entrevistas en profundidad</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-8 text-center">
+          <p class="font-heading font-bold mb-3" style="font-size:clamp(3rem,6vw,4rem);line-height:1;background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">20+</p>
+          <div class="glass rounded-xl px-4 py-2 inline-block">
+            <p class="text-white/70 text-sm font-body font-medium">Tree testings</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-8 text-center">
+          <p class="font-heading font-bold mb-3" style="font-size:clamp(3rem,6vw,4rem);line-height:1;background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">12+</p>
+          <div class="glass rounded-xl px-4 py-2 inline-block">
+            <p class="text-white/70 text-sm font-body font-medium">Test de usabilidad</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Proto Personas -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Proto Personas</h3>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-14">
+
+        <!-- Persona 1: César -->
+        <div class="glass rounded-3xl overflow-hidden flex flex-col">
+          <!-- Header accent -->
+          <div class="h-1 w-full" style="background:linear-gradient(90deg,#4ADE80,#22D3EE);"></div>
+          <div class="p-6 flex flex-col gap-5 flex-1">
+
+            <!-- Avatar + quote -->
+            <div class="flex flex-col items-center text-center gap-3">
+              <div class="w-16 h-16 rounded-full glass flex items-center justify-center" style="border:1px solid rgba(74,222,128,0.25);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+              </div>
+              <p class="text-white/50 text-xs font-body italic leading-relaxed">"Me hace la vida más simple pagar todas mis cuentas a través de la App de mi banco"</p>
+            </div>
+
+            <!-- Name & info -->
+            <div>
+              <p class="font-heading font-bold text-white text-base mb-3">César Alejandro Gutiérrez Díaz</p>
+              <div class="flex flex-col gap-1">
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Edad:</span> 34 años</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Género:</span> Hombre</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Ocupación:</span> Prevencionista de riesgo</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Estado civil:</span> Soltero (conviviente)</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Residencia:</span> Santiago</p>
+              </div>
+            </div>
+
+            <!-- Dolores -->
+            <div>
+              <p class="text-emerald-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Dolores</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Nunca tiene tiempo</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Problemas para hacer trámites presenciales</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Estabilidad económica</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Altas tasas de interés en crédito</li>
+              </ul>
+            </div>
+
+            <!-- Necesidades -->
+            <div>
+              <p class="text-emerald-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Necesidades</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Hacer trámites de forma rápida</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Confiar en su banco</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Ahorrar · Una casa propia</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-emerald-400/60 shrink-0">·</span>Seguridad para su familia</li>
+              </ul>
+            </div>
+
+            <!-- Nivel digital -->
+            <div class="glass rounded-xl p-4 mt-auto">
+              <p class="text-emerald-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Nivel digital</p>
+              <p class="text-white font-body font-semibold text-xs mb-2">Usuario Nivel Experto</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Pantalla</span><span class="text-white/65">10–12 h</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Móvil</span><span class="text-white/65">8 h</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Computador</span><span class="text-white/65">10 h</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Persona 2: Nelly -->
+        <div class="glass rounded-3xl overflow-hidden flex flex-col">
+          <div class="h-1 w-full" style="background:linear-gradient(90deg,#22D3EE,#6EE7B7);"></div>
+          <div class="p-6 flex flex-col gap-5 flex-1">
+
+            <div class="flex flex-col items-center text-center gap-3">
+              <div class="w-16 h-16 rounded-full glass flex items-center justify-center" style="border:1px solid rgba(34,211,238,0.25);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(34,211,238,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+              </div>
+              <p class="text-white/50 text-xs font-body italic leading-relaxed">"Trabajo desde muy pequeña, y me gustaría que un banco confiara en mí y en mi esfuerzo"</p>
+            </div>
+
+            <div>
+              <p class="font-heading font-bold text-white text-base mb-3">Nelly Mariela Martínez Núñez</p>
+              <div class="flex flex-col gap-1">
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Edad:</span> 56 años</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Género:</span> Mujer</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Ocupación:</span> Emprendedora</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Estado civil:</span> Casada</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Residencia:</span> Quilpué</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-cyan-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Dolores</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Endeudarse (alto interés)</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Que sus ventas bajen</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Poca digitalización</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Educación de sus hijos</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="text-cyan-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Necesidades</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Ser más conocida y tener más clientes</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Cuidar a su familia · Base financiera</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Red de contactos pyme</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-cyan-400/60 shrink-0">·</span>Crecimiento de emprendimiento</li>
+              </ul>
+            </div>
+
+            <div class="glass rounded-xl p-4 mt-auto">
+              <p class="text-cyan-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Nivel digital</p>
+              <p class="text-white font-body font-semibold text-xs mb-2">Usuario Nivel Básico</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Pantalla</span><span class="text-white/65">5 h máx.</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Móvil</span><span class="text-white/65">4 h</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Computador</span><span class="text-white/65">1 h</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Persona 3: Jennifer -->
+        <div class="glass rounded-3xl overflow-hidden flex flex-col">
+          <div class="h-1 w-full" style="background:linear-gradient(90deg,#6EE7B7,#4ADE80);"></div>
+          <div class="p-6 flex flex-col gap-5 flex-1">
+
+            <div class="flex flex-col items-center text-center gap-3">
+              <div class="w-16 h-16 rounded-full glass flex items-center justify-center" style="border:1px solid rgba(110,231,183,0.25);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(110,231,183,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+              </div>
+              <p class="text-white/50 text-xs font-body italic leading-relaxed">"Me gustó la facilidad con la que pude acceder a los productos del banco. El proceso fue 100% digital"</p>
+            </div>
+
+            <div>
+              <p class="font-heading font-bold text-white text-base mb-3">Jennifer Astudillo Molina</p>
+              <div class="flex flex-col gap-1">
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Edad:</span> 25 años</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Género:</span> No conforme</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Ocupación:</span> Estudiante Medicina Veterinaria</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Estado civil:</span> Solter@</p>
+                <p class="text-white/50 text-xs font-body"><span class="text-white/70 font-medium">Residencia:</span> La Serena</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-teal-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Dolores</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Despreocupación por el cambio climático</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Maltrato Animal</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Poca interés en cuentas de ahorro</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Molestia por la infoxicación</li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="text-teal-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Necesidades</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Vivir una vida más sana</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>No preocuparse de hacer trámites</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Ayudar en el medioambiente</li>
+                <li class="text-white/45 text-xs font-body flex gap-2"><span class="text-teal-400/60 shrink-0">·</span>Ahorrar para sus metas · Ayudar a animales</li>
+              </ul>
+            </div>
+
+            <div class="glass rounded-xl p-4 mt-auto">
+              <p class="text-teal-400 text-xs font-heading font-semibold uppercase tracking-wider mb-2">Nivel digital</p>
+              <p class="text-white font-body font-semibold text-xs mb-2">Usuario Nivel Intermedio</p>
+              <ul class="flex flex-col gap-1">
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Pantalla</span><span class="text-white/65">10 h</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Móvil</span><span class="text-white/65">9 h</span></li>
+                <li class="text-white/45 text-xs font-body flex justify-between"><span>Computador</span><span class="text-white/65">6 h</span></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Oportunidades mapeadas (Journey Map) -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Oportunidades mapeadas</h3>
+      <div class="glass rounded-3xl overflow-hidden mb-14" style="border:1px solid rgba(255,255,255,0.09);">
+
+        <!-- Stage headers -->
+        <div class="grid" style="grid-template-columns: 120px repeat(5, 1fr);">
+          <div class="bg-white/5 px-4 py-3"></div>
+          <div class="px-4 py-3 text-center" style="background:linear-gradient(135deg,#F59E0B,#F97316);">
+            <span class="font-heading font-bold text-white text-xs tracking-wide">01 ETAPA</span>
+          </div>
+          <div class="px-4 py-3 text-center" style="background:linear-gradient(135deg,#F97316,#EF4444);">
+            <span class="font-heading font-bold text-white text-xs tracking-wide">02 ETAPA</span>
+          </div>
+          <div class="px-4 py-3 text-center" style="background:linear-gradient(135deg,#EF4444,#DC2626);">
+            <span class="font-heading font-bold text-white text-xs tracking-wide">03 ETAPA</span>
+          </div>
+          <div class="px-4 py-3 text-center" style="background:linear-gradient(135deg,#DC2626,#B91C1C);">
+            <span class="font-heading font-bold text-white text-xs tracking-wide">04 ETAPA</span>
+          </div>
+          <div class="px-4 py-3 text-center" style="background:linear-gradient(135deg,#B91C1C,#7F1D1D);">
+            <span class="font-heading font-bold text-white text-xs tracking-wide">05 ETAPA</span>
+          </div>
+        </div>
+
+        <!-- CÉSAR row -->
+        <div class="grid" style="grid-template-columns: 120px repeat(5, 1fr); border-top:1px solid rgba(255,255,255,0.07);">
+          <div class="flex items-center gap-2 px-4 py-5" style="background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.07);">
+            <div class="w-8 h-8 rounded-full flex-shrink-0 overflow-hidden" style="background:linear-gradient(135deg,rgba(52,211,153,0.3),rgba(16,185,129,0.15));border:1px solid rgba(52,211,153,0.25);">
+              <div class="w-full h-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(52,211,153,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <span class="font-heading font-bold text-emerald-400 text-xs tracking-widest" style="writing-mode:horizontal-lr;">CÉSAR</span>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F59E0B;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Solucionar problemas técnicos por aumento de tráfico a fin de mes</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Feedback de inscripción</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Mejorar categorización de cuentas</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Agregar FAQ</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Vídeo tutorial</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#DC2626;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Implementar la edición en la APP</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#DC2626;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Todo se haga en la misma plataforma</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5">
+            <span class="text-white/15 text-xs font-body">—</span>
+          </div>
+        </div>
+
+        <!-- NELLY row -->
+        <div class="grid" style="grid-template-columns: 120px repeat(5, 1fr); border-top:1px solid rgba(255,255,255,0.07);">
+          <div class="flex items-center gap-2 px-4 py-5" style="background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.07);">
+            <div class="w-8 h-8 rounded-full flex-shrink-0 overflow-hidden" style="background:linear-gradient(135deg,rgba(34,211,238,0.3),rgba(6,182,212,0.15));border:1px solid rgba(34,211,238,0.25);">
+              <div class="w-full h-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(34,211,238,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <span class="font-heading font-bold text-cyan-400 text-xs tracking-widest">NELLY</span>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F59E0B;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Guía de ayuda inicial en web</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F59E0B;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Tutorial contextual interactivo en la app</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Tutorial contextual interactivo en la app</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Mejorar categorización de cuentas</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Feedback de errores</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Campo obligatorio de reingreso de cuenta</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F97316;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Validación del formato del número de cuenta</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-cyan-300 text-xs font-body leading-relaxed">Tutorial contextual interactivo en la app</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Hacer los cambios en la app</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <span class="text-white/15 text-xs font-body">—</span>
+          </div>
+          <div class="px-4 py-5">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#B91C1C;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Entregar el comprobante en la App después del pago</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- JENNIFER row -->
+        <div class="grid" style="grid-template-columns: 120px repeat(5, 1fr); border-top:1px solid rgba(255,255,255,0.07);">
+          <div class="flex items-center gap-2 px-4 py-5" style="background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.07);">
+            <div class="w-8 h-8 rounded-full flex-shrink-0 overflow-hidden" style="background:linear-gradient(135deg,rgba(20,184,166,0.3),rgba(13,148,136,0.15));border:1px solid rgba(20,184,166,0.25);">
+              <div class="w-full h-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(20,184,166,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <span class="font-heading font-bold text-teal-400 text-xs tracking-widest">JENNIFER</span>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#F59E0B;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Solucionar problemas técnicos por aumento de tráfico a fin de mes</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <span class="text-white/15 text-xs font-body">—</span>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Implementar la edición en la APP</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Agregar FAQ</span></li>
+            </ul>
+          </div>
+          <div class="px-4 py-5" style="border-right:1px solid rgba(255,255,255,0.05);">
+            <span class="text-white/15 text-xs font-body">—</span>
+          </div>
+          <div class="px-4 py-5">
+            <ul class="space-y-2">
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#B91C1C;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Feedback en App de eliminación de cuenta</span></li>
+              <li class="flex gap-2 items-start"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#B91C1C;"></span><span class="text-white/60 text-xs font-body leading-relaxed">Feedback en correo de eliminación de cuenta</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Flujo de interacción -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Flujo de interacción</h3>
+
+      <!-- Descripción + Leyenda -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+        <div class="glass rounded-2xl p-6">
+          <p class="text-white/60 text-sm font-body leading-relaxed mb-3">
+            Empleamos <strong class="text-white/80 font-semibold">simbología como lenguaje visual</strong> para señalar los puntos de decisión y áreas delimitadas que representan flujos externos y de seguridad.
+          </p>
+          <p class="text-white/60 text-sm font-body leading-relaxed mb-3">
+            Se destacan los caminos que recorre nuestra Proto-persona en el flujo actual, por ejemplo el flujo <strong class="text-yellow-300 font-semibold">Happy Path</strong> en Amarillo, Whatsapp en Verde, Sitio Web en Morado y Email en Turquesa.
+          </p>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Además sugerimos un <strong class="text-yellow-300 font-semibold">Happy Path de flujo ideal</strong>, con nuestra mejora de edición de cuentas ya integrada en la App.
+          </p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <p class="font-heading font-bold text-white/40 text-xs uppercase tracking-[0.15em] mb-4">Leyenda</p>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1px dashed rgba(227,6,19,0.55);border-radius:3px;background:rgba(227,6,19,0.05);flex-shrink:0;"></div>
+              <span class="text-white/45 text-xs font-body leading-tight">Flujo dentro de Web</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1px solid rgba(239,68,68,0.6);border-radius:3px;background:rgba(239,68,68,0.05);flex-shrink:0;"></div>
+              <span class="text-white/45 text-xs font-body leading-tight">Flujo de error</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1px dashed rgba(148,163,184,0.4);border-radius:3px;background:rgba(148,163,184,0.04);flex-shrink:0;"></div>
+              <span class="text-white/45 text-xs font-body leading-tight">Flujo en otra App</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1px dashed rgba(236,72,153,0.5);border-radius:3px;background:rgba(236,72,153,0.04);flex-shrink:0;"></div>
+              <span class="text-white/45 text-xs font-body leading-tight">Flujo de acceso</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1px dashed rgba(34,197,94,0.55);border-radius:3px;background:rgba(34,197,94,0.05);flex-shrink:0;"></div>
+              <span class="text-white/45 text-xs font-body leading-tight">Flujo en Whatsapp</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div style="width:34px;height:18px;border:1.5px solid #F59E0B;border-radius:3px;background:rgba(245,158,11,0.06);flex-shrink:0;"></div>
+              <span class="text-yellow-300 text-xs font-body font-semibold leading-tight">Happy Path — Flujo Ideal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Flujo original ── -->
+      <div class="glass rounded-3xl p-6 mb-4" style="border:1px solid rgba(255,255,255,0.09);">
+        <p class="font-heading font-semibold text-white/70 text-sm mb-5">Flujo original</p>
+        <div class="overflow-x-auto pb-3">
+          <div class="inline-flex flex-col gap-5" style="min-width:900px;">
+
+            <!-- Fila principal: login + happy path -->
+            <div class="fr">
+              <div class="fn fn-def" style="max-width:70px;">Inicio</div>
+              <span class="fn-arr">→</span>
+              <div class="flex flex-col gap-1.5">
+                <div class="fn fn-acc">Log in con biométrico</div>
+                <div class="fn fn-acc">Log in con clave</div>
+              </div>
+              <span class="fn-arr">→</span>
+              <div class="fn-dia"><span class="sr-only">Decisión</span></div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Ingresa a sección Pagar</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Selecciona cuenta inscrita</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Detalle de monto</div>
+              <span class="fn-arr">→</span>
+              <div class="fn-dia fn-dia-hp"><span class="sr-only">Decisión</span></div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Validación del pago</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Comprobante del pago</div>
+            </div>
+
+            <!-- Fila de ramas externas -->
+            <div class="fr items-start gap-8 pl-56">
+
+              <!-- Whatsapp -->
+              <div class="flex flex-col items-center gap-2">
+                <div style="width:1px;height:14px;background:rgba(34,197,94,0.35);"></div>
+                <div class="fn-ext fn-ext-wp">Flujo en<br>Whatsapp</div>
+                <div class="flex flex-col gap-1.5 mt-1">
+                  <div class="fn fn-wp" style="max-width:126px;">Tutorial contextual interactivo en la app</div>
+                  <div class="fn fn-wp" style="max-width:126px;">Mejorar categorización de cuentas</div>
+                  <div class="fn fn-wp" style="max-width:126px;">Feedback de errores</div>
+                </div>
+              </div>
+
+              <!-- Sitio Web -->
+              <div class="flex flex-col items-center gap-2">
+                <div style="width:1px;height:14px;background:rgba(139,92,246,0.35);"></div>
+                <div class="fn-ext fn-ext-site">Flujo en<br>Sitio Web</div>
+                <div class="flex flex-col gap-1.5 mt-1">
+                  <div class="fn fn-def" style="border-color:rgba(139,92,246,0.4);color:rgba(196,181,253,0.9);max-width:126px;">Inscripción de cuenta en web</div>
+                  <div class="fn fn-err" style="max-width:126px;">No puedes cancelar tu solicitud</div>
+                  <div class="fn fn-def" style="border-color:rgba(139,92,246,0.4);color:rgba(196,181,253,0.9);max-width:126px;">Validación del formato de cuenta</div>
+                </div>
+              </div>
+
+              <!-- App de Correo -->
+              <div class="flex flex-col items-center gap-2">
+                <div style="width:1px;height:14px;background:rgba(20,184,166,0.35);"></div>
+                <div class="fn-ext fn-ext-mail">Flujo en App<br>de Correo</div>
+                <div class="flex flex-col gap-1.5 mt-1">
+                  <div class="fn fn-email" style="max-width:126px;">Confirmación enviada al correo</div>
+                  <div class="fn fn-email" style="max-width:126px;">Acción requerida en app externa</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Nota de complejidad -->
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-px bg-white/10"></div>
+              <p class="text-white/25 text-xs font-body italic">Flujo que cruza 3 plataformas externas — el usuario pierde contexto en cada salto</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Flujo ideal ── -->
+      <div class="rounded-3xl p-6 mb-14" style="border:1.5px solid rgba(245,158,11,0.22);background:rgba(245,158,11,0.025);">
+        <div class="flex items-center gap-3 mb-5">
+          <p class="font-heading font-semibold text-yellow-300/90 text-sm">Flujo ideal</p>
+          <span class="text-xs font-body font-medium px-2.5 py-1 rounded-full" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#FDE68A;">Happy Path — 100% en la App</span>
+        </div>
+        <div class="overflow-x-auto pb-3">
+          <div class="inline-flex flex-col gap-3" style="min-width:860px;">
+
+            <!-- Fila principal ideal -->
+            <div class="fr items-center">
+              <div class="fn fn-hp" style="max-width:72px;">Inicio</div>
+              <span class="fn-arr">→</span>
+              <div class="flex flex-col gap-1.5">
+                <div class="fn fn-acc">Log in con biométrico</div>
+                <div class="fn fn-acc">Log in con clave</div>
+              </div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Ingresa a sección Pagar</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Menú lateral</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Entra a sección Pagar / Recarga</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Sección cuentas inscritas</div>
+              <span class="fn-arr">→</span>
+              <div class="fn fn-hp">Selecciona cuenta de su lista</div>
+              <span class="fn-arr">→</span>
+              <div class="fn-dia fn-dia-hp"><span class="sr-only">Decisión editar/eliminar</span></div>
+              <!-- Branches -->
+              <div class="flex flex-col gap-2 ml-1">
+                <div class="fr gap-2">
+                  <span class="fn-arr">↗</span>
+                  <div class="fn fn-hp">Opción de editar</div>
+                </div>
+                <div class="fr gap-2">
+                  <span class="fn-arr">↘</span>
+                  <div class="fn fn-hp">Eliminar cuenta</div>
+                  <span class="fn-arr">→</span>
+                  <div class="fn fn-hp">Inscribir nueva cuenta</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="w-4 h-px" style="background:rgba(245,158,11,0.4);"></div>
+          <p class="text-yellow-300/35 text-xs font-body italic">Todo el flujo sucede dentro de la App — sin saltos a plataformas externas</p>
+        </div>
+      </div>
+
+      <!-- ── Tree testing — Resultados ── -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-6">Tree testing — Resultados</h3>
+
+      <!-- Bar chart -->
+      <div class="glass rounded-3xl p-6 mb-5">
+        <!-- Legend -->
+        <div class="flex items-center justify-center gap-6 mb-5">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-sm" style="background:#3B82F6;"></div>
+            <span class="text-white/55 text-xs font-body">Tarea 1</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-sm" style="background:#F97316;"></div>
+            <span class="text-white/55 text-xs font-body">Tarea 2</span>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="flex gap-3">
+          <!-- Y-axis rotated label -->
+          <div class="flex items-center justify-center flex-shrink-0" style="width:14px;">
+            <span class="text-white/25 text-xs font-body" style="writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">Cantidad de usuarios</span>
+          </div>
+
+          <div class="flex-1">
+            <!-- Chart area: grid + bars stacked -->
+            <div class="relative" style="height:192px;">
+              <!-- Grid lines (positioned from top: 0,20,40,60,80,100% of 192px = 0,38,77,115,154,192) -->
+              <div class="absolute inset-x-0" style="top:0;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">25</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+              </div>
+              <div class="absolute inset-x-0" style="top:38px;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">20</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+              </div>
+              <div class="absolute inset-x-0" style="top:77px;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">15</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+              </div>
+              <div class="absolute inset-x-0" style="top:115px;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">10</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+              </div>
+              <div class="absolute inset-x-0" style="top:154px;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">5</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.06);"></div>
+              </div>
+              <div class="absolute inset-x-0" style="top:191px;display:flex;align-items:center;gap:6px;">
+                <span class="text-white/22 text-xs font-body flex-shrink-0" style="width:20px;text-align:right;">0</span>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,0.12);"></div>
+              </div>
+
+              <!-- Bars (absolute, bottom-aligned, starting after Y labels ~26px) -->
+              <div class="absolute inset-0 flex items-end" style="padding-left:26px;padding-top:4px;">
+                <!-- Éxito directo: T1=22→169px, T2=14→107px -->
+                <div class="flex-1 flex items-end justify-center gap-1.5">
+                  <div style="height:169px;width:clamp(18px,3.5vw,32px);background:#3B82F6;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                  <div style="height:107px;width:clamp(18px,3.5vw,32px);background:#F97316;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                </div>
+                <!-- Éxito no directo: T1=3→23px, T2=5→38px -->
+                <div class="flex-1 flex items-end justify-center gap-1.5">
+                  <div style="height:23px;width:clamp(18px,3.5vw,32px);background:#3B82F6;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                  <div style="height:38px;width:clamp(18px,3.5vw,32px);background:#F97316;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                </div>
+                <!-- Falla directa: T1=5→38px, T2=7→54px -->
+                <div class="flex-1 flex items-end justify-center gap-1.5">
+                  <div style="height:38px;width:clamp(18px,3.5vw,32px);background:#3B82F6;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                  <div style="height:54px;width:clamp(18px,3.5vw,32px);background:#F97316;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                </div>
+                <!-- Falla no directa: T1=1→8px, T2=5→38px -->
+                <div class="flex-1 flex items-end justify-center gap-1.5">
+                  <div style="height:8px;width:clamp(18px,3.5vw,32px);background:#3B82F6;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                  <div style="height:38px;width:clamp(18px,3.5vw,32px);background:#F97316;border-radius:3px 3px 0 0;opacity:0.85;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- X-axis labels -->
+            <div class="flex mt-3" style="padding-left:26px;">
+              <div class="flex-1 text-center"><span class="text-white/30 text-xs font-body">Éxito directo</span></div>
+              <div class="flex-1 text-center"><span class="text-white/30 text-xs font-body">Éxito no directo</span></div>
+              <div class="flex-1 text-center"><span class="text-white/30 text-xs font-body">Falla directa</span></div>
+              <div class="flex-1 text-center"><span class="text-white/30 text-xs font-body">Falla no directa</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis text 2 cols -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+        <div class="glass rounded-2xl p-6">
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Dentro del gráfico podemos ver que existen <strong class="text-white/80 font-semibold">mayores problemas en la tarea 2 de inscripción de cuentas</strong>, donde un patrón repetitivo en los usuarios con fallas y éxitos no directos, fue que éste avanzaba en dirección correcta y se devolvía en el árbol de navegación, probablemente para corroborar si la sección a la cual ingresaron era la correcta. Esto se puede deber a que los <strong class="text-white/80 font-semibold">etiquetados o rótulos no son lo suficientemente consistentes</strong>.
+          </p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Dentro de los resultados <strong class="text-white/80 font-semibold">predomina un mayor porcentaje de éxito directo en ambas tareas</strong> lo cual a niveles generales es bastante positivo, sin embargo, también es interesante evaluar los resultados parcialmente incorrectos ya que son los que más nos van a servir para saber por qué han fallado los usuarios.
+          </p>
+        </div>
+      </div>
+
+      <!-- Task cards -->
+      <div class="flex flex-col gap-4 mb-14">
+
+        <!-- Tarea 1 -->
+        <div class="glass rounded-2xl overflow-hidden" style="border:1px solid rgba(59,130,246,0.18);">
+          <div class="px-5 py-2.5" style="background:rgba(59,130,246,0.08);border-bottom:1px solid rgba(59,130,246,0.12);">
+            <span class="font-heading font-bold text-xs tracking-[0.14em] uppercase" style="color:#93C5FD;">Tarea 1</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="p-5" style="border-right:1px solid rgba(255,255,255,0.06);">
+              <p class="text-white/50 text-sm font-body leading-relaxed italic">
+                "Te encuentras en el Home después de haber iniciado sesión y necesitas buscar en el menú lateral la opción de pago de servicios básicos para poder pagar tu cuenta de Aguas andinas"
+              </p>
+            </div>
+            <div class="p-5 flex flex-col justify-center gap-4">
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Findability o success</p>
+                <p class="font-heading font-bold text-white text-2xl">81%</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Tiempo Invertido</p>
+                <p class="font-heading font-bold text-white text-2xl">24s</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Directness</p>
+                <p class="font-heading font-bold text-white text-2xl">71%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarea 2 -->
+        <div class="glass rounded-2xl overflow-hidden" style="border:1px solid rgba(249,115,22,0.18);">
+          <div class="px-5 py-2.5" style="background:rgba(249,115,22,0.08);border-bottom:1px solid rgba(249,115,22,0.12);">
+            <span class="font-heading font-bold text-xs tracking-[0.14em] uppercase" style="color:#FDBA74;">Tarea 2</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="p-5" style="border-right:1px solid rgba(255,255,255,0.06);">
+              <p class="text-white/50 text-sm font-body leading-relaxed italic">
+                "Te encuentras en el Home después de haber iniciado sesión y necesitas buscar en el menú lateral la opción de inscripción de servicios básicos para poder inscribir una nueva cuenta de gas."
+              </p>
+            </div>
+            <div class="p-5 flex flex-col justify-center gap-4">
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Findability o success</p>
+                <p class="font-heading font-bold text-white text-2xl">61%</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Directness</p>
+                <p class="font-heading font-bold text-white text-2xl">45%</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-xs font-body mb-0.5">Tiempo Invertido</p>
+                <p class="font-heading font-bold text-white text-2xl">29s</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Key insights -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-5">Hallazgos clave</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
+        <div class="glass rounded-2xl p-6 border-t border-emerald-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">73%</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">de usuarios no completaba una transferencia en el primer intento por confusión en el flujo.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border-t border-cyan-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">8 pasos</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">requería el flujo de pago de cuentas, cuando el estándar de la industria es 3–4 pasos.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 border-t border-emerald-400/20">
+          <p class="font-heading font-bold text-3xl text-white mb-2">#1</p>
+          <p class="text-white/45 text-sm font-body leading-relaxed">queja recurrente: "No encuentro cómo hacer una transferencia rápida".</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       3 — PROCESO DE DISEÑO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:360px;height:360px;top:-60px;right:-80px;opacity:0.28;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">03 — Proceso de diseño</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Del problema<br>a la <span class="gradient-text">solución</span>
+      </h2>
+
+      <!-- Steps -->
+      <div class="flex flex-col gap-6 mb-14">
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">01</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Arquitectura de información</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Redefiní la estructura de navegación en base a los resultados del card sorting, priorizando las 5 acciones más frecuentes en la pantalla de inicio: saldo, transferir, pagar, QR y movimientos.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">02</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Wireframes de baja fidelidad</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Diseño rápido de wireframes en papel y Miro para validar la estructura antes de invertir tiempo en UI. Iteración de 3 rondas con stakeholders internos.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">03</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Prototipo de alta fidelidad en Figma</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Sistema de componentes en Figma bajo metodología Atomic Design: tokens de color, tipografía y espaciado alineados a la identidad de Falabella, con variantes para estados activos, desactivados y de error.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex gap-4 items-start">
+          <div class="step-num">04</div>
+          <div>
+            <h4 class="font-heading font-semibold text-white text-base mb-1.5">Pruebas de usabilidad & iteración</h4>
+            <p class="text-white/50 text-sm font-body leading-relaxed">Sesiones de test con 8 usuarios sobre el prototipo. Se identificaron 3 fricciones adicionales que se resolvieron en una segunda iteración antes de entregar los assets al equipo de desarrollo.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Wireframe showcase -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-5">Wireframes de baja fidelidad</h3>
+      <div class="relative rounded-3xl overflow-hidden mb-12" style="border:1px solid rgba(255,255,255,0.08);">
+        <img
+          src="imagenes/wireframes-falabella.png"
+          alt="Wireframes de baja y media fidelidad — New App Banco Falabella"
+          class="w-full h-auto block"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <!-- Gradient sides/bottom to blend with dark background -->
+        <div class="absolute inset-y-0 left-0 w-16 pointer-events-none" style="background:linear-gradient(to right,#07071A,transparent);" aria-hidden="true"></div>
+        <div class="absolute inset-y-0 right-0 w-16 pointer-events-none" style="background:linear-gradient(to left,#07071A,transparent);" aria-hidden="true"></div>
+        <div class="absolute inset-x-0 bottom-0 h-20 pointer-events-none" style="background:linear-gradient(to top,#07071A,transparent);" aria-hidden="true"></div>
+        <!-- Fallback placeholder (hidden when image loads) -->
+        <div class="img-placeholder w-full h-72" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          <span>wireframes-falabella.jpg — guarda el archivo en la carpeta del proyecto</span>
+        </div>
+      </div>
+
+      <!-- Tools row -->
+      <h3 class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.18em] mb-4">Herramientas utilizadas</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="skill-tag text-emerald-300 bg-emerald-400/08 border border-emerald-400/14">Figma</span>
+        <span class="skill-tag text-emerald-300 bg-emerald-400/08 border border-emerald-400/14">Miro</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">Optimal Workshop</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">Adobe Illustrator</span>
+        <span class="skill-tag text-cyan-300 bg-cyan-400/08 border border-cyan-400/14">Adobe Photoshop</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       4 — SOLUCIÓN FINAL
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-red"  style="width:340px;height:340px;bottom:-80px;right:-60px;opacity:0.2;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan" style="width:300px;height:300px;top:-40px;left:-60px;opacity:0.25;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — Solución final</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-4 leading-snug">
+        Una experiencia bancaria<br><span class="gradient-text">simple y confiable</span>
+      </h2>
+      <p class="text-white/55 font-body text-[0.97rem] leading-relaxed mb-12 max-w-2xl">
+        El rediseño centró la experiencia en las tareas de mayor frecuencia, reduciendo la carga cognitiva y el número de pasos en los flujos críticos.
+      </p>
+
+      <!-- Main mockup image -->
+      <div class="relative rounded-3xl overflow-hidden mb-8" style="border:1px solid rgba(255,255,255,0.08);">
+        <img
+          src="imagenes/app-falabella.png"
+          alt="Pantallas principales del rediseño — New App Banco Falabella"
+          class="w-full h-auto block"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="img-placeholder w-full h-72 md:h-[500px]" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+          <span>Pantallas principales del rediseño</span>
+        </div>
+      </div>
+
+      <!-- Feature highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Home rediseñado</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Dashboard con accesos rápidos a las 5 acciones más usadas, saldo visible y últimos movimientos al primer vistazo.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Transferencias en 3 pasos</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Flujo optimizado que reduce de 8 a 3 pasos el proceso de transferencia, con contactos frecuentes al inicio.</p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="w-9 h-9 glass rounded-xl flex items-center justify-center mb-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-base mb-2">Seguridad contextual</h4>
+          <p class="text-white/45 text-sm font-body leading-relaxed">Confirmaciones claras y feedback visual inmediato en cada acción crítica, reforzando la confianza del usuario.</p>
+        </div>
+
+      </div>
+
+      <!-- Pantalla de inicio feature -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mb-6">
+
+        <!-- Image -->
+        <div class="relative rounded-3xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08);">
+          <img
+            src="imagenes/pantalla-inicio.png"
+            alt="Nueva pantalla de inicio — New App Banco Falabella"
+            class="w-full h-auto block"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="img-placeholder h-72" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+            <span>pantalla-inicio.png</span>
+          </div>
+        </div>
+
+        <!-- Card texto -->
+        <div class="glass rounded-2xl p-6 flex flex-col gap-3">
+          <h3 class="font-heading font-bold text-white text-xl leading-snug">Nueva pantalla de inicio</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Esta nueva pantalla cuenta con la información más relevante para los usuarios, intuitivo y muy simple de recordar, junto a accesos directos a las secciones más importantes de la plataforma, como el botón <strong class="text-white/80 font-semibold">"Canjear"</strong> que te lleva directamente a una gran oferta de productos.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Cuentas inscritas feature -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+
+        <!-- Card texto (izquierda) -->
+        <div class="glass rounded-2xl p-6 flex flex-col gap-3 order-2 md:order-1">
+          <h3 class="font-heading font-bold text-white text-xl leading-snug">Nueva sección Cuentas inscritas</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Esta renovada sección cuenta con un diseño altamente intuitivo y simple de comprender por los usuarios, con accesos directos tanto a cualquier cuenta de la lista ya inscrita, como a la cuenta directa de <strong class="text-white/80 font-semibold">CMR Falabella</strong>, junto a un llamativo botón que invita al usuario a inscribir nuevas cuentas.
+          </p>
+        </div>
+
+        <!-- Image (derecha) -->
+        <div class="relative rounded-3xl overflow-hidden order-1 md:order-2" style="border:1px solid rgba(255,255,255,0.08);">
+          <img
+            src="imagenes/cuentas-inscritas.png"
+            alt="Nueva sección Cuentas inscritas — New App Banco Falabella"
+            class="w-full h-auto block"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="img-placeholder h-72" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+            <span>cuentas-inscritas.png</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Kebab menu feature -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-6">
+
+        <!-- Image (izquierda) -->
+        <div class="flex items-center justify-center">
+          <div class="relative rounded-3xl overflow-hidden" style="border:1px solid rgba(255,255,255,0.08);max-width:260px;width:100%;">
+          <img
+            src="imagenes/kebab.png"
+            alt="Nuevo menú Kebab — New App Banco Falabella"
+            class="w-full h-auto block"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="img-placeholder h-72" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+            <span>kebab.png</span>
+          </div>
+          </div>
+        </div>
+
+        <!-- Card texto (derecha) -->
+        <div class="glass rounded-2xl p-6 flex flex-col gap-3">
+          <h3 class="font-heading font-bold text-white text-xl leading-snug">Nuevo menú Kebab</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Este nuevo modal le permite a los usuarios poder administrar su lista de cuentas inscritas, ya sea para <strong class="text-white/80 font-semibold">eliminar o editar</strong> algún posible error al momento de ingresar los datos de la cuenta.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       5 — RESULTADOS & APRENDIZAJES
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+
+    <div class="orb orb-green" style="width:400px;height:400px;bottom:-100px;left:-80px;opacity:0.28;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">05 — Resultados & aprendizajes</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.4rem)] text-white mb-12 leading-snug">
+        Impacto del<br><span class="gradient-text">rediseño</span>
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+
+        <!-- Metrics -->
+        <div class="flex flex-col gap-4">
+          <div class="glass rounded-2xl p-6 flex gap-5 items-center">
+            <p class="font-heading font-bold text-4xl text-white shrink-0" style="background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">−62%</p>
+            <div>
+              <p class="font-heading font-semibold text-white text-base mb-1">Reducción en errores de navegación</p>
+              <p class="text-white/45 text-sm font-body">Medido en pruebas de usabilidad post-diseño vs. la app original.</p>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6 flex gap-5 items-center">
+            <p class="font-heading font-bold text-4xl text-white shrink-0" style="background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">8→3</p>
+            <div>
+              <p class="font-heading font-semibold text-white text-base mb-1">Pasos en flujo de transferencias</p>
+              <p class="text-white/45 text-sm font-body">Flujo simplificado con confirmación de 2 pasos para contactos frecuentes.</p>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6 flex gap-5 items-center">
+            <p class="font-heading font-bold text-4xl text-white shrink-0" style="background:linear-gradient(135deg,#4ADE80,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">100%</p>
+            <div>
+              <p class="font-heading font-semibold text-white text-base mb-1">Componentes documentados</p>
+              <p class="text-white/45 text-sm font-body">Design System completo entregado en Figma bajo metodología Atomic Design.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learnings -->
+        <div class="glass rounded-2xl p-7">
+          <h3 class="font-heading font-semibold text-white text-lg mb-6">Aprendizajes clave</h3>
+          <div class="flex flex-col gap-5">
+            <div class="flex gap-3 items-start">
+              <span class="text-emerald-400 mt-0.5 shrink-0">▸</span>
+              <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-medium">La confianza es diseñable.</strong> En banca, cada micro-interacción (confirmaciones, estados de carga, mensajes de error) construye o destruye la confianza del usuario.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-emerald-400 mt-0.5 shrink-0">▸</span>
+              <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-medium">Card sorting salva meses de reiteración.</strong> Involucrar usuarios en la IA antes de wirefrear eliminó suposiciones costosas del equipo.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-emerald-400 mt-0.5 shrink-0">▸</span>
+              <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-medium">Menos opciones = más decisiones.</strong> Reducir el menú principal de 9 a 5 ítems aumentó significativamente la tasa de éxito en las tareas.</p>
+            </div>
+            <div class="flex gap-3 items-start">
+              <span class="text-cyan-400 mt-0.5 shrink-0">▸</span>
+              <p class="text-white/55 text-sm font-body leading-relaxed"><strong class="text-white/80 font-medium">Atomic Design acelera la consistencia.</strong> El sistema de componentes redujo el tiempo de handoff con desarrollo y aseguró coherencia en cada pantalla.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       NAV — Siguiente caso
+  ══════════════════════════════ -->
+  <section class="py-20 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+
+      <div>
+        <p class="text-white/35 text-xs font-body uppercase tracking-[0.18em] mb-1">Siguiente caso</p>
+        <p class="font-heading font-semibold text-white text-lg">Próximamente</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="case-studies.html" class="glass glass-hover text-white/70 font-body text-sm font-semibold px-6 py-3 rounded-xl cursor-pointer no-underline inline-flex items-center gap-2 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Ver todos los casos
+        </a>
+        <a href="index.html#contact" class="btn-primary text-white font-heading font-semibold px-6 py-3 rounded-xl cursor-pointer no-underline inline-flex items-center gap-2">
+          Trabajemos juntos
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER minimal -->
+  <footer class="py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="divider mb-8"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-white/25 text-sm font-body">© 2025 Raúl Villarroel Pizarro. Todos los derechos reservados.</p>
+        <a href="index.html" class="text-white/35 hover:text-white/70 text-sm font-body transition-colors duration-200 cursor-pointer">← Volver al portfolio</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

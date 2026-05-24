@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casos de Estudio — Portfolio UX/UI</title>
+  <meta name="description" content="Casos de estudio de diseño UX/UI y estrategia de producto.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-bg-hover: rgba(255, 255, 255, 0.09);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-hover: rgba(255, 255, 255, 0.18);
+      --blur: 18px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #07071A;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #07071A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
+    }
+    .glass-hover {
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .glass-hover:hover {
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .gradient-text {
+      background: linear-gradient(130deg, #4ADE80 0%, #22D3EE 55%, #6EE7B7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #059669 0%, #0891B2 100%);
+      transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 35px rgba(8, 145, 178, 0.4);
+    }
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-blue   { background: radial-gradient(circle, rgba(34,197,94,0.35), transparent 70%); }
+    .orb-purple { background: radial-gradient(circle, rgba(6,182,212,0.28), transparent 70%); }
+    .grid-texture {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.08) 60%, transparent 100%);
+    }
+    .skill-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 99px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="grid-texture">
+
+  <!-- NAVBAR -->
+  <nav aria-label="Navegación principal" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl glass rounded-2xl px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-heading font-bold text-white text-base tracking-tight cursor-pointer flex items-center gap-1.5">
+      <span class="gradient-text font-heading font-bold">RV</span>
+      <span class="text-white/80">Portfolio</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5">
+      <a href="index.html#about"      class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Sobre mí</a>
+      <a href="index.html#projects"   class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Proyectos</a>
+      <a href="index.html#skills"     class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Habilidades</a>
+      <a href="index.html#experience" class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Experiencia</a>
+      <a href="index.html#contact"    class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200 cursor-pointer">Contacto</a>
+    </div>
+    <a href="index.html" class="glass glass-hover text-white/80 text-sm font-heading font-semibold px-5 py-2 rounded-xl cursor-pointer no-underline transition-all duration-200 inline-flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Inicio
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[55vh] flex items-center overflow-hidden px-6 pt-28 pb-16">
+    <div class="orb orb-blue"   style="width:580px;height:580px;top:-200px;left:-180px;opacity:0.7" aria-hidden="true"></div>
+    <div class="orb orb-purple" style="width:460px;height:460px;top:60px;right:-140px;opacity:0.7" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto w-full">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-6 h-px bg-gradient-to-r from-blue-400 to-purple-400" aria-hidden="true"></div>
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">Casos de estudio</span>
+      </div>
+      <h1 class="font-heading font-bold text-[clamp(2.4rem,6vw,4rem)] leading-[1.08] mb-5 tracking-tight">
+        Proyectos &amp;<br><span class="gradient-text">Casos de estudio</span>
+      </h1>
+      <p class="text-white/55 font-body text-[clamp(1rem,2vw,1.15rem)] max-w-xl leading-relaxed">
+        Cada proyecto es una historia de problema, proceso y resultados. Aquí encontrarás el detalle de mi metodología y el impacto generado.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CASES GRID -->
+  <section class="relative py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Case: Banco Falabella -->
+        <a href="case-study-falabella.html" class="glass rounded-3xl overflow-hidden cursor-pointer group transition-all duration-300 no-underline block" style="border:1px solid rgba(255,255,255,0.09);" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.transform='';this.style.boxShadow=''">
+          <div class="aspect-video relative overflow-hidden bg-gradient-to-br from-red-700/30 via-orange-700/20 to-red-900/30">
+            <img src="imagenes/app-falabella.png" alt="New App Banco Falabella" class="w-full h-full object-cover object-top" onerror="this.style.display='none';">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <div class="mb-3 flex flex-wrap gap-2">
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full" style="color:#FCA5A5;background:rgba(227,6,19,0.1);border:1px solid rgba(227,6,19,0.2);">Banca Digital</span>
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-emerald-300 bg-emerald-400/10 border border-emerald-400/15">Mobile App</span>
+            </div>
+            <h3 class="font-heading font-semibold text-white text-xl mb-2 group-hover:text-emerald-300 transition-colors duration-200">New App Banco Falabella</h3>
+            <p class="text-white/45 text-sm font-body leading-relaxed mb-5">Rediseño de la app mobile bancaria, reduciendo el flujo de transferencias de 8 a 3 pasos.</p>
+            <div class="flex items-center text-white/35 text-sm font-body gap-1.5 group-hover:text-white/60 transition-colors duration-200">
+              <span>Ver caso completo</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Case: Migración ERP -->
+        <a href="case-study-erp.html" class="glass rounded-3xl overflow-hidden cursor-pointer group transition-all duration-300 no-underline block" style="border:1px solid rgba(255,255,255,0.09);" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.transform='';this.style.boxShadow=''">
+          <div class="aspect-video relative overflow-hidden">
+            <img src="imagenes/gemini.png" alt="Migración Crítica de ERP" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <div class="mb-3 flex flex-wrap gap-2">
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full" style="color:#C7D2FE;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">ERP / Enterprise</span>
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-violet-300 bg-violet-400/10 border border-violet-400/15">Sistema de Diseño</span>
+            </div>
+            <h3 class="font-heading font-semibold text-white text-xl mb-2 group-hover:text-indigo-300 transition-colors duration-200">Migración Crítica de ERP</h3>
+            <p class="text-white/45 text-sm font-body leading-relaxed mb-5">Diseño UX/UI y sistema de componentes para la migración de un ERP crítico, reduciendo el tiempo de tareas en un 60%.</p>
+            <div class="flex items-center text-white/35 text-sm font-body gap-1.5 group-hover:text-white/60 transition-colors duration-200">
+              <span>Ver caso completo</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Case: Motival +Meaning -->
+        <a href="case-study-motival.html" class="glass rounded-3xl overflow-hidden cursor-pointer group transition-all duration-300 no-underline block" style="border:1px solid rgba(255,255,255,0.09);" onmouseover="this.style.borderColor='rgba(255,255,255,0.18)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.09)';this.style.transform='';this.style.boxShadow=''">
+          <div class="aspect-video relative overflow-hidden">
+            <img src="imagenes/meaning.png" alt="Landing Page Motival +Meaning" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <div class="mb-3 flex flex-wrap gap-2">
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full" style="color:#FED7AA;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.2);">Landing Page</span>
+              <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-rose-300 bg-rose-400/10 border border-rose-400/15">Web Design</span>
+            </div>
+            <h3 class="font-heading font-semibold text-white text-xl mb-2 group-hover:text-orange-300 transition-colors duration-200">Landing Page Motival +Meaning</h3>
+            <p class="text-white/45 text-sm font-body leading-relaxed mb-5">Diseño de landing page para plataforma de coaching y desarrollo personal orientada a conectar personas con su propósito de vida.</p>
+            <div class="flex items-center text-white/35 text-sm font-body gap-1.5 group-hover:text-white/60 transition-colors duration-200">
+              <span>Ver caso completo</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER minimal -->
+  <footer class="py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="divider mb-8"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-white/25 text-sm font-body">© 2025 Portfolio. Todos los derechos reservados.</p>
+        <a href="index.html#contact" class="text-white/35 hover:text-white/70 text-sm font-body transition-colors duration-200 cursor-pointer">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
