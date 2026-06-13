@@ -274,6 +274,55 @@
 
       </div>
 
+      <!-- KPIs -->
+      <div class="mb-14">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+          <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">¿Cómo medimos el éxito?</span>
+        </div>
+        <h3 class="font-heading font-semibold text-white text-xl mb-8 leading-snug">Métricas y KPIs</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <div class="rounded-2xl p-6" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></div>
+              <span class="text-emerald-300/70 text-xs font-body uppercase tracking-[0.14em]">KPI de Negocio</span>
+            </div>
+            <p class="text-white/35 text-xs font-body mb-1">ROI</p>
+            <p class="font-heading font-bold text-emerald-300 text-2xl leading-none mb-3">100%</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Reducción en penalizaciones financieras por exceso de potencia contratada durante horas punta.
+            </p>
+          </div>
+
+          <div class="rounded-2xl p-6" style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.18);">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-amber-400" aria-hidden="true"></div>
+              <span class="text-amber-300/70 text-xs font-body uppercase tracking-[0.14em]">KPI de Eficiencia</span>
+            </div>
+            <p class="text-white/35 text-xs font-body mb-1">Tiempo de Resolución</p>
+            <p class="font-heading font-bold text-amber-300 text-2xl leading-none mb-3">&lt; 15 seg</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Reducir el tiempo de identificación de una anomalía de minutos (buscando en Excels o SCADA) a menos de 15 segundos.
+            </p>
+          </div>
+
+          <div class="rounded-2xl p-6" style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.18);">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-violet-400" aria-hidden="true"></div>
+              <span class="text-violet-300/70 text-xs font-body uppercase tracking-[0.14em]">Métrica UX</span>
+            </div>
+            <p class="text-white/35 text-xs font-body mb-1">Regla de los 3 clics</p>
+            <p class="font-heading font-bold text-violet-300 text-2xl leading-none mb-3">3 clics</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Justificada por la <strong class="text-white/75 font-medium">Ley de Hick</strong>: el tiempo de decisión aumenta con el número de opciones. En alto estrés, el operador debe ejecutar una acción de mitigación en máximo 3 interacciones para evitar fatiga decisional.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
       <!-- Three challenge cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
@@ -323,6 +372,67 @@
         </div>
 
       </div>
+
+      <!-- ─ Análisis del Entorno Actual ──────────────────── -->
+      <div class="mt-16 reveal">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-1 h-6 rounded-full bg-amber-400" aria-hidden="true"></div>
+          <h3 class="font-heading font-semibold text-white text-xl">Análisis del Entorno Actual <span class="text-white/35 font-normal text-base">(Sistemas Legacy vs. VoltAI)</span></h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- SCADA -->
+          <div class="glass rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500/40 to-transparent"></div>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);">
+              <div class="w-1.5 h-1.5 rounded-full bg-red-400" aria-hidden="true"></div>
+              <span class="text-red-400 text-xs font-body uppercase tracking-[0.12em]">Legacy</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-base mb-3">SCADA Tradicionales</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Sólidos y robustos, pero con interfaces creadas en los 90s: <strong class="text-white/75 font-semibold">pantallas saturadas</strong>, metáforas de control físico trasladadas 1:1 a la pantalla, y una curva de aprendizaje prohibitiva para operadores nuevos.
+            </p>
+          </div>
+
+          <!-- Excel/BI -->
+          <div class="glass rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-400/40 to-transparent"></div>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FB923C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div class="inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);">
+              <div class="w-1.5 h-1.5 rounded-full bg-orange-400" aria-hidden="true"></div>
+              <span class="text-orange-400 text-xs font-body uppercase tracking-[0.12em]">Post-mortem</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-base mb-3">Hojas de Cálculo y BI</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Útiles para el análisis post-mortem, pero el problema es la <strong class="text-white/75 font-semibold">latencia</strong>: los datos son viejos cuando el operador los ve. Un dashboard de BI no puede reaccionar a una anomalía en tiempo real.
+            </p>
+          </div>
+
+          <!-- VoltAI -->
+          <div class="glass rounded-2xl p-6 relative overflow-hidden" style="border-color:rgba(245,158,11,0.25);">
+            <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"></div>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);">
+              <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+              <span class="text-amber-400 text-xs font-body uppercase tracking-[0.12em]">Propuesta de valor</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-base mb-3">La Propuesta de Valor de VoltAI</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Actuar como una <strong class="text-white/75 font-semibold">capa de middleware ágil</strong>, que extrae la telemetría del SCADA, la procesa con modelos de IA, y la presenta como tarjetas de acción predictivas con contexto humano. No compite con el SCADA; <strong class="text-white/75 font-semibold">lo hace interpretable.</strong>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -711,6 +821,17 @@
       </p>
 
 
+      <!-- ─ Metodología de Descubrimiento ────── -->
+      <div class="mb-16 flex items-start gap-4 px-6 py-5 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <div>
+          <p class="font-heading font-semibold text-white/80 text-sm mb-2">Metodología de Descubrimiento (Desk Research)</p>
+          <p class="text-white/50 text-sm font-body leading-relaxed">
+            Al tratarse de un proyecto conceptual enfocado en la agroindustria local, el perfil y los dolores del usuario no se basan en entrevistas directas, sino en una <strong class="text-white/70 font-medium">hipótesis educada</strong> construida a través de investigación secundaria. Se analizaron reportes de eficiencia energética industrial, foros de operadores de sistemas SCADA y el contexto operativo estándar de los packings de exportación. Esta hipótesis establece las bases del diseño, con el entendimiento de que en un entorno real, el primer paso sería validar estas suposiciones con los jefes de turno en campo.
+          </p>
+        </div>
+      </div>
+
       <!-- ─ 3.1 Proto-Persona ───────────────── -->
       <div class="mb-16">
         <div class="flex items-start gap-4 mb-8">
@@ -864,6 +985,30 @@
           </div>
 
         </div>
+
+        <!-- Esquema entorno -->
+        <div class="glass rounded-2xl overflow-hidden mt-8 ml-0 md:ml-10 reveal" style="border-color:rgba(245,158,11,0.2);">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="p-8 flex flex-col justify-center">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-1 h-5 rounded-full bg-amber-400" aria-hidden="true"></div>
+                <span class="text-amber-400 text-xs font-body uppercase tracking-[0.14em]">Insight de contexto</span>
+              </div>
+              <p class="text-white/80 font-body text-base leading-relaxed">
+                El entorno dicta la interfaz. El operador no está aislado; está sujeto a <strong class="text-white font-semibold">interrupciones constantes y ruido de fondo</strong>. Por esto, la interfaz debe soportar la <strong class="text-white font-semibold">"visión periférica"</strong>, utilizando el color rojo exclusivamente para alertas críticas que atraviesen el ruido ambiental.
+              </p>
+            </div>
+            <div class="relative min-h-[260px] md:min-h-0 flex items-center justify-center" style="background:rgba(7,7,26,0.6);">
+              <img
+                src="imagenes/esquema.png"
+                alt="Esquema del entorno de uso — sala de control de planta industrial"
+                class="w-full h-full object-contain"
+                style="max-height:340px;padding:1.5rem;"
+              >
+            </div>
+          </div>
+        </div>
+
       </div>
 
 
@@ -949,6 +1094,86 @@
 
   <div class="divider"></div>
 
+  <!-- ══════════════════════════════
+       04 — LO-FI WIREFRAMES
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:380px;height:380px;top:-60px;right:-80px;opacity:0.16;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:320px;height:320px;bottom:-60px;left:-60px;opacity:0.14;filter:blur(80px);"  aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — Wireframes</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
+        De la Arquitectura al <span class="gradient-accent">Esqueleto Visual</span>
+      </h2>
+      <p class="text-white/35 text-sm font-body uppercase tracking-[0.14em] mb-10">Lo-Fi Wireframes</p>
+
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
+        Con la arquitectura de datos definida, el siguiente paso fue estructurar la distribución espacial (Layout) antes de aplicar la capa visual. Se optó por un <strong class="text-white/75 font-semibold">diseño de tres columnas</strong> para priorizar la navegación pasiva, el control espacial interactivo y la proactividad de la IA.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
+
+        <div class="glass rounded-2xl p-7 relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/50 to-transparent"></div>
+          <div class="text-4xl font-heading font-bold text-white/8 mb-4 leading-none select-none" aria-hidden="true">01</div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Columna izquierda</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">Navegación Pasiva</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Panel lateral fijo con la jerarquía del Asset Tree. Permite al operador ubicarse dentro de la planta sin cambiar de vista, manteniendo el contexto espacial en todo momento.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl p-7 relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
+          <div class="text-4xl font-heading font-bold text-white/8 mb-4 leading-none select-none" aria-hidden="true">02</div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-cyan-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Columna central</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">Control Espacial Interactivo</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Zona principal con la visualización del activo seleccionado, sus métricas en tiempo real y los controles de acción. Es el espacio de máxima densidad y foco cognitivo.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl p-7 relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent"></div>
+          <div class="text-4xl font-heading font-bold text-white/8 mb-4 leading-none select-none" aria-hidden="true">03</div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Columna derecha</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">Proactividad de la IA</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Feed lateral de tarjetas de acción predictivas generadas por el modelo de IA. El operador las revisa sin interrumpir su flujo principal, actuando solo cuando la confianza del modelo lo justifica.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="mt-8 reveal">
+        <div class="glass rounded-2xl overflow-hidden" style="border-color:rgba(245,158,11,0.2);">
+          <img
+            src="imagenes/wireframe voltai.png"
+            alt="Wireframe de baja fidelidad — layout de tres columnas de VoltAI"
+            class="w-full h-auto block"
+          >
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- Continuará -->
   <section class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-amber" style="width:500px;height:500px;top:-100px;left:50%;transform:translateX(-50%);opacity:0.15;filter:blur(90px);" aria-hidden="true"></div>
@@ -964,7 +1189,7 @@
         <p class="text-white/25 text-xs font-body uppercase tracking-[0.22em] mb-3">En construcción</p>
         <h2 class="font-heading font-bold text-white text-3xl mb-4">Continuará<span class="gradient-accent">.</span></h2>
         <p class="text-white/45 text-sm font-body leading-relaxed">
-          Las próximas secciones cubrirán el sistema de diseño, los wireframes de baja fidelidad y los resultados finales de la plataforma.
+          Actualmente me encuentro desarrollando el Sistema de Diseño y los componentes en Alta Fidelidad (Hi-Fi) para esta interfaz.
         </p>
       </div>
     </div>
