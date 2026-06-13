@@ -1095,7 +1095,159 @@
   <div class="divider"></div>
 
   <!-- ══════════════════════════════
-       04 — LO-FI WIREFRAMES
+       04 — USER FLOW
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:420px;height:420px;top:-80px;left:-80px;opacity:0.15;filter:blur(90px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:340px;height:340px;bottom:-60px;right:-60px;opacity:0.13;filter:blur(80px);"  aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — El Viaje Interactivo</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
+        User Flow: <span class="gradient-accent">El Escenario Crítico</span>
+      </h2>
+
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-5">
+        Antes de definir la estructura visual o los componentes de la interfaz, fue fundamental mapear el comportamiento del usuario. Para validar la arquitectura de la información y la estrategia de IA Explicable, tracé el escenario de mayor fricción y riesgo financiero para la Planta San Felipe: <strong class="text-white/75 font-semibold">evitar una multa por sobreconsumo eléctrico en tiempo real sin detener la producción.</strong>
+      </p>
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
+        Este flujo define los <strong class="text-white/75 font-semibold">5 pasos críticos</strong> que el operador (Carlos) debe completar, minimizando la carga cognitiva bajo estrés.
+      </p>
+
+      <!-- Contexto del escenario -->
+      <div class="glass rounded-2xl p-8 mb-12 reveal" style="border-color:rgba(245,158,11,0.2);">
+        <div class="flex items-center gap-2 mb-6">
+          <div class="w-1 h-5 rounded-full bg-amber-400" aria-hidden="true"></div>
+          <span class="text-amber-400 text-xs font-body uppercase tracking-[0.16em]">El Escenario Crítico</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-white/35 text-xs font-body uppercase tracking-[0.12em] mb-2">El Contexto</p>
+            <p class="text-white/65 text-sm font-body leading-relaxed">La planta opera a máxima capacidad. Quedan un par de horas para terminar el turno de la tarde y el consumo eléctrico está cerca del límite contratado.</p>
+          </div>
+          <div>
+            <p class="text-white/35 text-xs font-body uppercase tracking-[0.12em] mb-2">El Evento</p>
+            <p class="text-white/65 text-sm font-body leading-relaxed">El sistema detecta que un componente mecánico está fallando y consumiendo más energía de la debida para compensar.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pasos del User Flow -->
+      <div class="relative">
+
+        <!-- Línea vertical conectora -->
+        <div class="absolute left-5 top-8 bottom-8 w-px hidden md:block" style="background:linear-gradient(to bottom, rgba(245,158,11,0.4), rgba(245,158,11,0.1));" aria-hidden="true"></div>
+
+        <div class="space-y-5">
+
+          <!-- Paso 1 -->
+          <div class="glass rounded-2xl p-6 md:pl-16 relative reveal" style="border-color:rgba(245,158,11,0.15);">
+            <div class="absolute left-3.5 top-6 w-3 h-3 rounded-full hidden md:block" style="background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,0.6);" aria-hidden="true"></div>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <span class="font-heading font-bold text-amber-400 text-sm">Paso 1</span>
+              <span class="text-white/20 text-xs">—</span>
+              <span class="text-white font-heading font-semibold text-base">Detección <span class="text-white/35 font-normal text-sm">(Monitoreo Pasivo ➔ Alerta Activa)</span></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Sistema</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El sensor de presión del Compresor Neumático (CNP-04) en la línea de Embalaje detecta una anomalía. El consumo general de la planta escala rápidamente al <strong class="text-white/80 font-semibold">92% del límite.</strong></p>
+              </div>
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El indicador de consumo global cambia de verde a <strong class="text-amber-400/80 font-semibold">ámbar</strong>. En el Gemelo Digital, el bloque del Área de Embalaje se ilumina en <strong class="text-red-400/80 font-semibold">rojo</strong>. Simultáneamente, el asistente de IA genera una alerta prioritaria en el panel lateral.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="glass rounded-2xl p-6 md:pl-16 relative reveal" style="border-color:rgba(245,158,11,0.15);">
+            <div class="absolute left-3.5 top-6 w-3 h-3 rounded-full hidden md:block" style="background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,0.6);" aria-hidden="true"></div>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <span class="font-heading font-bold text-amber-400 text-sm">Paso 2</span>
+              <span class="text-white/20 text-xs">—</span>
+              <span class="text-white font-heading font-semibold text-base">Profundización Espacial <span class="text-white/35 font-normal text-sm">(El Drill-Down)</span></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos nota la alerta visual periférica y hace clic directamente sobre la zona roja en el Gemelo Digital interactivo.</p>
+              </div>
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El mapa realiza un <strong class="text-white/80 font-semibold">zoom-in fluido</strong> hacia el Área de Embalaje, revelando las máquinas individuales. El árbol de navegación lateral se expande automáticamente. El Compresor <strong class="text-white/80 font-semibold">CNP-04</strong> aparece resaltado como el origen de la crisis.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="glass rounded-2xl p-6 md:pl-16 relative reveal" style="border-color:rgba(245,158,11,0.15);">
+            <div class="absolute left-3.5 top-6 w-3 h-3 rounded-full hidden md:block" style="background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,0.6);" aria-hidden="true"></div>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <span class="font-heading font-bold text-amber-400 text-sm">Paso 3</span>
+              <span class="text-white/20 text-xs">—</span>
+              <span class="text-white font-heading font-semibold text-base">Diagnóstico y Comprensión <span class="text-white/35 font-normal text-sm">(Explainable AI)</span></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos selecciona el Compresor CNP-04 para investigar la raíz del problema.</p>
+              </div>
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El gráfico inferior muestra el cruce de datos: la presión cayendo y los kilovatios disparándose. El panel de IA explica en lenguaje natural: <em class="text-amber-300/80 not-italic">"El compresor sobrecompensa una caída de presión. Proyección: Multa por sobreconsumo en <strong class="font-semibold">45 minutos</strong>".</em></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="glass rounded-2xl p-6 md:pl-16 relative reveal" style="border-color:rgba(245,158,11,0.15);">
+            <div class="absolute left-3.5 top-6 w-3 h-3 rounded-full hidden md:block" style="background:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,0.6);" aria-hidden="true"></div>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <span class="font-heading font-bold text-amber-400 text-sm">Paso 4</span>
+              <span class="text-white/20 text-xs">—</span>
+              <span class="text-white font-heading font-semibold text-base">Mitigación Dinámica <span class="text-white/35 font-normal text-sm">(Toma de Decisión)</span></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Sistema</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">La IA no ejecuta acciones a ciegas. Presenta una recomendación accionable: <em class="text-amber-300/80 not-italic">"Reducir potencia del CNP-04 al 70% y redistribuir carga neumática al compresor de respaldo Norte".</em></p>
+              </div>
+              <div>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Al comprobar en el gráfico que la acción evitará la penalización económica, Carlos hace clic en <strong class="text-white/80 font-semibold">[Ejecutar Recomendación]</strong>. <span class="text-white/35">(Ley de Hick: decisión en menos de 3 clics)</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 5 -->
+          <div class="glass rounded-2xl p-6 md:pl-16 relative reveal" style="border-color:rgba(34,197,94,0.2);">
+            <div class="absolute left-3.5 top-6 w-3 h-3 rounded-full hidden md:block" style="background:#22C55E;box-shadow:0 0 8px rgba(34,197,94,0.6);" aria-hidden="true"></div>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <span class="font-heading font-bold text-green-400 text-sm">Paso 5</span>
+              <span class="text-white/20 text-xs">—</span>
+              <span class="text-white font-heading font-semibold text-base">Confirmación y Retorno al Equilibrio <span class="text-white/35 font-normal text-sm">(Feedback)</span></span>
+            </div>
+            <div>
+              <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
+              <p class="text-white/60 text-sm font-body leading-relaxed max-w-3xl">El sistema muestra un estado de carga breve para confirmar el envío del comando al hardware. Un mensaje de éxito confirma el ajuste operativo. La proyección de consumo cae por debajo de la zona de riesgo, y el Gemelo Digital vuelve progresivamente a su estado <strong class="text-green-400/80 font-semibold">verde (Normal)</strong>, cerrando el ciclo de crisis.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════
+       05 — LO-FI WIREFRAMES
   ══════════════════════════════ -->
   <section class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-amber" style="width:380px;height:380px;top:-60px;right:-80px;opacity:0.16;filter:blur(80px);" aria-hidden="true"></div>
@@ -1104,7 +1256,7 @@
     <div class="relative z-10 max-w-6xl mx-auto">
 
       <div class="section-label">
-        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">04 — Wireframes</span>
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">05 — Wireframes</span>
       </div>
 
       <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
@@ -1166,6 +1318,26 @@
             alt="Wireframe de baja fidelidad — layout de tres columnas de VoltAI"
             class="w-full h-auto block"
           >
+        </div>
+      </div>
+
+      <div class="mt-8 reveal">
+        <div class="glass rounded-2xl p-8 relative overflow-hidden" style="border-color:rgba(245,158,11,0.2);">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/40 to-transparent"></div>
+          <div class="flex items-start gap-6">
+            <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center mt-0.5" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+                <span class="text-amber-400 text-xs font-body uppercase tracking-[0.14em]">Decisión Estratégica del Lo-Fi — Enfoque Analítico</span>
+              </div>
+              <p class="text-white/65 font-body text-sm leading-relaxed">
+                Para este primer esqueleto visual, opté deliberadamente por un enfoque estructural de <strong class="text-white/85 font-semibold">"baja fidelidad extrema"</strong> (similar a un esquema de terminal). En entornos industriales complejos, presentar wireframes tradicionales suele desviar la atención de los ingenieros y stakeholders hacia discusiones prematuras sobre estética o formas de botones. Este formato descarnado me obligó a enfocar el <strong class="text-white/85 font-semibold">100% de la validación técnica</strong> en lo verdaderamente crítico: la jerarquía de la información, el orden de lectura macro-a-micro y la densidad de los datos en pantalla.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
