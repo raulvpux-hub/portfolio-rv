@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoltAI — Caso de Estudio · Raúl Villarroel</title>
+  <meta name="description" content="Plataforma de Gemelo Digital para agroindustria. Predicción de fallas críticas y control de costos eléctricos mediante IA. Case Study por Raúl Villarroel.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { heading: ['Space Grotesk','sans-serif'], body: ['DM Sans','sans-serif'] } } }
+    }
+  </script>
+
+  <style>
+    :root {
+      --glass-bg: rgba(255,255,255,0.05);
+      --glass-bg-hover: rgba(255,255,255,0.09);
+      --glass-border: rgba(255,255,255,0.09);
+      --glass-border-hover: rgba(255,255,255,0.18);
+      --blur: 18px;
+      --accent: #F59E0B;
+      --accent-soft: rgba(245,158,11,0.15);
+      --accent-border: rgba(245,158,11,0.25);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background-color: #07071A; color: #f1f5f9; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #07071A; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+    .glass { background: var(--glass-bg); backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur)); border: 1px solid var(--glass-border); }
+    .glass-hover { transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+    .glass-hover:hover { background: var(--glass-bg-hover); border-color: var(--glass-border-hover); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+
+    .gradient-text { background: linear-gradient(130deg, #4ADE80 0%, #22D3EE 55%, #6EE7B7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-accent { background: linear-gradient(130deg, #F59E0B 0%, #FBBF24 60%, #FCD34D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .btn-primary { background: linear-gradient(135deg, #059669 0%, #0891B2 100%); transition: filter 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease; }
+    .btn-primary:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 10px 35px rgba(8,145,178,0.4); }
+
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-amber  { background: radial-gradient(circle, rgba(245,158,11,0.30), transparent 70%); }
+    .orb-orange { background: radial-gradient(circle, rgba(249,115,22,0.22), transparent 70%); }
+    .orb-cyan   { background: radial-gradient(circle, rgba(6,182,212,0.18), transparent 70%); }
+
+    .grid-texture {
+      background-image: linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.08) 60%, transparent 100%); }
+
+    .tag-accent { color: #FDE68A; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22); }
+
+    .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: linear-gradient(90deg, #F59E0B, #FBBF24); }
+
+    .skill-tag { font-family: 'DM Sans', sans-serif; font-size: 0.8125rem; font-weight: 500; padding: 5px 13px; border-radius: 99px; }
+
+    .step-num {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.15));
+      border: 1px solid rgba(245,158,11,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.8rem; color: #FBBF24;
+    }
+
+    /* JSON Code block */
+    .code-block {
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(245,158,11,0.14);
+      border-radius: 16px;
+      padding: 24px 28px;
+      overflow-x: auto;
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.45);
+    }
+    .code-block pre { font-family: 'Courier New', 'Monaco', monospace; margin: 0; white-space: pre-wrap; }
+    .jk  { color: #93C5FD; }   /* key */
+    .js  { color: #86EFAC; }   /* string */
+    .jn  { color: #FBBF24; }   /* number */
+    .jb  { color: #F87171; }   /* boolean */
+    .jc  { color: rgba(255,255,255,0.28); font-style: italic; } /* comment */
+
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .data-table th, .data-table td { padding: 14px 18px; text-align: left; vertical-align: top; }
+    .data-table thead th { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .data-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .data-table tbody tr:last-child { border-bottom: none; }
+    .data-table .area-cell { background: rgba(255,255,255,0.018); border-right: 1px solid rgba(255,255,255,0.06); }
+    .data-table .area-cell-danger { background: rgba(239,68,68,0.04); border-right: 1px solid rgba(255,255,255,0.06); }
+    .data-table .area-cell-cold  { background: rgba(6,182,212,0.03); border-right: 1px solid rgba(255,255,255,0.06); }
+    .data-table .sep-top { border-top: 1px solid rgba(255,255,255,0.07); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .anim-in { animation: fadeUp 0.7s cubic-bezier(.16,1,.3,1) both; }
+    .anim-d1 { animation-delay: 0.05s; }
+    .anim-d2 { animation-delay: 0.18s; }
+    .anim-d3 { animation-delay: 0.32s; }
+
+    @keyframes blink-dot { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+    .blink { animation: blink-dot 1.6s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) { .orb,.anim-in,.blink { animation: none !important; } }
+  </style>
+</head>
+
+<body class="grid-texture">
+
+  <!-- ── NAVBAR ── -->
+  <nav aria-label="Navegación principal" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl glass rounded-2xl px-5 py-3 flex items-center justify-between">
+    <a href="index.html" class="font-heading font-bold text-white text-base tracking-tight flex items-center gap-1.5 no-underline">
+      <span class="gradient-text font-heading font-bold">RV</span>
+      <span class="text-white/80">Portfolio</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5">
+      <a href="index.html#about"      class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Sobre mí</a>
+      <a href="index.html#projects"   class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Proyectos</a>
+      <a href="index.html#skills"     class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Habilidades</a>
+      <a href="index.html#experience" class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Experiencia</a>
+      <a href="index.html#contact"    class="text-white/55 hover:text-white text-sm font-body font-medium transition-colors duration-200">Contacto</a>
+    </div>
+    <a href="case-studies.html" class="btn-primary text-white text-sm font-heading font-semibold px-5 py-2 rounded-xl no-underline inline-flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Casos de estudio
+    </a>
+  </nav>
+
+
+  <!-- ══════════════════════════════
+       HERO
+  ══════════════════════════════ -->
+  <section class="relative min-h-[76vh] flex flex-col justify-center overflow-hidden px-6 pt-32 pb-14">
+    <div class="orb orb-amber"  style="width:640px;height:640px;top:-210px;left:-190px;opacity:0.7;" aria-hidden="true"></div>
+    <div class="orb orb-orange" style="width:480px;height:480px;top:100px;right:-150px;opacity:0.55;" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto w-full text-center">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center justify-center gap-2 mb-6 anim-in anim-d1">
+        <a href="case-studies.html" class="text-white/35 text-xs font-body hover:text-white/60 transition-colors duration-200 no-underline">Casos de estudio</a>
+        <span class="text-white/20 text-xs">/</span>
+        <span class="text-white/55 text-xs font-body">VoltAI</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap justify-center gap-2 mb-7 anim-in anim-d1">
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full tag-accent">IA Industrial</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-sky-300 bg-sky-400/10 border border-sky-400/15">Gemelo Digital</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-emerald-300 bg-emerald-400/10 border border-emerald-400/15">Data Architecture</span>
+        <span class="font-body text-xs font-medium px-3 py-1.5 rounded-full text-violet-300 bg-violet-400/10 border border-violet-400/15">IIoT</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-heading font-bold text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.15] tracking-tight mb-8 anim-in anim-d2">
+        VoltAI — Reduciendo el impacto financiero<br> y la carga cognitiva en la agroindustria <span class="gradient-accent">mediante IA.</span>
+      </h1>
+
+      <!-- Imagen del proyecto (pequeña, centrada) -->
+      <div class="flex justify-center mb-8 anim-in anim-d2">
+        <div class="relative inline-block">
+          <div class="absolute inset-0 rounded-xl pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%, rgba(245,158,11,0.22) 0%, transparent 70%);filter:blur(20px);transform:scale(1.1);" aria-hidden="true"></div>
+          <img
+            src="imagenes/voltai.png"
+            alt="VoltAI — Plataforma de monitoreo industrial"
+            class="relative rounded-xl"
+            style="max-width:320px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5);"
+          />
+        </div>
+      </div>
+
+      <!-- Impact callout -->
+      <div class="inline-flex items-start gap-3 mb-8 px-5 py-3.5 rounded-2xl text-left anim-in anim-d3" style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);">
+        <div class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0 mt-1.5 blink" style="box-shadow:0 0 6px #F59E0B;" aria-hidden="true"></div>
+        <p class="text-white/65 text-sm font-body leading-relaxed">
+          Una plataforma de escritorio basada en un <strong class="text-white/85 font-semibold">Gemelo Digital</strong> que permite a los operadores predecir fallas críticas y evitar penalizaciones económicas en <strong class="text-amber-300 font-semibold">menos de 3 clics.</strong>
+        </p>
+      </div>
+
+      <!-- Meta cards -->
+      <div class="flex flex-wrap justify-center gap-3 anim-in anim-d3">
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Rol</p>
+            <p class="text-white/80 text-xs font-body font-semibold">Product Designer</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Plataforma</p>
+            <p class="text-white/80 text-xs font-body font-semibold">Desktop / IIoT</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Sector</p>
+            <p class="text-white/80 text-xs font-body font-semibold">Agroindustria</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Herramienta</p>
+            <p class="text-white/80 text-xs font-body font-semibold">Figma</p>
+          </div>
+        </div>
+        <div class="glass rounded-xl px-4 py-2.5 flex items-center gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m-12.1 12 .7-.7m12.1.7-.7-.7"/></svg>
+          <div>
+            <p class="text-white/30 text-xs font-body leading-none mb-0.5">Disciplina</p>
+            <p class="text-white/80 text-xs font-body font-semibold">UX/UI & Data Arch.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 mt-8 anim-in anim-d3">
+        <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent" aria-hidden="true"></div>
+        <span class="text-white/25 text-xs font-body">Desplázate para ver el caso completo</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider mt-20"></div>
+
+
+  <!-- ══════════════════════════════
+       01 — EL DESAFÍO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-orange" style="width:360px;height:360px;top:-60px;right:-80px;opacity:0.22;filter:blur(80px);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">01 — El Desafío de Negocio y de UX</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-10 leading-snug">
+        El Problema:<br>La <span class="gradient-accent">"Ceguera de Datos"</span>
+      </h2>
+
+      <!-- Contexto + Desafío -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-14">
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">El Contexto</span>
+          </div>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            En la exigente industria de la exportación frutícola en la región de Valparaíso, el tiempo y la temperatura dictan el éxito del negocio. Un packing moderno no es solo una bodega; es un ecosistema de maquinaria pesada trabajando al límite para mantener la cadena de frío y procesar toneladas de fruta antes de que pierda su valor. Sin embargo, operar estas maquinarias de forma ineficiente durante las horas de mayor demanda eléctrica genera <strong class="text-white/80 font-semibold">penalizaciones millonarias por sobreconsumo.</strong>
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">El Desafío del Proyecto</span>
+          </div>
+          <p class="text-white/60 text-sm font-body leading-relaxed">
+            Diseñar un centro de control centralizado (Dashboard) para ingenieros de operaciones que traduzca miles de datos por segundo provenientes de sensores IoT industriales en un entorno visual claro. El objetivo: permitir a los operadores <strong class="text-white/80 font-semibold">anticipar fallas en los equipos y evitar multas energéticas en menos de tres clics</strong>, equilibrando la continuidad de la producción con el ahorro de costos.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Three challenge cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <!-- Dolor operativo -->
+        <div class="glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-red-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">El dolor operativo</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">La "Ceguera de Datos" (Parálisis por Análisis)</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Los operadores reciben logs crudos de telemetría (voltaje, amperaje, presión) en tiempo real. Un humano no puede procesar esta densidad de información de forma pasiva, lo que los obliga a trabajar de manera <strong class="text-white/75 font-semibold">reactiva</strong>: se enteran del exceso de consumo cuando llega la factura mensual o cuando la máquina ya ha fallado.
+          </p>
+        </div>
+
+        <!-- Reto UX -->
+        <div class="glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">El reto UX</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">La Frustración del Drill-Down</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Cuando ocurre una anomalía global en la planta, los sistemas tradicionales obligan al usuario a navegar por hojas de cálculo y menús infinitos para encontrar qué componente exacto (ej. un sensor en el compresor neumático) está causando el problema, <strong class="text-white/75 font-semibold">perdiendo minutos vitales.</strong>
+          </p>
+        </div>
+
+        <!-- Variable crítica -->
+        <div class="glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+            <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">La variable crítica</span>
+          </div>
+          <h3 class="font-heading font-semibold text-white text-base mb-3">La Barrera de la Confianza (El problema de la "Caja Negra")</h3>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Integrar Inteligencia Artificial en procesos industriales genera resistencia. Si un algoritmo recomienda apagar un motor de enfriamiento crítico, el operador no ejecutará la acción a menos que entienda perfectamente el "porqué". <strong class="text-white/75 font-semibold">La IA sin contexto visual es percibida como un riesgo para la producción.</strong>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       02 — ARQUITECTURA Y MODELADO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:400px;height:400px;bottom:-80px;left:-100px;opacity:0.18;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:340px;height:340px;top:80px;right:-80px;opacity:0.18;filter:blur(80px);"   aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">02 — Arquitectura y Modelado de Datos</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
+        Estructurando el caos<br>antes del <span class="gradient-accent">primer wireframe</span>
+      </h2>
+
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-3">
+        Antes de abrir la herramienta de diseño y trazar el primer wireframe, el verdadero reto fue estructurar el caos. Un diseño visual atractivo es inútil si la infraestructura de datos no tiene sentido para la ingeniería de la planta.
+      </p>
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
+        Para resolver esto, modelé la arquitectura de la información basándose en un <strong class="text-white/75 font-semibold">Gemelo Digital esquemático</strong>, categorizando la información de la siguiente manera:
+      </p>
+
+
+      <!-- ─ 2.1 Asset Tree ──────────────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-6">
+          <div class="step-num flex-shrink-0 mt-0.5">1</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Jerarquía Física y Mapeo de Sensores</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Asset Tree</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-7 ml-10 max-w-3xl">
+          Estructuré la navegación para permitir una inmersión fluida desde la vista macro hasta el micro-componente. Para este MVP, mapeé un total de <strong class="text-white/75">3 áreas operativas vitales</strong>, albergando <strong class="text-white/75">6 activos críticos</strong> y <strong class="text-white/75">11 sensores físicos de telemetría IoT</strong> que transmiten datos en tiempo real:
+        </p>
+
+        <div class="glass rounded-2xl overflow-hidden ml-0 md:ml-10" style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr style="background:rgba(245,158,11,0.07);">
+                <th style="border-right:1px solid rgba(255,255,255,0.07);">
+                  <span class="font-heading font-semibold text-amber-300 text-xs uppercase tracking-[0.12em]">Área Operativa</span>
+                </th>
+                <th style="border-right:1px solid rgba(255,255,255,0.05);">
+                  <span class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.12em]">Activo Industrial</span>
+                </th>
+                <th style="border-right:1px solid rgba(255,255,255,0.05);">
+                  <span class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.12em]">Sensores Físicos (IoT)</span>
+                </th>
+                <th style="border-right:1px solid rgba(255,255,255,0.05);">
+                  <span class="font-heading font-semibold text-white/50 text-xs uppercase tracking-[0.12em]">Variable Medida</span>
+                </th>
+                <th>
+                  <span class="font-heading font-semibold text-sky-300 text-xs uppercase tracking-[0.12em]">Impacto Crítico UI</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Área 1, row A -->
+              <tr>
+                <td class="area-cell" rowspan="2">
+                  <p class="font-heading font-semibold text-white/70 text-sm leading-snug">1. Recepción<br>y Selección</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-amber-300/80 text-xs" style="font-family:monospace;">CTV-01</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Cinta Transportadora</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Sensor de Vibración, Amperímetro</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Vibración (mm/s), Corriente (A)</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/45 text-xs font-body">Desgaste mecánico.</p>
+                </td>
+              </tr>
+              <!-- Área 1, row B -->
+              <tr>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-amber-300/80 text-xs" style="font-family:monospace;">SOC-02</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Selector Óptico</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Medidor de Consumo, Contador</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Energía (kWh), Unidades/min</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/45 text-xs font-body">Eficiencia de selección.</p>
+                </td>
+              </tr>
+              <!-- Área 2, row A -->
+              <tr class="sep-top">
+                <td class="area-cell-danger" rowspan="2">
+                  <p class="font-heading font-semibold text-white/70 text-sm leading-snug mb-2">2. Embalaje</p>
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full" style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.22);">
+                    <div class="w-1.5 h-1.5 rounded-full bg-red-400 blink" style="box-shadow:0 0 4px #F87171;" aria-hidden="true"></div>
+                    <span class="text-red-300 text-xs font-body">Zona Crítica</span>
+                  </span>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-red-300/80 text-xs" style="font-family:monospace;">CNP-04</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Compresor Neumático</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Medidor de Consumo, Barómetro</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Energía (kWh), Presión (Bar)</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-red-300/70 text-xs font-body">Riesgo de sobreconsumo eléctrico.</p>
+                </td>
+              </tr>
+              <!-- Área 2, row B -->
+              <tr>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-red-300/80 text-xs" style="font-family:monospace;">SAC-08</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Selladora de Atmósfera</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Medidor de Consumo, Termómetro</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Energía (kWh), Temperatura (°C)</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-red-300/70 text-xs font-body">Riesgo térmico.</p>
+                </td>
+              </tr>
+              <!-- Área 3, row A -->
+              <tr class="sep-top">
+                <td class="area-cell-cold" rowspan="2">
+                  <p class="font-heading font-semibold text-white/70 text-sm leading-snug">3. Túneles<br>de Frío</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-sky-300/80 text-xs" style="font-family:monospace;">CH-11</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Chiller Rápido</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Medidor Trifásico, Sensor de Fluidos</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Energía (kWh), Temperatura (°C)</p>
+                </td>
+                <td class="sep-top" style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-sky-300/70 text-xs font-body">Mantención de cadena de frío.</p>
+                </td>
+              </tr>
+              <!-- Área 3, row B -->
+              <tr>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="font-heading font-bold text-sky-300/80 text-xs" style="font-family:monospace;">EVM-02</p>
+                  <p class="text-white/35 text-xs font-body mt-0.5">Evaporador de Mantención</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Medidor de Consumo</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/55 text-xs font-body">Energía (kWh)</p>
+                </td>
+                <td style="border-left:1px solid rgba(255,255,255,0.05);">
+                  <p class="text-white/45 text-xs font-body">Gasto basal continuo.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- ─ 2.2 Datos Crudos (JSON) ──────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-6">
+          <div class="step-num flex-shrink-0 mt-0.5">2</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Ejemplo de Datos Crudos</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Materia Prima IoT</p>
+          </div>
+        </div>
+
+        <div class="ml-0 md:ml-10">
+          <p class="text-white/55 font-body text-sm leading-relaxed mb-5 max-w-3xl">
+            Para dimensionar el desafío de diseño, es necesario entender la naturaleza de la información entrante. Los 11 sensores no envían reportes legibles, sino strings de datos continuos en formato <strong class="text-white/75">JSON estructurados como Series de Tiempo (Time-Series Data)</strong> cada 2 segundos.
+          </p>
+          <p class="text-white/55 font-body text-sm leading-relaxed mb-7 max-w-3xl">
+            A continuación, se ejemplifica el flujo de datos crudos que la interfaz de VoltAI debe procesar y traducir visualmente durante la crisis del Compresor CNP-04:
+          </p>
+
+          <div class="code-block">
+            <pre><span class="jc">// Telemetría en tiempo real — CNP-04 · 2026-06-13T15:55:02Z</span>
+{
+  <span class="jk">"timestamp"</span>: <span class="js">"2026-06-13T15:55:02Z"</span>,
+  <span class="jk">"facility_id"</span>: <span class="js">"PACKING_SAN_FELIPE"</span>,
+  <span class="jk">"area_id"</span>: <span class="js">"EMBALAJE_LINEA_SUR"</span>,
+  <span class="jk">"device_metadata"</span>: {
+    <span class="jk">"asset_id"</span>: <span class="js">"CNP-04"</span>,
+    <span class="jk">"model"</span>: <span class="js">"Pneumatic-Industrial-V2"</span>,
+    <span class="jk">"last_maintenance"</span>: <span class="js">"2026-04-10"</span>
+  },
+  <span class="jk">"telemetry_sensors"</span>: {
+    <span class="jk">"energy_consumption_kwh"</span>: <span class="jn">145.8</span>,
+    <span class="jk">"current_amperage"</span>: <span class="jn">215.2</span>,
+    <span class="jk">"pressure_bar"</span>: <span class="jn">4.1</span>,
+    <span class="jk">"surface_temperature_c"</span>: <span class="jn">82.5</span>
+  },
+  <span class="jk">"ai_analytics_layer"</span>: {
+    <span class="jk">"operating_efficiency_score"</span>: <span class="jn">0.62</span>,
+    <span class="jk">"anomaly_detected"</span>: <span class="jb">true</span>,
+    <span class="jk">"predicted_failure_hours"</span>: <span class="jn">14.5</span>,
+    <span class="jk">"financial_risk_hourly_usd"</span>: <span class="jn">1250.00</span>
+  }
+}</pre>
+          </div>
+
+          <!-- UX pain callout -->
+          <div class="mt-5 flex items-start gap-3 px-5 py-4 rounded-2xl" style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <p class="text-white/60 text-sm font-body leading-relaxed">
+              <strong class="text-amber-300 font-semibold">El dolor UX resuelto:</strong> Ningún operador puede interpretar líneas de código como esta bajo una situación de estrés en la planta. El propósito de VoltAI es transformar este objeto JSON abstracto en <strong class="text-white/80">alertas cromáticas prioritarias, gráficos de tendencias predictivas y botones de acción unificada.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ─ 2.3 Matriz de Variables ──────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-6">
+          <div class="step-num flex-shrink-0 mt-0.5">3</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Matriz de Variables</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Clasificación de flujos de información</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-7 ml-0 md:ml-10 max-w-3xl">
+          Con el inventario físico y técnico claro, clasifiqué los flujos de información en la interfaz para reducir la carga cognitiva del operador:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 ml-0 md:ml-10">
+
+          <div class="glass rounded-2xl p-6">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-slate-400" aria-hidden="true"></div>
+              <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Tipo 1</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-0.5">Datos Estáticos</h4>
+            <p class="text-amber-300/60 text-xs font-body mb-4">(Contexto)</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Límites operativos de fábrica, IDs de los equipos y fechas de mantención.
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-6" style="border-color:rgba(245,158,11,0.2);">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-amber-400 blink" style="box-shadow:0 0 5px #F59E0B;" aria-hidden="true"></div>
+              <span class="text-amber-300/60 text-xs font-body uppercase tracking-[0.14em]">Tipo 2</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-0.5">Datos Dinámicos</h4>
+            <p class="text-amber-300/60 text-xs font-body mb-4">(Telemetría IIoT)</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Los valores crudos del JSON como los Kilovatios por hora (145.8 kWh) y la presión (4.1 Bar).
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-6" style="border-color:rgba(99,102,241,0.22);">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-violet-400" style="box-shadow:0 0 5px #A78BFA;" aria-hidden="true"></div>
+              <span class="text-violet-300/60 text-xs font-body uppercase tracking-[0.14em]">Tipo 3</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-0.5">Datos Calculados</h4>
+            <p class="text-violet-300/60 text-xs font-body mb-4">(Capa de Inteligencia)</p>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Las métricas procesadas por el algoritmo, como el score de eficiencia (62%) o el riesgo financiero estimado.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ─ 2.4 Lógica de Estados ───────────── -->
+      <div>
+        <div class="flex items-start gap-4 mb-6">
+          <div class="step-num flex-shrink-0 mt-0.5">4</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Lógica de Estados del Sistema</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Sistema de alertas estandarizado</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-7 ml-0 md:ml-10 max-w-3xl">
+          Diseñé un sistema de alertas estandarizado. La interfaz no obliga al usuario a interpretar números aislados, sino que presenta <strong class="text-white/75">estados accionables</strong> basados en las desviaciones matemáticas del flujo IoT:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 ml-0 md:ml-10">
+
+          <!-- Verde -->
+          <div class="rounded-2xl p-6" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.22);">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.22);">
+                <div class="w-4 h-4 rounded-full bg-emerald-400" style="box-shadow:0 0 10px rgba(34,197,94,0.65);" aria-hidden="true"></div>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-emerald-400 text-base leading-none">Verde</p>
+                <p class="text-emerald-300/55 text-xs font-body mt-0.5">Normal</p>
+              </div>
+            </div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Operación óptima dentro de los parámetros estables de fábrica.
+            </p>
+          </div>
+
+          <!-- Amarillo -->
+          <div class="rounded-2xl p-6" style="background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.25);">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.25);">
+                <div class="w-4 h-4 rounded-full bg-yellow-400" style="box-shadow:0 0 10px rgba(234,179,8,0.65);" aria-hidden="true"></div>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-yellow-400 text-base leading-none">Amarillo</p>
+                <p class="text-yellow-300/55 text-xs font-body mt-0.5">Advertencia</p>
+              </div>
+            </div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Desviación menor al 10% en variables como temperatura o vibración; requiere monitoreo pasivo.
+            </p>
+          </div>
+
+          <!-- Rojo -->
+          <div class="rounded-2xl p-6" style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.25);">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.22);">
+                <div class="w-4 h-4 rounded-full bg-red-400 blink" style="box-shadow:0 0 10px rgba(239,68,68,0.65);" aria-hidden="true"></div>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-red-400 text-base leading-none">Rojo</p>
+                <p class="text-red-300/55 text-xs font-body mt-0.5">Crítico</p>
+              </div>
+            </div>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Falla inminente, caída drástica de presión o proyección de sobreconsumo eléctrico; exige confirmación manual del usuario de forma inmediata.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+
+  <!-- ══════════════════════════════
+       03 — EL FACTOR HUMANO
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:420px;height:420px;top:-80px;right:-100px;opacity:0.18;filter:blur(80px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:360px;height:360px;bottom:-60px;left:-80px;opacity:0.15;filter:blur(80px);"  aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">03 — El Factor Humano</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
+        Diseñando para la <span class="gradient-accent">Carga Cognitiva</span>
+      </h2>
+
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
+        En entornos industriales de alta presión, el diseño visual debe estar subordinado a la claridad operativa. Antes de definir componentes en pantalla, era fundamental entender quién utilizaría VoltAI, bajo qué nivel de estrés, y cuáles eran las limitaciones físicas de su entorno de trabajo. El éxito del producto no dependía de la estética, sino de mitigar la <strong class="text-white/75 font-semibold">"Ansiedad de la Automatización"</strong> frente a la Inteligencia Artificial.
+      </p>
+
+
+      <!-- ─ 3.1 Proto-Persona ───────────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-8">
+          <div class="step-num flex-shrink-0 mt-0.5">1</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Proto-Persona: El Pragmático Escéptico</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Perfil representativo del usuario final</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-8 ml-0 md:ml-10 max-w-3xl">
+          Para guiar las decisiones de diseño, sinteticé los hallazgos en un perfil representativo del usuario final de la agroindustria local:
+        </p>
+
+        <div class="ml-0 md:ml-10 glass rounded-2xl overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3">
+
+            <!-- Perfil -->
+            <div class="p-7 flex flex-col" style="border-right:1px solid rgba(255,255,255,0.07);">
+              <!-- Avatar placeholder -->
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 flex-shrink-0" style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(251,191,36,0.08));border:1px solid rgba(245,158,11,0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <p class="font-heading font-bold text-white text-xl mb-1">Carlos Mendoza</p>
+              <p class="text-amber-300/80 text-sm font-body mb-4">Jefe de Operaciones y Mantenimiento</p>
+              <div class="space-y-2.5 mt-auto">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/25 flex-shrink-0 mt-1.5" aria-hidden="true"></div>
+                  <p class="text-white/50 text-xs font-body leading-relaxed"><strong class="text-white/70 font-medium">Edad:</strong> 42 años</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/25 flex-shrink-0 mt-1.5" aria-hidden="true"></div>
+                  <p class="text-white/50 text-xs font-body leading-relaxed"><strong class="text-white/70 font-medium">Formación:</strong> Ingeniero en Automatización</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/25 flex-shrink-0 mt-1.5" aria-hidden="true"></div>
+                  <p class="text-white/50 text-xs font-body leading-relaxed"><strong class="text-white/70 font-medium">Ubicación:</strong> Valle del Aconcagua, polo estratégico de la exportación frutícola</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/25 flex-shrink-0 mt-1.5" aria-hidden="true"></div>
+                  <p class="text-white/50 text-xs font-body leading-relaxed"><strong class="text-white/70 font-medium">Arquetipo:</strong> Pragmático y enfocado en resultados. Desconfía de los sistemas de "caja negra" que prometen resolver todo sin explicar el proceso matemático detrás.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metas -->
+            <div class="p-7" style="border-right:1px solid rgba(255,255,255,0.07);">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></div>
+                <span class="text-emerald-300/70 text-xs font-body uppercase tracking-[0.14em]">Metas Críticas</span>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed">Garantizar la operatividad continua de las líneas de embalaje.</p>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed">Mantener intacta la cadena de frío para proteger la fruta premium.</p>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed">Cumplir las metas gerenciales de eficiencia, evitando multas millonarias por excesos de potencia eléctrica en horas punta.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frustraciones -->
+            <div class="p-7">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-2 h-2 rounded-full bg-red-400" aria-hidden="true"></div>
+                <span class="text-red-300/70 text-xs font-body uppercase tracking-[0.14em]">Frustraciones Actuales</span>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.14);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed"><strong class="text-white/75 font-medium">Sopa de números:</strong> Sus monitores muestran miles de datos crudos sin jerarquía.</p>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.14);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed"><strong class="text-white/75 font-medium">Reactividad:</strong> Se entera de los picos de consumo o de las fallas mecánicas cuando el daño (o el gasto) ya está hecho.</p>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-xl" style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.14);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:2px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  <p class="text-white/60 text-xs font-body leading-relaxed"><strong class="text-white/75 font-medium">Fricción analítica:</strong> Pierde minutos vitales cruzando datos entre sistemas diferentes para encontrar la raíz de un problema.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ─ 3.2 Contexto de Uso ─────────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-8">
+          <div class="step-num flex-shrink-0 mt-0.5">2</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Contexto de Uso</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Environment Mapping</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-8 ml-0 md:ml-10 max-w-3xl">
+          Diseñar para este sector exige salir de la suposición del "usuario en un entorno tranquilo". Las decisiones de accesibilidad y contraste de VoltAI se fundamentaron en el siguiente entorno físico:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 ml-0 md:ml-10">
+
+          <div class="glass rounded-2xl p-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+              <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Plataforma</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-3">Desktop-First</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Carlos no monitorea datos complejos desde un móvil. Trabaja en una sala de control con múltiples monitores de 24 pulgadas, lo que permite un layout de alta densidad de información. El móvil se reserva estrictamente para <strong class="text-white/75 font-medium">notificaciones de emergencia Push.</strong>
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-red-400" aria-hidden="true"></div>
+              <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Entorno Físico</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-3">Alta presión y distracción</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Opera desde una oficina acristalada dentro de la misma planta de procesamiento. Expuesto a ruido de fondo constante (compresores, grúas), interrupciones por radio y <strong class="text-white/75 font-medium">presión directa de los supervisores de turno.</strong>
+            </p>
+          </div>
+
+          <div class="glass rounded-2xl p-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+              <span class="text-white/35 text-xs font-body uppercase tracking-[0.14em]">Exigencia UX</span>
+            </div>
+            <h4 class="font-heading font-semibold text-white text-sm mb-3">Lectura Periférica</h4>
+            <p class="text-white/55 text-sm font-body leading-relaxed">
+              Carlos necesita captar el estado general de la planta por el "rabillo del ojo". Los colores no cumplen una función estética, sino <strong class="text-white/75 font-medium">normativa:</strong> el rojo vibrante se reserva exclusivamente para riesgos críticos e inminentes.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ─ 3.3 JTBD ────────────────────────── -->
+      <div class="mb-16">
+        <div class="flex items-start gap-4 mb-8">
+          <div class="step-num flex-shrink-0 mt-0.5">3</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">Marco de Acción: Jobs-to-be-Done</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">JTBD · Manejo de Crisis</p>
+          </div>
+        </div>
+
+        <p class="text-white/55 font-body text-sm leading-relaxed mb-8 ml-0 md:ml-10 max-w-3xl">
+          Para alinear la interfaz con las necesidades reales de negocio, definí el "trabajo" principal que la plataforma debía resolver durante una crisis operativa. Este enfoque garantizó que cada componente en pantalla tuviera un <strong class="text-white/75">propósito accionable.</strong>
+        </p>
+
+        <div class="ml-0 md:ml-10 rounded-2xl overflow-hidden" style="border:1px solid rgba(245,158,11,0.18);">
+          <div class="px-6 py-3 flex items-center gap-2" style="background:rgba(245,158,11,0.08);border-bottom:1px solid rgba(245,158,11,0.14);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <span class="text-amber-300 text-xs font-heading font-semibold uppercase tracking-[0.14em]">JTBD Principal — Manejo de Crisis</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3" style="background:rgba(245,158,11,0.03);">
+            <div class="px-6 py-7" style="border-right:1px solid rgba(255,255,255,0.06);">
+              <p class="text-amber-400/60 text-xs font-heading font-semibold uppercase tracking-[0.16em] mb-3">Cuando…</p>
+              <p class="text-white/70 text-sm font-body leading-relaxed">
+                La demanda eléctrica del packing está a punto de superar el límite contratado debido a una anomalía mecánica…
+              </p>
+            </div>
+            <div class="px-6 py-7" style="border-right:1px solid rgba(255,255,255,0.06);">
+              <p class="text-amber-400/60 text-xs font-heading font-semibold uppercase tracking-[0.16em] mb-3">Quiero…</p>
+              <p class="text-white/70 text-sm font-body leading-relaxed">
+                Identificar visualmente y al instante qué máquina está causando el pico, y entender el razonamiento detrás de la alerta de la Inteligencia Artificial…
+              </p>
+            </div>
+            <div class="px-6 py-7">
+              <p class="text-amber-400/60 text-xs font-heading font-semibold uppercase tracking-[0.16em] mb-3">Para poder…</p>
+              <p class="text-white/70 text-sm font-body leading-relaxed">
+                Ejecutar un ajuste operativo con un solo clic, mitigando el riesgo financiero <strong class="text-white/85 font-semibold">sin detener la línea principal de exportación.</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ─ 3.4 Explainable AI ───────────────── -->
+      <div>
+        <div class="flex items-start gap-4 mb-8">
+          <div class="step-num flex-shrink-0 mt-0.5">4</div>
+          <div>
+            <h3 class="font-heading font-semibold text-white text-lg leading-none">UX Strategy: Explainable AI</h3>
+            <p class="text-white/35 text-xs font-body mt-1.5">Mitigando el Riesgo — Human-in-the-loop</p>
+          </div>
+        </div>
+
+        <div class="ml-0 md:ml-10">
+          <p class="text-white/55 font-body text-sm leading-relaxed mb-6 max-w-3xl">
+            El mayor desafío de interacción fue la confianza. Si el algoritmo de VoltAI recomendaba bajar la potencia del sistema de enfriamiento y la fruta se dañaba, la responsabilidad caía sobre el humano.
+          </p>
+
+          <div class="glass rounded-2xl p-7" style="border-color:rgba(99,102,241,0.2);">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.22);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              </div>
+              <div>
+                <p class="font-heading font-semibold text-white text-base mb-3">Inteligencia Artificial Explicable</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed mb-4">
+                  Para resolver esto, diseñé la plataforma bajo el principio de <strong class="text-violet-300 font-semibold">Inteligencia Artificial Explicable (Explainable AI)</strong>. La interfaz nunca da una orden a ciegas; siempre contextualiza la recomendación desplegando un gráfico predictivo de tiempo y dinero.
+                </p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">
+                  Esto transforma a la IA de una "caja negra" a un <strong class="text-white/80 font-semibold">asistente consultivo</strong>, dejando a Carlos siempre como el decisor final (<em class="text-violet-300">Human-in-the-loop</em>).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Continuará -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:500px;height:500px;top:-100px;left:50%;transform:translateX(-50%);opacity:0.15;filter:blur(90px);" aria-hidden="true"></div>
+    <div class="relative z-10 max-w-6xl mx-auto flex justify-center">
+      <div class="glass rounded-2xl px-10 py-12 text-center max-w-xl w-full" style="border:1px solid rgba(245,158,11,0.18);">
+        <div class="flex justify-center mb-6">
+          <div class="flex gap-1.5" aria-hidden="true">
+            <div class="w-2 h-2 rounded-full bg-amber-400/60"></div>
+            <div class="w-2 h-2 rounded-full bg-amber-400/40"></div>
+            <div class="w-2 h-2 rounded-full bg-amber-400/20"></div>
+          </div>
+        </div>
+        <p class="text-white/25 text-xs font-body uppercase tracking-[0.22em] mb-3">En construcción</p>
+        <h2 class="font-heading font-bold text-white text-3xl mb-4">Continuará<span class="gradient-accent">.</span></h2>
+        <p class="text-white/45 text-sm font-body leading-relaxed">
+          Las próximas secciones cubrirán el sistema de diseño, los wireframes de baja fidelidad y los resultados finales de la plataforma.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER -->
+  <footer class="py-12 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="text-white/25 text-sm font-body">© 2025 Portfolio — Raúl Villarroel</p>
+        <p class="text-white/15 text-xs font-body mt-1">Caso de estudio — VoltAI · Agroindustria &amp; IA</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="case-studies.html" class="text-white/35 hover:text-white/70 text-sm font-body transition-colors duration-200 no-underline inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Ver todos los casos
+        </a>
+        <a href="index.html#contact" class="btn-primary text-white text-sm font-heading font-semibold px-5 py-2.5 rounded-xl no-underline inline-flex items-center gap-2">
+          Contactar
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
