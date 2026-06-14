@@ -289,10 +289,10 @@
               <div class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></div>
               <span class="text-emerald-300/70 text-xs font-body uppercase tracking-[0.14em]">KPI de Negocio</span>
             </div>
-            <p class="text-white/35 text-xs font-body mb-1">ROI</p>
-            <p class="font-heading font-bold text-emerald-300 text-2xl leading-none mb-3">100%</p>
+            <p class="text-white/35 text-xs font-body mb-1">Tasa de Mitigación Temprana</p>
+            <p class="font-heading font-bold text-emerald-300 text-2xl leading-none mb-3">&gt; 95%</p>
             <p class="text-white/55 text-sm font-body leading-relaxed">
-              Reducción en penalizaciones financieras por exceso de potencia contratada durante horas punta.
+              Alertas críticas de consumo atendidas y mitigadas antes de cruzar la línea base de penalización. Objetivo final: <strong class="text-white/75 font-semibold">0 multas</strong> por sobreconsumo en los turnos operados con VoltAI.
             </p>
           </div>
 
@@ -1108,39 +1108,33 @@
       </div>
 
       <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
-        User Flow: <span class="gradient-accent">El Escenario Crítico</span>
+        El Viaje Interactivo y<br><span class="gradient-accent">Protocolos de Seguridad</span>
       </h2>
+      <p class="text-white/35 text-sm font-body uppercase tracking-[0.14em] mb-10">User Flow</p>
 
-      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-5">
-        Antes de definir la estructura visual o los componentes de la interfaz, fue fundamental mapear el comportamiento del usuario. Para validar la arquitectura de la información y la estrategia de IA Explicable, tracé el escenario de mayor fricción y riesgo financiero para la Planta San Felipe: <strong class="text-white/75 font-semibold">evitar una multa por sobreconsumo eléctrico en tiempo real sin detener la producción.</strong>
-      </p>
       <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
-        Este flujo define los <strong class="text-white/75 font-semibold">5 pasos críticos</strong> que el operador (Carlos) debe completar, minimizando la carga cognitiva bajo estrés.
+        En el diseño de software para misiones críticas, mapear el escenario ideal (Happy Path) es solo la mitad del trabajo. Para validar la arquitectura y la estrategia de IA Explicable, tracé el flujo de mayor fricción y riesgo financiero para el packing: <strong class="text-white/75 font-semibold">evitar una multa por sobreconsumo eléctrico en tiempo real</strong>, contemplando qué sucede si el factor humano falla.
       </p>
 
-      <!-- Contexto del escenario -->
-      <div class="glass rounded-2xl p-8 mb-12 reveal" style="border-color:rgba(245,158,11,0.2);">
+      <!-- Escenario crítico -->
+      <div class="glass rounded-2xl p-8 mb-14 reveal" style="border-color:rgba(245,158,11,0.22);">
         <div class="flex items-center gap-2 mb-6">
           <div class="w-1 h-5 rounded-full bg-amber-400" aria-hidden="true"></div>
           <span class="text-amber-400 text-xs font-body uppercase tracking-[0.16em]">El Escenario Crítico</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <p class="text-white/35 text-xs font-body uppercase tracking-[0.12em] mb-2">El Contexto</p>
-            <p class="text-white/65 text-sm font-body leading-relaxed">La planta opera a máxima capacidad. Quedan un par de horas para terminar el turno de la tarde y el consumo eléctrico está cerca del límite contratado.</p>
-          </div>
-          <div>
-            <p class="text-white/35 text-xs font-body uppercase tracking-[0.12em] mb-2">El Evento</p>
-            <p class="text-white/65 text-sm font-body leading-relaxed">El sistema detecta que un componente mecánico está fallando y consumiendo más energía de la debida para compensar.</p>
-          </div>
-        </div>
+        <p class="text-white/65 text-sm font-body leading-relaxed max-w-3xl">
+          La planta opera a máxima capacidad. Faltan dos horas para el cambio de turno y el sistema detecta que el <strong class="text-white/80 font-semibold">Compresor Neumático (CNP-04)</strong> en la línea de Embalaje presenta una anomalía, disparando el consumo general de la planta hacia el límite contratado.
+        </p>
       </div>
 
-      <!-- Pasos del User Flow -->
-      <div class="relative">
+      <!-- ── HAPPY PATH ────────────────────── -->
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-6 rounded-full bg-amber-400" aria-hidden="true"></div>
+        <h3 class="font-heading font-semibold text-white text-xl">El Camino Principal <span class="text-white/35 font-normal text-base">(Happy Path)</span></h3>
+      </div>
 
-        <!-- Línea vertical conectora -->
-        <div class="absolute left-5 top-8 bottom-8 w-px hidden md:block" style="background:linear-gradient(to bottom, rgba(245,158,11,0.4), rgba(245,158,11,0.1));" aria-hidden="true"></div>
+      <div class="relative mb-16">
+        <div class="absolute left-5 top-8 bottom-8 w-px hidden md:block" style="background:linear-gradient(to bottom, rgba(245,158,11,0.5), rgba(245,158,11,0.05));" aria-hidden="true"></div>
 
         <div class="space-y-5">
 
@@ -1150,16 +1144,16 @@
             <div class="flex flex-wrap items-center gap-3 mb-4">
               <span class="font-heading font-bold text-amber-400 text-sm">Paso 1</span>
               <span class="text-white/20 text-xs">—</span>
-              <span class="text-white font-heading font-semibold text-base">Detección <span class="text-white/35 font-normal text-sm">(Monitoreo Pasivo ➔ Alerta Activa)</span></span>
+              <span class="text-white font-heading font-semibold text-base">Detección <span class="text-white/35 font-normal text-sm">(De Monitoreo Pasivo a Alerta Activa)</span></span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Sistema</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">El sensor de presión del Compresor Neumático (CNP-04) en la línea de Embalaje detecta una anomalía. El consumo general de la planta escala rápidamente al <strong class="text-white/80 font-semibold">92% del límite.</strong></p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Evento</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El sensor de presión del CNP-04 registra una caída. El consumo general escala al <strong class="text-white/80 font-semibold">92%</strong>.</p>
               </div>
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">El indicador de consumo global cambia de verde a <strong class="text-amber-400/80 font-semibold">ámbar</strong>. En el Gemelo Digital, el bloque del Área de Embalaje se ilumina en <strong class="text-red-400/80 font-semibold">rojo</strong>. Simultáneamente, el asistente de IA genera una alerta prioritaria en el panel lateral.</p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">La barra superior cambia a estado <strong class="text-amber-400/80 font-semibold">ámbar</strong>. En el Gemelo Digital, el Área de Embalaje se ilumina en <strong class="text-red-400/80 font-semibold">rojo</strong> con un borde grueso para capturar la visión periférica del operador. Se activa el panel lateral de IA y comienza un temporizador interno de <strong class="text-white/80 font-semibold">3 minutos</strong>.</p>
               </div>
             </div>
           </div>
@@ -1170,16 +1164,16 @@
             <div class="flex flex-wrap items-center gap-3 mb-4">
               <span class="font-heading font-bold text-amber-400 text-sm">Paso 2</span>
               <span class="text-white/20 text-xs">—</span>
-              <span class="text-white font-heading font-semibold text-base">Profundización Espacial <span class="text-white/35 font-normal text-sm">(El Drill-Down)</span></span>
+              <span class="text-white font-heading font-semibold text-base">Profundización Espacial <span class="text-white/35 font-normal text-sm">(Drill-Down)</span></span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos nota la alerta visual periférica y hace clic directamente sobre la zona roja en el Gemelo Digital interactivo.</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos reacciona a la alerta visual y hace clic sobre el área roja.</p>
               </div>
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">El mapa realiza un <strong class="text-white/80 font-semibold">zoom-in fluido</strong> hacia el Área de Embalaje, revelando las máquinas individuales. El árbol de navegación lateral se expande automáticamente. El Compresor <strong class="text-white/80 font-semibold">CNP-04</strong> aparece resaltado como el origen de la crisis.</p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">El mapa hace un <strong class="text-white/80 font-semibold">zoom-in fluido</strong> hacia el Área de Embalaje. El árbol de activos izquierdo se expande automáticamente, manteniendo el contexto. El sistema aísla visualmente el <strong class="text-white/80 font-semibold">Compresor CNP-04</strong>.</p>
               </div>
             </div>
           </div>
@@ -1195,11 +1189,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos selecciona el Compresor CNP-04 para investigar la raíz del problema.</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Carlos selecciona el compresor afectado.</p>
               </div>
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">El gráfico inferior muestra el cruce de datos: la presión cayendo y los kilovatios disparándose. El panel de IA explica en lenguaje natural: <em class="text-amber-300/80 not-italic">"El compresor sobrecompensa una caída de presión. Proyección: Multa por sobreconsumo en <strong class="font-semibold">45 minutos</strong>".</em></p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Se despliega el <strong class="text-white/80 font-semibold">gráfico predictivo (XAI)</strong>. Muestra la curva histórica de kilovatios cruzando la zona de riesgo en los próximos 45 minutos. El panel traduce en lenguaje natural: <em class="text-amber-300/80 not-italic">"El compresor sobrecompensa una pérdida de presión. Riesgo de penalización inminente".</em></p>
               </div>
             </div>
           </div>
@@ -1214,12 +1208,12 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Sistema</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">La IA no ejecuta acciones a ciegas. Presenta una recomendación accionable: <em class="text-amber-300/80 not-italic">"Reducir potencia del CNP-04 al 70% y redistribuir carga neumática al compresor de respaldo Norte".</em></p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Propuesta de la IA</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed"><em class="text-amber-300/80 not-italic">"Reducir potencia al 70% y redistribuir carga".</em> Carlos comprueba en el gráfico que esto evita la multa sin detener la línea.</p>
               </div>
               <div>
-                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Acción del Usuario</p>
-                <p class="text-white/60 text-sm font-body leading-relaxed">Al comprobar en el gráfico que la acción evitará la penalización económica, Carlos hace clic en <strong class="text-white/80 font-semibold">[Ejecutar Recomendación]</strong>. <span class="text-white/35">(Ley de Hick: decisión en menos de 3 clics)</span></p>
+                <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta UI</p>
+                <p class="text-white/60 text-sm font-body leading-relaxed">Siguiendo la <strong class="text-white/80 font-semibold">Ley de Hick</strong>, se presenta un botón unificado y destacado: <strong class="text-white font-semibold">[Ejecutar Recomendación]</strong>. Carlos hace clic.</p>
               </div>
             </div>
           </div>
@@ -1230,14 +1224,80 @@
             <div class="flex flex-wrap items-center gap-3 mb-4">
               <span class="font-heading font-bold text-green-400 text-sm">Paso 5</span>
               <span class="text-white/20 text-xs">—</span>
-              <span class="text-white font-heading font-semibold text-base">Confirmación y Retorno al Equilibrio <span class="text-white/35 font-normal text-sm">(Feedback)</span></span>
+              <span class="text-white font-heading font-semibold text-base">Resolución y Feedback</span>
             </div>
             <div>
-              <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta de la UI</p>
-              <p class="text-white/60 text-sm font-body leading-relaxed max-w-3xl">El sistema muestra un estado de carga breve para confirmar el envío del comando al hardware. Un mensaje de éxito confirma el ajuste operativo. La proyección de consumo cae por debajo de la zona de riesgo, y el Gemelo Digital vuelve progresivamente a su estado <strong class="text-green-400/80 font-semibold">verde (Normal)</strong>, cerrando el ciclo de crisis.</p>
+              <p class="text-white/30 text-xs font-body uppercase tracking-[0.12em] mb-2">Respuesta UI</p>
+              <p class="text-white/60 text-sm font-body leading-relaxed max-w-3xl">Un estado de carga (loading) confirma la comunicación con el hardware físico. El gráfico predictivo desciende a la zona segura y los módulos del Gemelo Digital retornan al estado <strong class="text-green-400/80 font-semibold">verde (Normal)</strong>.</p>
             </div>
           </div>
 
+        </div>
+      </div>
+
+      <!-- ── EDGE CASES ────────────────────── -->
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-1 h-6 rounded-full bg-red-400" aria-hidden="true"></div>
+        <h3 class="font-heading font-semibold text-white text-xl">Diseñando para el Fracaso <span class="text-white/35 font-normal text-base">(Edge Cases)</span></h3>
+      </div>
+      <p class="text-white/55 font-body text-sm leading-relaxed max-w-3xl mb-10">
+        En un entorno industrial real, los usuarios se levantan al baño, ignoran las pantallas o necesitan tomar el control manual. El sistema no puede depender de una interacción perfecta. Para proteger el negocio, diseñé las siguientes ramificaciones lógicas:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
+
+        <!-- Edge Case 1 -->
+        <div class="glass rounded-2xl p-6 relative overflow-hidden" style="border-color:rgba(239,68,68,0.2);">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
+          <div class="inline-flex items-center gap-1.5 mb-5 px-2.5 py-1 rounded-full" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);">
+            <div class="w-1.5 h-1.5 rounded-full bg-red-400" aria-hidden="true"></div>
+            <span class="text-red-400 text-xs font-body uppercase tracking-[0.12em]">Edge Case 1</span>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-1">Ausencia del Operador</h4>
+          <p class="text-white/30 text-xs font-body mb-4">El Fail-Safe Automático</p>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Si la alerta roja no recibe clics en los primeros <strong class="text-white/75 font-semibold">3 minutos</strong>, el sistema escala un SMS de emergencia al Gerente de Planta. Si tras 2 minutos adicionales no hay intervención humana, VoltAI ejecuta un <strong class="text-white/75 font-semibold">apagado preventivo seguro (Safe-Shutdown)</strong> del equipo, evitando el daño mecánico irreparable y la multa de la distribuidora.
+          </p>
+        </div>
+
+        <!-- Edge Case 2 -->
+        <div class="glass rounded-2xl p-6 relative overflow-hidden" style="border-color:rgba(245,158,11,0.2);">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/50 to-transparent"></div>
+          <div class="inline-flex items-center gap-1.5 mb-5 px-2.5 py-1 rounded-full" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-400" aria-hidden="true"></div>
+            <span class="text-amber-400 text-xs font-body uppercase tracking-[0.12em]">Edge Case 2</span>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-1">Control Total</h4>
+          <p class="text-white/30 text-xs font-body mb-4">Ajuste Manual</p>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            En lugar de forzar la automatización, el operador siempre tiene la última palabra (<strong class="text-white/75 font-semibold">Human-in-the-loop</strong>). Si rechaza la recomendación de la IA, puede seleccionar "Ajuste Manual", desplegando un modal para calibrar los parámetros de presión bajo su propia responsabilidad.
+          </p>
+        </div>
+
+        <!-- Edge Case 3 -->
+        <div class="glass rounded-2xl p-6 relative overflow-hidden" style="border-color:rgba(99,102,241,0.2);">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent"></div>
+          <div class="inline-flex items-center gap-1.5 mb-5 px-2.5 py-1 rounded-full" style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-400" aria-hidden="true"></div>
+            <span class="text-violet-400 text-xs font-body uppercase tracking-[0.12em]">Edge Case 3</span>
+          </div>
+          <h4 class="font-heading font-semibold text-white text-sm mb-1">Requisito de Compliance</h4>
+          <p class="text-white/30 text-xs font-body mb-4">Ignorar Alerta</p>
+          <p class="text-white/55 text-sm font-body leading-relaxed">
+            Si el operador decide descartar la alerta, el sistema no permite simplemente "cerrar la ventana". Exige la selección de un motivo en un menú desplegable para generar un <strong class="text-white/75 font-semibold">registro de auditoría (Audit Trail)</strong>, silenciando la alarma visual por 1 hora.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Imagen user flow -->
+      <div class="mt-10 reveal">
+        <div class="glass rounded-2xl overflow-hidden" style="border-color:rgba(245,158,11,0.2);">
+          <img
+            src="imagenes/user flow voltai.png"
+            alt="Diagrama de User Flow completo — VoltAI, incluyendo Happy Path y Edge Cases"
+            class="w-full h-auto block"
+          >
         </div>
       </div>
 
