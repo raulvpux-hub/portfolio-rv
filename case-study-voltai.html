@@ -1406,7 +1406,175 @@
 
   <div class="divider"></div>
 
-  <!-- Continuará -->
+  <!-- ══════════════════════════════
+       06 — DISEÑO UI & ALTA FIDELIDAD
+  ══════════════════════════════ -->
+  <section class="relative py-24 px-6 overflow-hidden">
+    <div class="orb orb-amber" style="width:460px;height:460px;top:-80px;right:-100px;opacity:0.16;filter:blur(90px);" aria-hidden="true"></div>
+    <div class="orb orb-cyan"  style="width:360px;height:360px;bottom:-60px;left:-80px;opacity:0.13;filter:blur(80px);"  aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+
+      <div class="section-label">
+        <span class="text-white/35 text-xs font-body uppercase tracking-[0.18em]">06 — Diseño UI &amp; Alta Fidelidad</span>
+      </div>
+
+      <h2 class="font-heading font-bold text-[clamp(1.8rem,3.5vw,2.5rem)] text-white mb-4 leading-snug">
+        De Telemetría a <span class="gradient-accent">Decisiones Críticas</span>
+      </h2>
+
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-5">
+        Con la arquitectura de datos definida, el reto visual era claro: diseñar un centro de control que redujera la carga cognitiva del operador, permitiéndole trabajar en un entorno de alto estrés sin cometer errores.
+      </p>
+      <p class="text-white/55 font-body text-base max-w-3xl leading-relaxed mb-16">
+        Se optó por un sistema de diseño estructurado en <strong class="text-white/75 font-semibold">Dark Mode Industrial</strong>. Esta no fue una decisión puramente estética, sino funcional: en salas de control, los fondos oscuros previenen la fatiga visual de los turnos largos, permitiendo que los colores semánticos (<strong class="text-green-400/80 font-semibold">Verde</strong> para salud, <strong class="text-red-400/80 font-semibold">Rojo</strong> para alertas) capturen instantáneamente la visión periférica del usuario.
+      </p>
+
+      <!-- ── ANATOMÍA DE LA INTERFAZ ────────────────────── -->
+      <div class="flex items-center gap-3 mb-12">
+        <div class="w-1 h-6 rounded-full bg-amber-400" aria-hidden="true"></div>
+        <h3 class="font-heading font-semibold text-white text-xl">Anatomía de la Interfaz <span class="text-white/35 font-normal text-base">— Diseñando para la Resolución</span></h3>
+      </div>
+
+      <p class="text-white/50 font-body text-sm max-w-3xl leading-relaxed mb-14 -mt-8">
+        Antes de visualizar el panel general, cada componente individual fue diseñado para asistir al operador y mitigar el riesgo operativo:
+      </p>
+
+      <div class="space-y-6">
+
+        <!-- Componente 1: Gemelo Digital -->
+        <div class="glass rounded-2xl overflow-hidden reveal" style="border-color:rgba(245,158,11,0.18);">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="relative min-h-[260px] flex items-center justify-center overflow-hidden" style="background:rgba(7,7,26,0.8);">
+              <img src="imagenes/voltai%20twin.png" alt="Gemelo Digital — Tooltip con telemetría del CNP-04" class="w-full h-full object-cover object-center">
+            </div>
+            <div class="p-8 flex flex-col justify-center">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="step-num flex-shrink-0">1</div>
+                <div>
+                  <h4 class="font-heading font-semibold text-white text-base leading-none">Ubicación Espacial Rápida</h4>
+                  <p class="text-white/35 text-xs font-body mt-1">El Gemelo Digital</p>
+                </div>
+              </div>
+              <p class="text-white/60 font-body text-sm leading-relaxed">
+                En plantas industriales enormes, saber exactamente dónde ocurre el problema es vital. El esquema arquitectónico mapea los nodos IoT en tiempo real y, ante una anomalía, entrega la telemetría dura (<strong class="text-white/80 font-semibold">89.5 kWh y 3.8 Bar</strong>) directamente sobre la ubicación física del motor afectado.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Componente 2: Árbol de Activos -->
+        <div class="glass rounded-2xl overflow-hidden reveal" style="border-color:rgba(245,158,11,0.18);">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="p-8 flex flex-col justify-center md:order-1 order-2">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="step-num flex-shrink-0">2</div>
+                <div>
+                  <h4 class="font-heading font-semibold text-white text-base leading-none">Navegación Contextual</h4>
+                  <p class="text-white/35 text-xs font-body mt-1">El Árbol de Activos</p>
+                </div>
+              </div>
+              <p class="text-white/60 font-body text-sm leading-relaxed">
+                Para evitar el ruido visual, el menú lateral <strong class="text-white/80 font-semibold">reacciona al contexto</strong>. Ante una alerta, expande automáticamente la línea de producción afectada y resalta el equipo defectuoso, mientras que los componentes sanos pasan a un segundo plano visual.
+              </p>
+            </div>
+            <div class="relative min-h-[260px] flex items-center justify-center overflow-hidden md:order-2 order-1" style="background:rgba(7,7,26,0.8);">
+              <img src="imagenes/voltai%20menu.png" alt="Menú lateral — Árbol de activos con CNP-04 en rojo" class="w-full h-full object-cover object-center">
+            </div>
+          </div>
+        </div>
+
+        <!-- Componente 3: Gráfico Predictivo -->
+        <div class="glass rounded-2xl overflow-hidden reveal" style="border-color:rgba(245,158,11,0.18);">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="relative min-h-[260px] flex items-center justify-center overflow-hidden" style="background:rgba(7,7,26,0.8);">
+              <img src="imagenes/voltai%20grafico2.png" alt="Gráfico predictivo XAI — Proyección de sobreconsumo" class="w-full h-full object-cover object-center">
+            </div>
+            <div class="p-8 flex flex-col justify-center">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="step-num flex-shrink-0">3</div>
+                <div>
+                  <h4 class="font-heading font-semibold text-white text-base leading-none">Generando Confianza</h4>
+                  <p class="text-white/35 text-xs font-body mt-1">El Gráfico Predictivo XAI</p>
+                </div>
+              </div>
+              <p class="text-white/60 font-body text-sm leading-relaxed">
+                Para que un humano confíe en una recomendación automatizada, necesita entender el razonamiento de la máquina (<strong class="text-white/80 font-semibold">Explainable AI</strong>). El gráfico proyecta el impacto a futuro: muestra cómo el consumo histórico se dispara y calcula que, si no se interviene, el límite del contrato se romperá en exactamente <strong class="text-amber-400/80 font-semibold">14 minutos</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Componente 4: Panel de Acciones -->
+        <div class="glass rounded-2xl overflow-hidden reveal" style="border-color:rgba(245,158,11,0.18);">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="p-8 flex flex-col justify-center md:order-1 order-2">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="step-num flex-shrink-0">4</div>
+                <div>
+                  <h4 class="font-heading font-semibold text-white text-base leading-none">Ejecución Segura</h4>
+                  <p class="text-white/35 text-xs font-body mt-1">Panel de Acciones e Insights</p>
+                </div>
+              </div>
+              <p class="text-white/60 font-body text-sm leading-relaxed">
+                Aplicando la <strong class="text-white/80 font-semibold">Ley de Hick</strong>, bloqueamos otras interacciones bajo presión y ofrecemos una solución unificada. El diseño traduce la acción técnica a su impacto de negocio (<strong class="text-green-400/80 font-semibold">ahorro de $12,500 USD</strong>). El botón de ejecución principal es inconfundible, asegurando una respuesta rápida y libre de errores.
+              </p>
+            </div>
+            <div class="relative min-h-[260px] flex items-center justify-center overflow-hidden md:order-2 order-1" style="background:rgba(7,7,26,0.8);">
+              <img src="imagenes/voltai%20ai.png" alt="Panel VoltAI Insights — Botón de ejecución principal" class="w-full h-full object-cover object-center">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── VISTA MACRO ────────────────────── -->
+      <div class="flex items-center gap-3 mt-20 mb-6">
+        <div class="w-1 h-6 rounded-full bg-amber-400" aria-hidden="true"></div>
+        <h3 class="font-heading font-semibold text-white text-xl">La Vista Macro <span class="text-white/35 font-normal text-base">— El Sistema en Acción</span></h3>
+      </div>
+      <p class="text-white/50 font-body text-sm max-w-3xl leading-relaxed mb-14">
+        Al ensamblar estos componentes, VoltAI entrega dos vistas maestras que dirigen la atención del usuario de manera dinámica, pasando del monitoreo pasivo a la gestión activa de crisis.
+      </p>
+
+      <!-- Estado Normal -->
+      <div class="mb-8 reveal">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-2 h-2 rounded-full bg-green-400" aria-hidden="true"></div>
+          <span class="text-green-400 text-xs font-body uppercase tracking-[0.14em]">Estado Normal</span>
+          <span class="text-white/20 text-xs mx-1">—</span>
+          <span class="text-white/50 text-xs font-body">Monitoreo Pasivo y Control Global</span>
+        </div>
+        <div class="glass rounded-2xl overflow-hidden" style="border-color:rgba(34,197,94,0.2);">
+          <img src="imagenes/voltai%20normal.png" alt="VoltAI — Estado Normal: monitoreo pasivo con consumo eléctrico global estable" class="w-full h-auto block">
+        </div>
+        <p class="text-white/45 font-body text-sm leading-relaxed mt-5 max-w-3xl">
+          En condiciones operativas estables, la interfaz transmite tranquilidad. El árbol de activos se mantiene colapsado (en verde) y el panel central muestra el comportamiento energético de toda la planta. Mientras la curva de consumo general (<strong class="text-white/65 font-semibold">400.2 kWh</strong>) fluya bajo la línea de penalización, el operador solo supervisa.
+        </p>
+      </div>
+
+      <!-- Estado Crítico -->
+      <div class="reveal">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-2 h-2 rounded-full bg-red-400" aria-hidden="true"></div>
+          <span class="text-red-400 text-xs font-body uppercase tracking-[0.14em]">Estado Crítico</span>
+          <span class="text-white/20 text-xs mx-1">—</span>
+          <span class="text-white/50 text-xs font-body">Intervención y Foco</span>
+        </div>
+        <div class="glass rounded-2xl overflow-hidden" style="border-color:rgba(239,68,68,0.25);">
+          <img src="imagenes/voltai%20critico.png" alt="VoltAI — Estado Crítico: panel lateral de insights abierto con alerta roja" class="w-full h-auto block">
+        </div>
+        <p class="text-white/45 font-body text-sm leading-relaxed mt-5 max-w-3xl">
+          El sistema muta cuando se detecta la anomalía en el compresor. La vista global se abandona para hacer un zoom al problema, desplegando el panel lateral de Insights y guiando la visión del operador directamente hacia el botón de resolución para mitigar el riesgo financiero.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Cierre del caso -->
   <section class="relative py-24 px-6 overflow-hidden">
     <div class="orb orb-amber" style="width:500px;height:500px;top:-100px;left:50%;transform:translateX(-50%);opacity:0.15;filter:blur(90px);" aria-hidden="true"></div>
     <div class="relative z-10 max-w-6xl mx-auto flex justify-center">
@@ -1418,10 +1586,10 @@
             <div class="w-2 h-2 rounded-full bg-amber-400/20"></div>
           </div>
         </div>
-        <p class="text-white/25 text-xs font-body uppercase tracking-[0.22em] mb-3">En construcción</p>
-        <h2 class="font-heading font-bold text-white text-3xl mb-4">Continuará<span class="gradient-accent">.</span></h2>
+        <p class="text-white/25 text-xs font-body uppercase tracking-[0.22em] mb-3">Caso de estudio</p>
+        <h2 class="font-heading font-bold text-white text-3xl mb-4">VoltAI<span class="gradient-accent">.</span></h2>
         <p class="text-white/45 text-sm font-body leading-relaxed">
-          Actualmente me encuentro desarrollando el Sistema de Diseño y los componentes en Alta Fidelidad (Hi-Fi) para esta interfaz.
+          Este caso de estudio documenta el proceso completo de diseño: desde la arquitectura de datos y el modelado del gemelo digital, hasta el sistema de diseño industrial y la interfaz de alta fidelidad.
         </p>
       </div>
     </div>
